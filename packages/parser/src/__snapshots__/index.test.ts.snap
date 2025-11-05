@@ -1,0 +1,258 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UIH Parser > Bind Block > should parse bind mappings 1`] = `
+{
+  "blocks": [
+    {
+      "map": {
+        "#email": "user.email",
+        "#name": "user.name",
+      },
+      "type": "Bind",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Complete UIH File > should parse complete booking example 1`] = `
+{
+  "blocks": [
+    {
+      "entries": {
+        "route": "/booking",
+        "theme": "light",
+      },
+      "type": "Meta",
+    },
+    {
+      "tokens": {
+        "color.primary": "#0E5EF7",
+        "radius.card": "16px",
+      },
+      "type": "Style",
+    },
+    {
+      "mode": "centered",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "울릉도 여행 예약",
+            },
+          ],
+          "kind": "Element",
+          "name": "Card",
+          "props": [
+            {
+              "key": "id",
+              "value": "booking-card",
+            },
+          ],
+        },
+        {
+          "children": [],
+          "kind": "Element",
+          "name": "Input",
+          "props": [
+            {
+              "key": "id",
+              "value": "name",
+            },
+            {
+              "key": "placeholder",
+              "value": "이름 입력",
+            },
+          ],
+        },
+        {
+          "children": [],
+          "kind": "Element",
+          "name": "Input",
+          "props": [
+            {
+              "key": "id",
+              "value": "phone",
+            },
+            {
+              "key": "placeholder",
+              "value": "전화번호",
+            },
+          ],
+        },
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "예약하기",
+            },
+          ],
+          "kind": "Element",
+          "name": "Button",
+          "props": [
+            {
+              "key": "variant",
+              "value": "primary",
+            },
+          ],
+        },
+      ],
+      "type": "Layout",
+    },
+    {
+      "events": [
+        {
+          "name": "submit",
+          "steps": [
+            {
+              "to": "/complete",
+              "type": "Navigate",
+            },
+          ],
+        },
+      ],
+      "type": "Logic",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > I18n Block > should parse i18n entries 1`] = `
+{
+  "blocks": [
+    {
+      "entries": {
+        "farewell": {
+          "en": "Goodbye",
+          "ko": "안녕히 가세요",
+        },
+        "greeting": {
+          "en": "Hello",
+          "ko": "안녕하세요",
+        },
+      },
+      "type": "I18n",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Layout Block > should parse layout with elements 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "centered",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Hello World",
+            },
+          ],
+          "kind": "Element",
+          "name": "Card",
+          "props": [
+            {
+              "key": "id",
+              "value": "demo",
+            },
+          ],
+        },
+        {
+          "children": [],
+          "kind": "Element",
+          "name": "Input",
+          "props": [
+            {
+              "key": "id",
+              "value": "name",
+            },
+            {
+              "key": "placeholder",
+              "value": "Enter name",
+            },
+          ],
+        },
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Submit",
+            },
+          ],
+          "kind": "Element",
+          "name": "Button",
+          "props": [
+            {
+              "key": "variant",
+              "value": "primary",
+            },
+          ],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Layout Block > should parse layout without label 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Simple text",
+            },
+          ],
+          "kind": "Element",
+          "name": "Text",
+          "props": [],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Meta Block > should parse basic meta block 1`] = `
+{
+  "blocks": [
+    {
+      "entries": {
+        "route": "/test",
+        "theme": "dark",
+      },
+      "type": "Meta",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Style Block > should parse style tokens 1`] = `
+{
+  "blocks": [
+    {
+      "tokens": {
+        "color.primary": "#0E5EF7",
+        "radius.card": "16px",
+        "spacing.base": "8px",
+      },
+      "type": "Style",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;

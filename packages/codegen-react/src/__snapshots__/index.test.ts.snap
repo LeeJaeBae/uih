@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`React Code Generator > Basic Components > should generate Button component 1`] = `
+"import { Button } from "@/components/ui/button"
+export default function Page() {
+  return (
+    <div className="container mx-auto p-6">
+      <Button variant="primary">Click me</Button>
+    </div>
+  )
+}"
+`;
+
+exports[`React Code Generator > Basic Components > should generate Card component 1`] = `
+"import { Card, CardContent } from "@/components/ui/card"
+export default function Page() {
+  return (
+    <div className="container mx-auto p-6">
+      <Card><CardContent>Card content</CardContent></Card>
+    </div>
+  )
+}"
+`;
+
+exports[`React Code Generator > Basic Components > should generate Input component 1`] = `
+"import { Input } from "@/components/ui/input"
+export default function Page() {
+  return (
+    <div className="container mx-auto p-6">
+      <Input id="username" placeholder="Enter username" />
+    </div>
+  )
+}"
+`;
+
+exports[`React Code Generator > Multiple Components > should generate form with multiple inputs 1`] = `
+"import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+export default function Page() {
+  return (
+    <div className="container mx-auto p-6">
+      <Card><CardContent>User Registration</CardContent></Card>
+<Input id="name" placeholder="Name" />
+<Input id="email" placeholder="Email" type="email" />
+<Button variant="primary">Submit</Button>
+    </div>
+  )
+}"
+`;
