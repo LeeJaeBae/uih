@@ -1,0 +1,22 @@
+meta {
+  route: "/booking";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+  radius.card: "16px";
+}
+
+layout "centered" {
+  Card(id:"booking-card") { "울릉도 여행 예약" }
+  Input(id:"name", placeholder:"이름 입력")
+  Input(id:"phone", placeholder:"전화번호")
+  Button(variant:"primary"){ "예약하기" }
+}
+
+logic {
+  on submit {
+    navigate: "/complete";
+  }
+}

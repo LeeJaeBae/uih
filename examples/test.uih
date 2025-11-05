@@ -1,0 +1,16 @@
+meta {
+  route: "/test";
+  theme: "dark";
+}
+
+layout "centered" {
+  Card(id:"demo") { "테스트 카드" }
+  Input(id:"name", placeholder:"이름 입력")
+  Button(variant:"primary"){ "확인" }
+}
+
+logic {
+  on submit {
+    navigate: "/done";
+  }
+}

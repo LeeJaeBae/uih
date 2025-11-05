@@ -1,0 +1,9 @@
+meta {
+  route: "/hello";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"welcome") { "Hello, UIH!" }
+  Button(variant:"primary"){ "확인" }
+}
