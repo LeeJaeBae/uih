@@ -1,6 +1,6 @@
 {
   "name": "uih",
-  "version": "1.0.0",
+  "version": "0.6.0",
   "description": "UIH is a universal UI meta-language that bridges human-written interface descriptions and AI-generated components.",
   "keywords": [
     "uih",
@@ -11,6 +11,14 @@
   ],
   "author": "LeeJaeWon",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeJaeBae/uih.git"
+  },
+  "homepage": "https://github.com/LeeJaeBae/uih#readme",
+  "bugs": {
+    "url": "https://github.com/LeeJaeBae/uih/issues"
+  },
   "packageManager": "pnpm@10.19.0",
   "workspaces": [
     "packages/*"

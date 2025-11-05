@@ -1,6 +1,26 @@
 {
   "name": "uih-parser",
-  "version": "0.1.0",
+  "version": "0.6.0",
+  "description": "UIH language parser - converts .uih files to AST using Chevrotain",
+  "keywords": [
+    "uih",
+    "parser",
+    "ast",
+    "chevrotain",
+    "meta-language",
+    "ui"
+  ],
+  "author": "LeeJaeWon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeJaeBae/uih.git",
+    "directory": "packages/parser"
+  },
+  "homepage": "https://github.com/LeeJaeBae/uih/tree/main/packages/parser#readme",
+  "bugs": {
+    "url": "https://github.com/LeeJaeBae/uih/issues"
+  },
   "type": "module",
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
