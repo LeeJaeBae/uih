@@ -8,5 +8,5 @@ export default defineConfig({
     resolve: true,
   },
   platform: "node",
-  skipNodeModulesBundle: true,
+  noExternal: ["uih-parser", "uih-codegen-react"], // Bundle workspace packages
 });
