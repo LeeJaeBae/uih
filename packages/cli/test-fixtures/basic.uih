@@ -1,0 +1,10 @@
+
+meta {
+  route: "/test";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"demo") { "Test Card" }
+  Button(variant:"primary"){ "Click" }
+}

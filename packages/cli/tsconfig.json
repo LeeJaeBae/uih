@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "esModuleInterop": true,
+      "allowImportingTsExtensions": true,
+      "skipLibCheck": true,
+      "types": ["node"],
+      "baseUrl": ".",
+      "paths": {
+        "uih-parser": ["../parser/src"],
+        "uih-codegen-react": ["../codegen-react/src"]
+      }
+    },
+    "include": ["src"]
+  }
+  

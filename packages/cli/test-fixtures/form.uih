@@ -1,0 +1,6 @@
+
+layout {
+  Input(id:"name", placeholder:"이름")
+  Input(id:"email", placeholder:"이메일", type:"email")
+  Button(variant:"primary"){ "제출" }
+}

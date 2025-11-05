@@ -1,0 +1,22 @@
+{
+  "name": "uih-cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "uih": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --dts",
+    "dev": "node dist/index.js --watch examples/booking.uih",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "uih-codegen-react": "workspace:*",
+    "uih-parser": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.7"
+  }
+}
