@@ -1,0 +1,27 @@
+{
+  "name": "uih",
+  "version": "1.0.0",
+  "description": "UIH is a universal UI meta-language that bridges human-written interface descriptions and AI-generated components.",
+  "keywords": [
+    "uih",
+    "ui",
+    "meta-language",
+    "ai",
+    "components"
+  ],
+  "author": "LeeJaeWon",
+  "license": "MIT",
+  "packageManager": "pnpm@10.19.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter uih-cli dev",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "uih-cli": "workspace:*"
+  }
+}
