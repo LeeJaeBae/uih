@@ -13,7 +13,11 @@ export async function generateReact(file: UIHFile): Promise<string> {
     | undefined;
 
   const imports = new Set<string>();
-  const jsx = layout.nodes.map((n) => emitNode(n, imports)).join("\n");
+  const jsx = layout.nodes.map((n) => {
+    const nodeJsx = emitNode(n, imports);
+    // Wrap expression nodes (Loop, Conditional) in braces at top level
+    return isExpressionNode(n) ? `{${nodeJsx}}` : nodeJsx;
+  }).join("\n");
   const motionStyles = motion ? generateMotionStyles(motion) : "";
 
   const importStr = [...imports].filter(Boolean).join("\n");
@@ -43,23 +47,74 @@ export default function Page() {
   return formatted;
 }
 
+// Helper: Check if nodes need Fragment wrapper (multiple nodes or no nodes)
+function needsFragment(nodes: Node[]): boolean {
+  return nodes.length !== 1;
+}
+
+// Helper: Check if node is already an expression (Loop or Conditional)
+function isExpressionNode(node: Node): boolean {
+  return node.kind === "Loop" || node.kind === "Conditional";
+}
+
+// Helper: Wrap JSX in Fragment if needed
+function wrapIfNeeded(jsx: string, nodes: Node[]): string {
+  if (needsFragment(nodes)) {
+    return `<>${jsx}</>`;
+  }
+  // Single node - check if it's already an expression
+  if (nodes.length === 1 && isExpressionNode(nodes[0])) {
+    // Loop and Conditional already produce {...} expressions, no wrapping needed
+    return jsx;
+  }
+  return jsx;
+}
+
 function emitNode(n: Node, imports: Set<string>): string {
   if (n.kind === "Text") {
     return n.text;
   }
 
   if (n.kind === "Conditional") {
-    const thenJsx = n.thenNodes.map((node) => emitNode(node, imports)).join("\n");
+    // Only wrap expression nodes in braces if there are multiple children
+    const shouldWrapExpressions = n.thenNodes.length > 1;
+    const thenJsx = n.thenNodes.map((node) => {
+      const nodeJsx = emitNode(node, imports);
+      // Wrap expression nodes in braces only when multiple children exist
+      return shouldWrapExpressions && isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
+    }).join("\n");
+    const wrappedThen = wrapIfNeeded(thenJsx, n.thenNodes);
+    const needsParensThen = n.thenNodes.length !== 1 || !isExpressionNode(n.thenNodes[0]);
+
     if (n.elseNodes && n.elseNodes.length > 0) {
-      const elseJsx = n.elseNodes.map((node) => emitNode(node, imports)).join("\n");
-      return `{${n.condition} ? (<>${thenJsx}</>) : (<>${elseJsx}</>)}`;
+      const shouldWrapExpressionsElse = n.elseNodes.length > 1;
+      const elseJsx = n.elseNodes.map((node) => {
+        const nodeJsx = emitNode(node, imports);
+        // Wrap expression nodes in braces only when multiple children exist
+        return shouldWrapExpressionsElse && isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
+      }).join("\n");
+      const wrappedElse = wrapIfNeeded(elseJsx, n.elseNodes);
+      const needsParensElse = n.elseNodes.length !== 1 || !isExpressionNode(n.elseNodes[0]);
+
+      const thenPart = needsParensThen ? `(${wrappedThen})` : wrappedThen;
+      const elsePart = needsParensElse ? `(${wrappedElse})` : wrappedElse;
+      // Return without outer braces (parent will add them if needed)
+      return `${n.condition} ? ${thenPart} : ${elsePart}`;
     }
-    return `{${n.condition} && (<>${thenJsx}</>)}`;
+
+    const thenPart = needsParensThen ? `(${wrappedThen})` : wrappedThen;
+    // Return without outer braces (parent will add them if needed)
+    return `${n.condition} && ${thenPart}`;
   }
 
   if (n.kind === "Loop") {
-    const childrenJsx = n.children.map((node) => emitNode(node, imports)).join("\n");
-    return `{${n.iterableExpr}.map((${n.iteratorVar}) => (<React.Fragment key={${n.iteratorVar}.id || Math.random()}>${childrenJsx}</React.Fragment>))}`;
+    const childrenJsx = n.children.map((node) => {
+      const nodeJsx = emitNode(node, imports);
+      // Wrap expression nodes in braces inside Fragment
+      return isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
+    }).join("\n");
+    // Return as expression without outer braces (parent will add them if needed)
+    return `${n.iterableExpr}.map((${n.iteratorVar}) => (<React.Fragment key={${n.iteratorVar}.id || Math.random()}>${childrenJsx}</React.Fragment>))`;
   }
 
   // Element node

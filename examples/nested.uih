@@ -1,0 +1,44 @@
+meta {
+  route: "/nested";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+  radius.card: "12px";
+}
+
+layout "centered" {
+  Card(id:"header") { "Dashboard" }
+
+  if (isAuthenticated) {
+    Card(id:"user-section") { "User Information" }
+
+    if (isPremium) {
+      Badge(variant:"success") { "Premium Member" }
+
+      for (feature in premiumFeatures) {
+        Card(id:"feature-card") { "Premium Feature" }
+        if (feature.isNew) {
+          Badge(variant:"default") { "New" }
+        }
+      }
+    } else {
+      Badge(variant:"secondary") { "Free Member" }
+      Button(variant:"primary") { "Upgrade to Premium" }
+    }
+
+    for (notification in notifications) {
+      Card(id:"notification") { "Notification" }
+      if (notification.isUrgent) {
+        Badge(variant:"destructive") { "Urgent" }
+      } else {
+        Badge(variant:"default") { "Normal" }
+      }
+    }
+  } else {
+    Card(id:"login-prompt") { "Please log in" }
+    Button(variant:"primary") { "Login" }
+    Button(variant:"secondary") { "Sign Up" }
+  }
+}

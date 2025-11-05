@@ -181,4 +181,224 @@ describe("React Code Generator", () => {
       await expect(generateReact(ast)).rejects.toThrow("Layout block required");
     });
   });
+
+  describe("Conditional Rendering", () => {
+    it("should generate single-node conditional without Fragment", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Conditional",
+                condition: "isActive",
+                thenNodes: [
+                  {
+                    kind: "Element",
+                    name: "Badge",
+                    children: [{ kind: "Text", text: "Active" }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("{isActive && <Badge");
+      expect(code).not.toContain("<><Badge");
+    });
+
+    it("should generate multi-node conditional with Fragment", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Conditional",
+                condition: "isLoggedIn",
+                thenNodes: [
+                  {
+                    kind: "Element",
+                    name: "Button",
+                    children: [{ kind: "Text", text: "Logout" }],
+                  },
+                  {
+                    kind: "Element",
+                    name: "Badge",
+                    children: [{ kind: "Text", text: "Premium" }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("{isLoggedIn && (");
+      expect(code).toContain("<>");
+      expect(code).toContain("<Button");
+      expect(code).toContain("<Badge");
+    });
+
+    it("should generate ternary with single nodes without Fragment", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Conditional",
+                condition: "isPremium",
+                thenNodes: [
+                  {
+                    kind: "Element",
+                    name: "Badge",
+                    props: [{ key: "variant", value: "success" }],
+                    children: [{ kind: "Text", text: "Premium" }],
+                  },
+                ],
+                elseNodes: [
+                  {
+                    kind: "Element",
+                    name: "Badge",
+                    props: [{ key: "variant", value: "default" }],
+                    children: [{ kind: "Text", text: "Free" }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("{isPremium ?");
+      expect(code).toContain("<Badge variant=\"success\">Premium</Badge>");
+      expect(code).toContain("<Badge variant=\"default\">Free</Badge>");
+      expect(code).not.toContain("<><Badge");
+    });
+  });
+
+  describe("Loop Rendering", () => {
+    it("should generate loop with React.Fragment", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Loop",
+                iteratorVar: "user",
+                iterableExpr: "users",
+                children: [
+                  {
+                    kind: "Element",
+                    name: "Card",
+                    children: [{ kind: "Text", text: "User" }],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("users.map((user) =>");
+      expect(code).toContain("React.Fragment");
+      expect(code).toContain("key={user.id || Math.random()}");
+    });
+  });
+
+  describe("Nested Control Flow", () => {
+    it("should handle nested conditional in loop", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Loop",
+                iteratorVar: "item",
+                iterableExpr: "items",
+                children: [
+                  {
+                    kind: "Element",
+                    name: "Card",
+                    children: [{ kind: "Text", text: "Item" }],
+                  },
+                  {
+                    kind: "Conditional",
+                    condition: "item.isActive",
+                    thenNodes: [
+                      {
+                        kind: "Element",
+                        name: "Badge",
+                        children: [{ kind: "Text", text: "Active" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("items.map((item) =>");
+      expect(code).toContain("{item.isActive &&");
+      expect(code).toContain("<Badge");
+    });
+
+    it("should handle loop inside conditional", async () => {
+      const ast: UIHFile = {
+        type: "UIHFile",
+        blocks: [
+          {
+            type: "Layout",
+            nodes: [
+              {
+                kind: "Conditional",
+                condition: "hasItems",
+                thenNodes: [
+                  {
+                    kind: "Loop",
+                    iteratorVar: "item",
+                    iterableExpr: "items",
+                    children: [
+                      {
+                        kind: "Element",
+                        name: "Badge",
+                        children: [{ kind: "Text", text: "Item" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      const code = await generateReact(ast);
+      expect(code).toMatchSnapshot();
+      expect(code).toContain("{hasItems &&");
+      expect(code).toContain("items.map((item) =>");
+    });
+  });
 });

@@ -1,0 +1,18 @@
+meta {
+  route: "/simple";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"header") { "Header" }
+
+  if (isActive) {
+    Badge(variant:"success") { "Active" }
+  }
+
+  if (isPremium) {
+    Button(variant:"primary") { "Premium" }
+  } else {
+    Button(variant:"secondary") { "Free" }
+  }
+}

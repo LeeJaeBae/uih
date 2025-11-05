@@ -227,7 +227,14 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 
 ## 로드맵
 
-### v0.5 (현재)
+### v0.6 (현재)
+- ✅ 중첩된 조건/반복 최적화 (불필요한 Fragment 제거)
+- ✅ 중첩 테스트 케이스 추가
+- ✅ 복잡한 중첩 예제 (nested.uih)
+- 📋 플러그인 시스템
+- 📋 Vue/Svelte 코드 생성기
+
+### v0.5 (완료)
 - ✅ 조건부 렌더링 (`if`, `else`)
 - ✅ 반복 렌더링 (`for ... in`)
 - ✅ AST 타입 시스템 개선 (Node union types)
@@ -245,12 +252,7 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ Prettier 통합
 - ✅ Meta, Style, Layout, Logic, I18n, Bind 블록
 
-### v0.6 (다음 단계)
-- 📋 플러그인 시스템
-- 📋 Vue/Svelte 코드 생성기
-- 📋 중첩된 조건/반복 최적화
-
-### v1.0
+### v1.0 (계획)
 - 📋 온라인 플레이그라운드
 - 📋 VSCode 확장
 - 📋 주석 지원
