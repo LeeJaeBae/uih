@@ -4,7 +4,7 @@ import type { UIHFile } from "uih-parser";
 
 describe("React Code Generator", () => {
   describe("Basic Components", () => {
-    it("should generate Button component", () => {
+    it("should generate Button component", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -25,14 +25,14 @@ describe("React Code Generator", () => {
         ],
       };
 
-      const code = generateReact(ast);
+      const code = await generateReact(ast);
       expect(code).toMatchSnapshot();
       expect(code).toContain('import { Button }');
       expect(code).toContain('variant="primary"');
       expect(code).toContain('Click me');
     });
 
-    it("should generate Input component", () => {
+    it("should generate Input component", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -53,14 +53,14 @@ describe("React Code Generator", () => {
         ],
       };
 
-      const code = generateReact(ast);
+      const code = await generateReact(ast);
       expect(code).toMatchSnapshot();
       expect(code).toContain('import { Input }');
       expect(code).toContain('id="username"');
       expect(code).toContain('placeholder="Enter username"');
     });
 
-    it("should generate Card component", () => {
+    it("should generate Card component", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -78,7 +78,7 @@ describe("React Code Generator", () => {
         ],
       };
 
-      const code = generateReact(ast);
+      const code = await generateReact(ast);
       expect(code).toMatchSnapshot();
       expect(code).toContain('import { Card, CardContent }');
       expect(code).toContain('Card content');
@@ -86,7 +86,7 @@ describe("React Code Generator", () => {
   });
 
   describe("Multiple Components", () => {
-    it("should generate form with multiple inputs", () => {
+    it("should generate form with multiple inputs", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -129,7 +129,7 @@ describe("React Code Generator", () => {
         ],
       };
 
-      const code = generateReact(ast);
+      const code = await generateReact(ast);
       expect(code).toMatchSnapshot();
       expect(code).toContain('import { Button }');
       expect(code).toContain('import { Input }');
@@ -138,7 +138,7 @@ describe("React Code Generator", () => {
   });
 
   describe("Import Deduplication", () => {
-    it("should deduplicate imports for same component used multiple times", () => {
+    it("should deduplicate imports for same component used multiple times", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -160,14 +160,14 @@ describe("React Code Generator", () => {
         ],
       };
 
-      const code = generateReact(ast);
+      const code = await generateReact(ast);
       const importMatches = code.match(/import { Button }/g);
       expect(importMatches).toHaveLength(1);
     });
   });
 
   describe("Error Handling", () => {
-    it("should throw error when layout block is missing", () => {
+    it("should throw error when layout block is missing", async () => {
       const ast: UIHFile = {
         type: "UIHFile",
         blocks: [
@@ -178,7 +178,7 @@ describe("React Code Generator", () => {
         ],
       };
 
-      expect(() => generateReact(ast)).toThrow("Layout block required");
+      await expect(generateReact(ast)).rejects.toThrow("Layout block required");
     });
   });
 });

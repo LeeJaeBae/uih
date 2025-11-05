@@ -111,7 +111,10 @@ layout {
       try {
         execSync(`node ${CLI_PATH}`, { encoding: "utf8" });
       } catch (error: any) {
-        expect(error.stdout).toContain("Usage: uih compile");
+        expect(error.stdout).toContain("Usage: uih <command>");
+        expect(error.stdout).toContain("compile");
+        expect(error.stdout).toContain("validate");
+        expect(error.stdout).toContain("watch");
         expect(error.status).toBe(1);
       }
     });

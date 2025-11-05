@@ -1,7 +1,8 @@
 import type { UIHFile, LayoutBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.ts";
+import prettier from "prettier";
 
-export function generateReact(file: UIHFile) {
+export async function generateReact(file: UIHFile): Promise<string> {
   const layout = file.blocks.find((b) => b.type === "Layout") as
     | LayoutBlock
     | undefined;
@@ -21,7 +22,17 @@ export default function Page() {
   )
 }
 `;
-  return code.trim();
+
+  // Format with prettier
+  const formatted = await prettier.format(code.trim(), {
+    parser: "typescript",
+    semi: true,
+    singleQuote: false,
+    trailingComma: "es5",
+    printWidth: 80,
+  });
+
+  return formatted;
 }
 
 function emitNode(n: Node, imports: Set<string>): string {

@@ -1,0 +1,22 @@
+meta {
+  route: "/form";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"form-card") { "회원가입 폼" }
+
+  Label(htmlFor:"username") { "이름" }
+  Input(id:"username", placeholder:"이름을 입력하세요", type:"text")
+
+  Label(htmlFor:"email") { "이메일" }
+  Input(id:"email", placeholder:"이메일을 입력하세요", type:"email")
+
+  Label(htmlFor:"bio") { "자기소개" }
+  Textarea(id:"bio", placeholder:"자기소개를 입력하세요", rows:"4")
+
+  Label(htmlFor:"agree") { "약관 동의" }
+  Checkbox(id:"agree")
+
+  Button(variant:"primary") { "제출" }
+}
