@@ -4,9 +4,11 @@ exports[`React Code Generator > Basic Components > should generate Button compon
 "import { Button } from "@/components/ui/button";
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      <Button variant="primary">Click me</Button>
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <Button variant="primary">Click me</Button>
+      </div>
+    </>
   );
 }
 "
@@ -16,11 +18,13 @@ exports[`React Code Generator > Basic Components > should generate Card componen
 "import { Card, CardContent } from "@/components/ui/card";
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      <Card>
-        <CardContent>Card content</CardContent>
-      </Card>
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <Card>
+          <CardContent>Card content</CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
 "
@@ -30,9 +34,11 @@ exports[`React Code Generator > Basic Components > should generate Input compone
 "import { Input } from "@/components/ui/input";
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      <Input id="username" placeholder="Enter username" />
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <Input id="username" placeholder="Enter username" />
+      </div>
+    </>
   );
 }
 "
@@ -44,14 +50,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      <Card>
-        <CardContent>User Registration</CardContent>
-      </Card>
-      <Input id="name" placeholder="Name" />
-      <Input id="email" placeholder="Email" type="email" />
-      <Button variant="primary">Submit</Button>
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <Card>
+          <CardContent>User Registration</CardContent>
+        </Card>
+        <Input id="name" placeholder="Name" />
+        <Input id="email" placeholder="Email" type="email" />
+        <Button variant="primary">Submit</Button>
+      </div>
+    </>
   );
 }
 "

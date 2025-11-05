@@ -226,6 +226,37 @@ exports[`UIH Parser > Layout Block > should parse layout without label 1`] = `
 }
 `;
 
+exports[`UIH Parser > Logic Block > should parse logic events 1`] = `
+{
+  "blocks": [
+    {
+      "events": [
+        {
+          "name": "submit",
+          "steps": [
+            {
+              "to": "/success",
+              "type": "Navigate",
+            },
+          ],
+        },
+        {
+          "name": "cancel",
+          "steps": [
+            {
+              "message": "Cancelled",
+              "type": "Toast",
+            },
+          ],
+        },
+      ],
+      "type": "Logic",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
 exports[`UIH Parser > Meta Block > should parse basic meta block 1`] = `
 {
   "blocks": [
@@ -235,6 +266,27 @@ exports[`UIH Parser > Meta Block > should parse basic meta block 1`] = `
         "theme": "dark",
       },
       "type": "Meta",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Motion Block > should parse motion rules 1`] = `
+{
+  "blocks": [
+    {
+      "rules": [
+        {
+          "event": "hover",
+          "props": {
+            "duration": "200ms",
+            "scale": "1.05",
+          },
+          "selector": "#button",
+        },
+      ],
+      "type": "Motion",
     },
   ],
   "type": "UIHFile",

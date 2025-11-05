@@ -1,0 +1,21 @@
+meta {
+  route: "/components";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"showcase") { "Component Showcase" }
+
+  Label(htmlFor:"user") { "User Profile" }
+  Avatar(src:"https://github.com/shadcn.png", alt:"User") { "CN" }
+
+  Label(htmlFor:"status") { "Status Badges" }
+  Badge(variant:"default") { "Active" }
+  Badge(variant:"secondary") { "Pending" }
+  Badge(variant:"destructive") { "Error" }
+
+  Button(id:"dialog-trigger", variant:"primary") { "Open Dialog" }
+
+  Input(id:"message", placeholder:"Enter a message")
+  Button(id:"tooltip-btn", variant:"outline") { "Hover for tooltip" }
+}

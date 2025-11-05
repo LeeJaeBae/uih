@@ -1,0 +1,30 @@
+meta {
+  route: "/motion";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"demo-card") { "Interactive Card" }
+  Button(id:"hover-btn", variant:"primary") { "Hover Me" }
+  Button(id:"scale-btn", variant:"secondary") { "Scale Button" }
+  Badge(id:"badge", variant:"default") { "New" }
+}
+
+motion {
+  on hover(#hover-btn) {
+    scale: "1.05";
+    duration: "200ms";
+  }
+  on hover(#demo-card) {
+    scale: "1.02";
+    duration: "300ms";
+  }
+  on active(#scale-btn) {
+    scale: "0.95";
+    duration: "100ms";
+  }
+  on hover(#badge) {
+    opacity: "0.8";
+    duration: "150ms";
+  }
+}

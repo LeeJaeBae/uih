@@ -5,11 +5,13 @@ exports[`UIH CLI E2E Tests > compile command > should compile form example 1`] =
 import { Button } from "@/components/ui/button";
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      <Input id="name" placeholder="이름" />
-      <Input id="email" placeholder="이메일" type="email" />
-      <Button variant="primary">제출</Button>
-    </div>
+    <>
+      <div className="container mx-auto p-6">
+        <Input id="name" placeholder="이름" />
+        <Input id="email" placeholder="이메일" type="email" />
+        <Button variant="primary">제출</Button>
+      </div>
+    </>
   );
 }
 "

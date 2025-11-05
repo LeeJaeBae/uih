@@ -54,11 +54,11 @@ layout {
   });
 
   describe("Motion Block", () => {
-    it.skip("should parse motion rules", () => {
+    it("should parse motion rules", () => {
       const input = `
 motion {
   on hover(#button) {
-    scale: 1.05;
+    scale: "1.05";
     duration: "200ms";
   }
 }
@@ -69,7 +69,7 @@ motion {
   });
 
   describe("Logic Block", () => {
-    it.skip("should parse logic events", () => {
+    it("should parse logic events", () => {
       const input = `
 logic {
   on submit {

@@ -39,6 +39,26 @@ export const shadRegistry = {
     render: (_: any, children: string) =>
       `<Card><CardContent>${children || ""}</CardContent></Card>`,
   },
+  Badge: {
+    import: `import { Badge } from "@/components/ui/badge"`,
+    render: (p: any, children: string) =>
+      `<Badge ${propStr(p, ["variant"])}>${children || ""}</Badge>`,
+  },
+  Avatar: {
+    import: `import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"`,
+    render: (p: any, children: string) =>
+      `<Avatar><AvatarImage ${propStr(p, ["src", "alt"])} /><AvatarFallback>${children || "?"}</AvatarFallback></Avatar>`,
+  },
+  Dialog: {
+    import: `import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"`,
+    render: (p: any, children: string) =>
+      `<Dialog><DialogTrigger asChild>${p.trigger || "<Button>Open</Button>"}</DialogTrigger><DialogContent><DialogHeader><DialogTitle>${p.title || "Dialog"}</DialogTitle></DialogHeader>${children || ""}</DialogContent></Dialog>`,
+  },
+  Tooltip: {
+    import: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"`,
+    render: (p: any, children: string) =>
+      `<TooltipProvider><Tooltip><TooltipTrigger asChild>${children || "<Button>Hover</Button>"}</TooltipTrigger><TooltipContent><p>${p.content || "Tooltip"}</p></TooltipContent></Tooltip></TooltipProvider>`,
+  },
   Text: {
     import: ``,
     render: (_: any, children: string) => `<p>${children || ""}</p>`,

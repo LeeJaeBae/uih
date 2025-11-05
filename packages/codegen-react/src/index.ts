@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.ts";
 import prettier from "prettier";
 
@@ -8,17 +8,25 @@ export async function generateReact(file: UIHFile): Promise<string> {
     | undefined;
   if (!layout) throw new Error("Layout block required");
 
+  const motion = file.blocks.find((b) => b.type === "Motion") as
+    | MotionBlock
+    | undefined;
+
   const imports = new Set<string>();
   const jsx = layout.nodes.map((n) => emitNode(n, imports)).join("\n");
+  const motionStyles = motion ? generateMotionStyles(motion) : "";
 
   const importStr = [...imports].filter(Boolean).join("\n");
   const code = `
 ${importStr}
 export default function Page() {
   return (
-    <div className="container mx-auto p-6">
-      ${jsx}
-    </div>
+    <>
+      ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
+      <div className="container mx-auto p-6">
+        ${jsx}
+      </div>
+    </>
   )
 }
 `;
@@ -46,4 +54,49 @@ function emitNode(n: Node, imports: Set<string>): string {
   if (reg?.render) return reg.render(propsObj, children);
   // fallback div
   return `<div>${children}</div>`;
+}
+
+function generateMotionStyles(motion: MotionBlock): string {
+  const cssRules = motion.rules.map((rule) => {
+    const { selector, event, props } = rule;
+
+    // Convert motion props to CSS properties
+    const cssProps: string[] = [];
+    const transitions: string[] = [];
+
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === "duration") {
+        transitions.push(`all ${value}`);
+      } else if (key === "scale") {
+        cssProps.push(`transform: scale(${value});`);
+      } else if (key === "opacity") {
+        cssProps.push(`opacity: ${value};`);
+      } else if (key === "rotate") {
+        cssProps.push(`transform: rotate(${value}deg);`);
+      } else if (key === "x") {
+        cssProps.push(`transform: translateX(${value}px);`);
+      } else if (key === "y") {
+        cssProps.push(`transform: translateY(${value}px);`);
+      }
+    });
+
+    if (transitions.length === 0) {
+      transitions.push("all 200ms ease");
+    }
+    cssProps.push(`transition: ${transitions.join(", ")};`);
+
+    // Generate CSS rule based on event type
+    let pseudo = "";
+    if (event === "hover") {
+      pseudo = ":hover";
+    } else if (event === "focus") {
+      pseudo = ":focus";
+    } else if (event === "active") {
+      pseudo = ":active";
+    }
+
+    return `${selector}${pseudo} { ${cssProps.join(" ")} }`;
+  });
+
+  return cssRules.join("\n");
 }
