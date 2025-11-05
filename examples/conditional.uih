@@ -1,0 +1,21 @@
+meta {
+  route: "/conditional";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"status-card") { "User Status" }
+
+  if (isLoggedIn) {
+    Text { "Welcome back!" }
+    Button(variant:"primary") { "Logout" }
+  } else {
+    Text { "Please log in" }
+    Button(variant:"secondary") { "Login" }
+  }
+
+  if (isAdmin) {
+    Badge(variant:"destructive") { "Admin" }
+    Button(variant:"destructive") { "Admin Panel" }
+  }
+}

@@ -19,6 +19,10 @@ import {
   Identifier,
   StringLiteral,
   On,
+  If,
+  Else,
+  For,
+  In,
 } from "./lexer.js";
 
 export class UIHParser extends CstParser {
@@ -70,9 +74,17 @@ export class UIHParser extends CstParser {
     });
     this.CONSUME(LCurly);
     this.MANY(() => {
-      this.SUBRULE(this.element);
+      this.SUBRULE(this.node);
     });
     this.CONSUME(RCurly);
+  });
+
+  private node = this.RULE("node", () => {
+    this.OR([
+      { ALT: () => this.SUBRULE(this.element) },
+      { ALT: () => this.SUBRULE(this.conditional) },
+      { ALT: () => this.SUBRULE(this.loop) },
+    ]);
   });
 
   private element = this.RULE("element", () => {
@@ -91,6 +103,48 @@ export class UIHParser extends CstParser {
       });
       this.CONSUME(RCurly);
     });
+  });
+
+  private conditional = this.RULE("conditional", () => {
+    this.CONSUME(If);
+    this.CONSUME(LParen);
+    this.CONSUME(Identifier); // condition expression
+    this.CONSUME(RParen);
+    this.SUBRULE(this.thenBlock);
+    this.OPTION(() => {
+      this.CONSUME(Else);
+      this.SUBRULE(this.elseBlock);
+    });
+  });
+
+  private thenBlock = this.RULE("thenBlock", () => {
+    this.CONSUME(LCurly);
+    this.MANY(() => {
+      this.SUBRULE(this.node);
+    });
+    this.CONSUME(RCurly);
+  });
+
+  private elseBlock = this.RULE("elseBlock", () => {
+    this.CONSUME(LCurly);
+    this.MANY(() => {
+      this.SUBRULE(this.node);
+    });
+    this.CONSUME(RCurly);
+  });
+
+  private loop = this.RULE("loop", () => {
+    this.CONSUME(For);
+    this.CONSUME(LParen);
+    this.CONSUME(Identifier); // iterator variable
+    this.CONSUME(In);
+    this.CONSUME2(Identifier); // iterable expression
+    this.CONSUME(RParen);
+    this.CONSUME(LCurly);
+    this.MANY(() => {
+      this.SUBRULE(this.node);
+    });
+    this.CONSUME(RCurly);
   });
 
   private propList = this.RULE("propList", () => {

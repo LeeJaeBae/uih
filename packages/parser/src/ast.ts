@@ -27,13 +27,34 @@ export interface NodeProp {
   key: string;
   value: Literal;
 }
-export interface Node {
-  kind: "Element" | "Text";
-  name?: string; // Element만
+
+export type Node = ElementNode | TextNode | ConditionalNode | LoopNode;
+
+export interface ElementNode {
+  kind: "Element";
+  name: string;
   props?: NodeProp[];
   children?: Node[];
-  text?: string; // Text만
-  id?: string; // quick lookup
+  id?: string;
+}
+
+export interface TextNode {
+  kind: "Text";
+  text: string;
+}
+
+export interface ConditionalNode {
+  kind: "Conditional";
+  condition: string;
+  thenNodes: Node[];
+  elseNodes?: Node[];
+}
+
+export interface LoopNode {
+  kind: "Loop";
+  iteratorVar: string;
+  iterableExpr: string;
+  children: Node[];
 }
 
 export interface LayoutBlock {

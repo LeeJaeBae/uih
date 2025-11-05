@@ -1,0 +1,22 @@
+meta {
+  route: "/loop";
+  theme: "light";
+}
+
+layout "centered" {
+  Card(id:"list-card") { "User List" }
+
+  for (user in users) {
+    Card(id:"user-card") { "User Profile" }
+    Label(htmlFor:"name") { "Name" }
+    Text { "User name here" }
+    Badge(variant:"default") { "Active" }
+  }
+
+  Card(id:"items-card") { "Product List" }
+
+  for (product in products) {
+    Text { "Product" }
+    Button(variant:"primary") { "Buy" }
+  }
+}

@@ -44,7 +44,25 @@ export default function Page() {
 }
 
 function emitNode(n: Node, imports: Set<string>): string {
-  if (n.kind === "Text") return n.text || "";
+  if (n.kind === "Text") {
+    return n.text;
+  }
+
+  if (n.kind === "Conditional") {
+    const thenJsx = n.thenNodes.map((node) => emitNode(node, imports)).join("\n");
+    if (n.elseNodes && n.elseNodes.length > 0) {
+      const elseJsx = n.elseNodes.map((node) => emitNode(node, imports)).join("\n");
+      return `{${n.condition} ? (<>${thenJsx}</>) : (<>${elseJsx}</>)}`;
+    }
+    return `{${n.condition} && (<>${thenJsx}</>)}`;
+  }
+
+  if (n.kind === "Loop") {
+    const childrenJsx = n.children.map((node) => emitNode(node, imports)).join("\n");
+    return `{${n.iterableExpr}.map((${n.iteratorVar}) => (<React.Fragment key={${n.iteratorVar}.id || Math.random()}>${childrenJsx}</React.Fragment>))}`;
+  }
+
+  // Element node
   const reg = (n.name && (shadRegistry as any)[n.name]) || null;
   const propsObj = Object.fromEntries(
     (n.props || []).map((p) => [p.key, String(p.value)])

@@ -9,6 +9,10 @@ export const Logic = createToken({ name: "Logic", pattern: /logic/ });
 export const I18n = createToken({ name: "I18n", pattern: /i18n/ });
 export const Bind = createToken({ name: "Bind", pattern: /bind/ });
 export const On = createToken({ name: "On", pattern: /on/ });
+export const If = createToken({ name: "If", pattern: /if/ });
+export const Else = createToken({ name: "Else", pattern: /else/ });
+export const For = createToken({ name: "For", pattern: /for/ });
+export const In = createToken({ name: "In", pattern: /in/ });
 
 // Identifiers and Literals
 export const Identifier = createToken({
@@ -50,6 +54,10 @@ export const allTokens = [
   I18n,
   Bind,
   On,
+  If,
+  Else,
+  For,
+  In,
   // Then identifiers and literals
   Identifier,
   StringLiteral,

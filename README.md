@@ -227,11 +227,16 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 
 ## 로드맵
 
-### v0.4 (현재)
+### v0.5 (현재)
+- ✅ 조건부 렌더링 (`if`, `else`)
+- ✅ 반복 렌더링 (`for ... in`)
+- ✅ AST 타입 시스템 개선 (Node union types)
+- ✅ 예제 파일 추가 (conditional.uih, loop.uih)
+
+### v0.4 (완료)
 - ✅ Motion 블록 완성 (CSS 애니메이션)
 - ✅ shadcn/ui 컴포넌트 12개 (Button, Input, Card, Textarea, Select, Checkbox, Label, Text, Badge, Avatar, Dialog, Tooltip)
 - ✅ Motion/Logic 블록 테스트 완성
-- ✅ 예제 파일 추가 (motion-demo.uih, components-showcase.uih)
 
 ### v0.3 (완료)
 - ✅ Chevrotain 기반 파서
@@ -240,11 +245,10 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ Prettier 통합
 - ✅ Meta, Style, Layout, Logic, I18n, Bind 블록
 
-### v0.5 (다음 단계)
-- 📋 조건부 렌더링 (\`if\`, \`else\`)
-- 📋 반복 렌더링 (\`for\`, \`map\`)
+### v0.6 (다음 단계)
 - 📋 플러그인 시스템
 - 📋 Vue/Svelte 코드 생성기
+- 📋 중첩된 조건/반복 최적화
 
 ### v1.0
 - 📋 온라인 플레이그라운드

@@ -9,6 +9,10 @@ import type {
   I18nBlock,
   BindBlock,
   Node,
+  ElementNode,
+  TextNode,
+  ConditionalNode,
+  LoopNode,
   NodeProp,
   MotionRule,
   LogicEvent,
@@ -60,11 +64,18 @@ export class UIHVisitor extends BaseCstVisitor {
     const mode = ctx.StringLiteral?.[0]
       ? stripQuotes(ctx.StringLiteral[0].image)
       : "default";
-    const nodes = ctx.element?.map((e: any) => this.visit(e)) ?? [];
+    const nodes = ctx.node?.map((n: any) => this.visit(n)) ?? [];
     return { type: "Layout", mode, nodes };
   }
 
-  element(ctx: any): Node {
+  node(ctx: any): Node {
+    if (ctx.element) return this.visit(ctx.element);
+    if (ctx.conditional) return this.visit(ctx.conditional);
+    if (ctx.loop) return this.visit(ctx.loop);
+    throw new Error("Invalid node type");
+  }
+
+  element(ctx: any): ElementNode {
     const name = ctx.Identifier[0].image;
     const props: NodeProp[] = ctx.propList
       ? this.visit(ctx.propList[0])
@@ -72,12 +83,46 @@ export class UIHVisitor extends BaseCstVisitor {
     const text = ctx.StringLiteral?.[0]
       ? stripQuotes(ctx.StringLiteral[0].image)
       : undefined;
-    const children = text ? [{ kind: "Text" as const, text }] : [];
+    const children: Node[] = text ? [{ kind: "Text", text }] : [];
 
     return {
       kind: "Element",
       name,
       props,
+      children,
+    };
+  }
+
+  conditional(ctx: any): ConditionalNode {
+    const condition = ctx.Identifier[0].image;
+    const thenNodes = ctx.thenBlock ? this.visit(ctx.thenBlock[0]) : [];
+    const elseNodes = ctx.elseBlock ? this.visit(ctx.elseBlock[0]) : undefined;
+
+    return {
+      kind: "Conditional",
+      condition,
+      thenNodes,
+      elseNodes,
+    };
+  }
+
+  thenBlock(ctx: any): Node[] {
+    return ctx.node?.map((n: any) => this.visit(n)) ?? [];
+  }
+
+  elseBlock(ctx: any): Node[] {
+    return ctx.node?.map((n: any) => this.visit(n)) ?? [];
+  }
+
+  loop(ctx: any): LoopNode {
+    const iteratorVar = ctx.Identifier[0].image;
+    const iterableExpr = ctx.Identifier[1].image;
+    const children = ctx.node?.map((n: any) => this.visit(n)) ?? [];
+
+    return {
+      kind: "Loop",
+      iteratorVar,
+      iterableExpr,
       children,
     };
   }
