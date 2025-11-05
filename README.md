@@ -44,10 +44,14 @@ layout "centered" {
 ### 컴파일
 
 ```bash
+# React 컴포넌트 생성 (기본값)
 uih compile hello.uih
+
+# Vue 컴포넌트 생성
+uih compile hello.uih --target vue
 ```
 
-**생성된 코드** (\`out/Page.tsx\`):
+**생성된 코드** (\`out/Page.tsx\` 또는 \`out/Page.vue\`):
 ```tsx
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -170,6 +174,43 @@ uih/
 └── README.md
 ```
 
+## 플러그인 시스템
+
+v0.6부터 UIH는 플러그인 기반 아키텍처로 여러 프레임워크를 지원합니다.
+
+### 사용 가능한 플러그인
+
+- **React Plugin**: React + TypeScript + shadcn/ui (기본값)
+- **Vue Plugin**: Vue 3 Composition API + TypeScript
+
+### 플러그인 작성
+
+커스텀 코드 생성기를 만들려면 `CodegenPlugin` 인터페이스를 구현하세요:
+
+```typescript
+import { CodegenPlugin, pluginRegistry } from "uih-codegen-react";
+import type { UIHFile } from "uih-parser";
+
+class MyFrameworkPlugin implements CodegenPlugin {
+  readonly name = "myframework";
+  readonly fileExtension = ".myext";
+
+  async generate(file: UIHFile): Promise<string> {
+    // AST를 프레임워크 코드로 변환
+    return "/* generated code */";
+  }
+}
+
+// 플러그인 등록
+pluginRegistry.register(new MyFrameworkPlugin());
+```
+
+그런 다음 CLI에서 사용:
+
+```bash
+uih compile input.uih --target myframework
+```
+
 ## 패키지
 
 ### [@uih/parser](packages/parser)
@@ -194,7 +235,15 @@ const reactCode = generateReact(ast);
 커맨드라인 도구로 컴파일을 실행합니다.
 
 ```bash
+# 기본 사용법
 uih compile input.uih [outputDir]
+
+# 타겟 프레임워크 지정
+uih compile input.uih --target react  # React 컴포넌트 생성
+uih compile input.uih --target vue    # Vue 3 컴포넌트 생성
+
+# 파일 감시 모드
+uih watch input.uih [outputDir] --target vue
 ```
 
 ## 개발
@@ -231,8 +280,10 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ 중첩된 조건/반복 최적화 (불필요한 Fragment 제거)
 - ✅ 중첩 테스트 케이스 추가
 - ✅ 복잡한 중첩 예제 (nested.uih)
-- 📋 플러그인 시스템
-- 📋 Vue/Svelte 코드 생성기
+- ✅ 플러그인 시스템 아키텍처
+- ✅ Vue 코드 생성기 (Vue 3 Composition API)
+- ✅ CLI --target 옵션 (react|vue)
+- 📋 Svelte 코드 생성기
 
 ### v0.5 (완료)
 - ✅ 조건부 렌더링 (`if`, `else`)

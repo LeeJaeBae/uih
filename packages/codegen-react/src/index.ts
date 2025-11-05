@@ -1,175 +1,24 @@
-import type { UIHFile, LayoutBlock, MotionBlock, Node } from "uih-parser";
-import { shadRegistry } from "./registry.ts";
-import prettier from "prettier";
+import type { UIHFile } from "uih-parser";
+import { createReactPlugin } from "./react-plugin.js";
+import { pluginRegistry } from "./plugin.js";
+import { createVuePlugin } from "./vue-plugin.js";
 
+// Export plugin system
+export { CodegenPlugin, PluginRegistry, pluginRegistry } from "./plugin.js";
+export { ReactPlugin, createReactPlugin } from "./react-plugin.js";
+export { VuePlugin, createVuePlugin } from "./vue-plugin.js";
+export { shadRegistry } from "./registry.js";
+
+// Register default plugins
+pluginRegistry.register(createReactPlugin());
+pluginRegistry.register(createVuePlugin());
+
+/**
+ * Generate React code from UIH AST
+ * @deprecated Use createReactPlugin().generate() instead
+ * This function is maintained for backward compatibility
+ */
 export async function generateReact(file: UIHFile): Promise<string> {
-  const layout = file.blocks.find((b) => b.type === "Layout") as
-    | LayoutBlock
-    | undefined;
-  if (!layout) throw new Error("Layout block required");
-
-  const motion = file.blocks.find((b) => b.type === "Motion") as
-    | MotionBlock
-    | undefined;
-
-  const imports = new Set<string>();
-  const jsx = layout.nodes.map((n) => {
-    const nodeJsx = emitNode(n, imports);
-    // Wrap expression nodes (Loop, Conditional) in braces at top level
-    return isExpressionNode(n) ? `{${nodeJsx}}` : nodeJsx;
-  }).join("\n");
-  const motionStyles = motion ? generateMotionStyles(motion) : "";
-
-  const importStr = [...imports].filter(Boolean).join("\n");
-  const code = `
-${importStr}
-export default function Page() {
-  return (
-    <>
-      ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
-      <div className="container mx-auto p-6">
-        ${jsx}
-      </div>
-    </>
-  )
-}
-`;
-
-  // Format with prettier
-  const formatted = await prettier.format(code.trim(), {
-    parser: "typescript",
-    semi: true,
-    singleQuote: false,
-    trailingComma: "es5",
-    printWidth: 80,
-  });
-
-  return formatted;
-}
-
-// Helper: Check if nodes need Fragment wrapper (multiple nodes or no nodes)
-function needsFragment(nodes: Node[]): boolean {
-  return nodes.length !== 1;
-}
-
-// Helper: Check if node is already an expression (Loop or Conditional)
-function isExpressionNode(node: Node): boolean {
-  return node.kind === "Loop" || node.kind === "Conditional";
-}
-
-// Helper: Wrap JSX in Fragment if needed
-function wrapIfNeeded(jsx: string, nodes: Node[]): string {
-  if (needsFragment(nodes)) {
-    return `<>${jsx}</>`;
-  }
-  // Single node - check if it's already an expression
-  if (nodes.length === 1 && isExpressionNode(nodes[0])) {
-    // Loop and Conditional already produce {...} expressions, no wrapping needed
-    return jsx;
-  }
-  return jsx;
-}
-
-function emitNode(n: Node, imports: Set<string>): string {
-  if (n.kind === "Text") {
-    return n.text;
-  }
-
-  if (n.kind === "Conditional") {
-    // Only wrap expression nodes in braces if there are multiple children
-    const shouldWrapExpressions = n.thenNodes.length > 1;
-    const thenJsx = n.thenNodes.map((node) => {
-      const nodeJsx = emitNode(node, imports);
-      // Wrap expression nodes in braces only when multiple children exist
-      return shouldWrapExpressions && isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
-    }).join("\n");
-    const wrappedThen = wrapIfNeeded(thenJsx, n.thenNodes);
-    const needsParensThen = n.thenNodes.length !== 1 || !isExpressionNode(n.thenNodes[0]);
-
-    if (n.elseNodes && n.elseNodes.length > 0) {
-      const shouldWrapExpressionsElse = n.elseNodes.length > 1;
-      const elseJsx = n.elseNodes.map((node) => {
-        const nodeJsx = emitNode(node, imports);
-        // Wrap expression nodes in braces only when multiple children exist
-        return shouldWrapExpressionsElse && isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
-      }).join("\n");
-      const wrappedElse = wrapIfNeeded(elseJsx, n.elseNodes);
-      const needsParensElse = n.elseNodes.length !== 1 || !isExpressionNode(n.elseNodes[0]);
-
-      const thenPart = needsParensThen ? `(${wrappedThen})` : wrappedThen;
-      const elsePart = needsParensElse ? `(${wrappedElse})` : wrappedElse;
-      // Return without outer braces (parent will add them if needed)
-      return `${n.condition} ? ${thenPart} : ${elsePart}`;
-    }
-
-    const thenPart = needsParensThen ? `(${wrappedThen})` : wrappedThen;
-    // Return without outer braces (parent will add them if needed)
-    return `${n.condition} && ${thenPart}`;
-  }
-
-  if (n.kind === "Loop") {
-    const childrenJsx = n.children.map((node) => {
-      const nodeJsx = emitNode(node, imports);
-      // Wrap expression nodes in braces inside Fragment
-      return isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
-    }).join("\n");
-    // Return as expression without outer braces (parent will add them if needed)
-    return `${n.iterableExpr}.map((${n.iteratorVar}) => (<React.Fragment key={${n.iteratorVar}.id || Math.random()}>${childrenJsx}</React.Fragment>))`;
-  }
-
-  // Element node
-  const reg = (n.name && (shadRegistry as any)[n.name]) || null;
-  const propsObj = Object.fromEntries(
-    (n.props || []).map((p) => [p.key, String(p.value)])
-  );
-  const children = (n.children || []).map((c) => emitNode(c, imports)).join("");
-  if (reg?.import) imports.add(reg.import);
-  if (reg?.render) return reg.render(propsObj, children);
-  // fallback div
-  return `<div>${children}</div>`;
-}
-
-function generateMotionStyles(motion: MotionBlock): string {
-  const cssRules = motion.rules.map((rule) => {
-    const { selector, event, props } = rule;
-
-    // Convert motion props to CSS properties
-    const cssProps: string[] = [];
-    const transitions: string[] = [];
-
-    Object.entries(props).forEach(([key, value]) => {
-      if (key === "duration") {
-        transitions.push(`all ${value}`);
-      } else if (key === "scale") {
-        cssProps.push(`transform: scale(${value});`);
-      } else if (key === "opacity") {
-        cssProps.push(`opacity: ${value};`);
-      } else if (key === "rotate") {
-        cssProps.push(`transform: rotate(${value}deg);`);
-      } else if (key === "x") {
-        cssProps.push(`transform: translateX(${value}px);`);
-      } else if (key === "y") {
-        cssProps.push(`transform: translateY(${value}px);`);
-      }
-    });
-
-    if (transitions.length === 0) {
-      transitions.push("all 200ms ease");
-    }
-    cssProps.push(`transition: ${transitions.join(", ")};`);
-
-    // Generate CSS rule based on event type
-    let pseudo = "";
-    if (event === "hover") {
-      pseudo = ":hover";
-    } else if (event === "focus") {
-      pseudo = ":focus";
-    } else if (event === "active") {
-      pseudo = ":active";
-    }
-
-    return `${selector}${pseudo} { ${cssProps.join(" ")} }`;
-  });
-
-  return cssRules.join("\n");
+  const plugin = createReactPlugin();
+  return plugin.generate(file);
 }
