@@ -227,19 +227,19 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 
 ## 로드맵
 
-### v0.2 (현재)
+### v0.3 (현재)
 - ✅ Chevrotain 기반 파서
 - ✅ React 코드 생성 (shadcn/ui)
-- ✅ 기본 CLI (compile)
+- ✅ 기본 CLI (compile, watch, validate)
+- ✅ Prettier 통합
 - ✅ Meta, Style, Layout, Logic, I18n, Bind 블록
+- ✅ shadcn/ui 컴포넌트 8개 (Button, Input, Card, Textarea, Select, Checkbox, Label, Text)
 
-### v0.3 (다음 단계)
-- ⏳ Prettier 통합
-- ⏳ CLI watch/validate 명령
+### v0.4 (다음 단계)
 - ⏳ Motion 블록 완성
-- ⏳ 더 많은 shadcn/ui 컴포넌트
+- ⏳ 더 많은 shadcn/ui 컴포넌트 (Badge, Avatar, Dialog, Tooltip)
 
-### v0.4 (향후)
+### v0.5 (향후)
 - 📋 조건부 렌더링 (\`if\`, \`else\`)
 - 📋 반복 렌더링 (\`for\`, \`map\`)
 - 📋 플러그인 시스템
