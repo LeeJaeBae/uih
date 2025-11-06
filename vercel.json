@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm install && pnpm build && pnpm --filter uih-playground build",
+  "outputDirectory": "playground/.next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install"
+}
