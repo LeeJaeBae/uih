@@ -1,6 +1,7 @@
 {
-  "buildCommand": "cd playground && pnpm build",
+  "buildCommand": "pnpm build && pnpm --filter uih-playground build",
   "outputDirectory": "playground/.next",
   "framework": "nextjs",
-  "installCommand": "pnpm install --frozen-lockfile"
+  "installCommand": "pnpm install --frozen-lockfile",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./playground"
 }
