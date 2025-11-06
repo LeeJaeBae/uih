@@ -4,7 +4,7 @@
 
 ## 소개
 
-UIH는 선언적이고 직관적인 문법으로 UI를 정의하고, 이를 React, Vue 등 다양한 프레임워크 코드로 변환하는 메타 언어입니다.
+UIH는 선언적이고 직관적인 문법으로 UI를 정의하고, 이를 React, Vue, Svelte 등 다양한 프레임워크 코드로 변환하는 메타 언어입니다.
 
 ### 왜 UIH인가?
 
@@ -49,6 +49,9 @@ uih compile hello.uih
 
 # Vue 컴포넌트 생성
 uih compile hello.uih --target vue
+
+# Svelte 컴포넌트 생성
+uih compile hello.uih --target svelte
 ```
 
 **생성된 코드** (\`out/Page.tsx\` 또는 \`out/Page.vue\`):
@@ -182,6 +185,7 @@ v0.6부터 UIH는 플러그인 기반 아키텍처로 여러 프레임워크를 
 
 - **React Plugin**: React + TypeScript + shadcn/ui (기본값)
 - **Vue Plugin**: Vue 3 Composition API + TypeScript
+- **Svelte Plugin**: Svelte + TypeScript
 
 ### 플러그인 작성
 
@@ -239,8 +243,9 @@ const reactCode = generateReact(ast);
 uih compile input.uih [outputDir]
 
 # 타겟 프레임워크 지정
-uih compile input.uih --target react  # React 컴포넌트 생성
-uih compile input.uih --target vue    # Vue 3 컴포넌트 생성
+uih compile input.uih --target react   # React 컴포넌트 생성
+uih compile input.uih --target vue     # Vue 3 컴포넌트 생성
+uih compile input.uih --target svelte  # Svelte 컴포넌트 생성
 
 # 파일 감시 모드
 uih watch input.uih [outputDir] --target vue
@@ -282,8 +287,8 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ 복잡한 중첩 예제 (nested.uih)
 - ✅ 플러그인 시스템 아키텍처
 - ✅ Vue 코드 생성기 (Vue 3 Composition API)
-- ✅ CLI --target 옵션 (react|vue)
-- 📋 Svelte 코드 생성기
+- ✅ Svelte 코드 생성기 (Svelte + TypeScript)
+- ✅ CLI --target 옵션 (react|vue|svelte)
 
 ### v0.5 (완료)
 - ✅ 조건부 렌더링 (`if`, `else`)

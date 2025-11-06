@@ -1,12 +1,13 @@
 {
   "name": "uih-codegen-react",
   "version": "0.6.0",
-  "description": "Multi-framework code generator for UIH - supports React and Vue with plugin system",
+  "description": "Multi-framework code generator for UIH - supports React, Vue, and Svelte with plugin system",
   "keywords": [
     "uih",
     "codegen",
     "react",
     "vue",
+    "svelte",
     "code-generator",
     "plugin",
     "typescript",
@@ -37,6 +38,7 @@
     "vitest": "^4.0.7"
   },
   "dependencies": {
+    "prettier-plugin-svelte": "^3.4.0",
     "uih-parser": "workspace:*"
   }
 }

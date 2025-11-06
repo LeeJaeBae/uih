@@ -11,13 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Plugin System**: Extensible architecture for multi-framework support
   - `CodegenPlugin` interface for creating custom code generators
   - `PluginRegistry` for managing and discovering plugins
-  - Built-in React and Vue plugins
+  - Built-in React, Vue, and Svelte plugins
 - **Vue 3 Support**: Full Vue 3 code generation with Composition API
   - `v-if`, `v-else`, `v-for` directives
   - Single File Component (.vue) format
   - Scoped styles support
+- **Svelte Support**: Full Svelte code generation with TypeScript
+  - `{#if}`, `{:else}`, `{/if}`, `{#each}` syntax
+  - Single File Component (.svelte) format
+  - Motion styles with CSS transitions
 - **CLI Enhancements**:
-  - `--target` flag to specify framework (react|vue)
+  - `--target` flag to specify framework (react|vue|svelte)
   - Plugin discovery and automatic loading
   - Better error messages and help text
 - **Nested Optimization**: Intelligent Fragment removal for cleaner code
