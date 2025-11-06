@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, Node } from "uih-parser";
 import prettier from "prettier";
 import prettierPluginSvelte from "prettier-plugin-svelte";
 import type { CodegenPlugin } from "./plugin.js";
@@ -20,11 +20,34 @@ export class SveltePlugin implements CodegenPlugin {
       | MotionBlock
       | undefined;
 
+    const logic = file.blocks.find((b) => b.type === "Logic") as
+      | LogicBlock
+      | undefined;
+
+    const state = file.blocks.find((b) => b.type === "State") as
+      | StateBlock
+      | undefined;
+
+    const data = file.blocks.find((b) => b.type === "Data") as
+      | DataBlock
+      | undefined;
+
     const template = layout.nodes.map((n) => this.emitNode(n, 1)).join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
+    const { stateVars, stateImports } = state ? this.generateStateVars(state) : { stateVars: "", stateImports: new Set<string>() };
+    const { dataFetches, dataImports } = data ? this.generateDataFetches(data) : { dataFetches: "", dataImports: new Set<string>() };
+    const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
+
+    // Merge all imports
+    const imports = new Set<string>();
+    stateImports.forEach(imp => imports.add(imp));
+    dataImports.forEach(imp => imports.add(imp));
+    handlerImports.forEach(imp => imports.add(imp));
+
+    const importStr = imports.size > 0 ? `  import { ${[...imports].join(", ")} } from "svelte";\n` : "";
 
     const code = `<script lang="ts">
-  // Svelte component logic
+${importStr}${stateVars}${dataFetches}${handlers}
 </script>
 
 <div class="container mx-auto p-6">
@@ -105,7 +128,7 @@ ${indentStr}</${svelteComponent}>`;
   }
 
   private mapToSvelteComponent(name: string): string {
-    // Map React component names to Svelte/HTML equivalents
+    // Map component names to Svelte/HTML equivalents
     const mapping: Record<string, string> = {
       Button: "button",
       Input: "input",
@@ -120,6 +143,11 @@ ${indentStr}</${svelteComponent}>`;
       Avatar: "div",
       Dialog: "div",
       Tooltip: "div",
+      Switch: "input",
+      Separator: "hr",
+      Alert: "div",
+      Progress: "progress",
+      Skeleton: "div",
     };
 
     return mapping[name] || "div";
@@ -129,7 +157,6 @@ ${indentStr}</${svelteComponent}>`;
     const cssRules = motion.rules.map((rule) => {
       const { selector, event, props } = rule;
 
-      // Convert motion props to CSS properties
       const cssProps: string[] = [];
       const transitions: string[] = [];
 
@@ -154,20 +181,98 @@ ${indentStr}</${svelteComponent}>`;
       }
       cssProps.push(`transition: ${transitions.join(", ")};`);
 
-      // Generate CSS rule based on event type
       let pseudo = "";
-      if (event === "hover") {
-        pseudo = ":hover";
-      } else if (event === "focus") {
-        pseudo = ":focus";
-      } else if (event === "active") {
-        pseudo = ":active";
-      }
+      if (event === "hover") pseudo = ":hover";
+      else if (event === "focus") pseudo = ":focus";
+      else if (event === "active") pseudo = ":active";
 
       return `${selector}${pseudo} {\n  ${cssProps.join("\n  ")}\n}`;
     });
 
     return cssRules.join("\n\n");
+  }
+
+  private generateStateVars(state: StateBlock): { stateVars: string; stateImports: Set<string> } {
+    const imports = new Set<string>();
+
+    const vars = state.declarations.map((decl) => {
+      let initialValue: string;
+      if (typeof decl.initialValue === "string") {
+        initialValue = `"${decl.initialValue}"`;
+      } else if (typeof decl.initialValue === "boolean") {
+        initialValue = String(decl.initialValue);
+      } else {
+        initialValue = String(decl.initialValue);
+      }
+
+      return `  let ${decl.name} = ${initialValue};`;
+    }).join("\n");
+
+    return {
+      stateVars: vars + "\n\n",
+      stateImports: imports
+    };
+  }
+
+  private generateDataFetches(data: DataBlock): { dataFetches: string; dataImports: Set<string> } {
+    const imports = new Set<string>();
+    imports.add("onMount");
+
+    const fetches = data.fetches.map((fetch) => {
+      const varName = fetch.name;
+      const loadingVar = `${varName}Loading`;
+      const errorVar = `${varName}Error`;
+
+      return `  let ${varName} = null;
+  let ${loadingVar} = true;
+  let ${errorVar} = null;
+
+  onMount(async () => {
+    try {
+      const response = await fetch("${fetch.url}");
+      ${varName} = await response.json();
+    } catch (err) {
+      ${errorVar} = err;
+    } finally {
+      ${loadingVar} = false;
+    }
+  });`;
+    }).join("\n\n");
+
+    return {
+      dataFetches: fetches + "\n\n",
+      dataImports: imports
+    };
+  }
+
+  private generateLogicHandlers(logic: LogicBlock): { handlers: string; handlerImports: Set<string> } {
+    const imports = new Set<string>();
+
+    const handlers = logic.events.map((event) => {
+      const handlerName = `handle${event.name.charAt(0).toUpperCase()}${event.name.slice(1)}`;
+      const statements: string[] = [];
+
+      event.steps.forEach((step) => {
+        if (step.type === "Navigate") {
+          statements.push(`// Navigate to ${step.to}`);
+          statements.push(`window.location.href = "${step.to}";`);
+        } else if (step.type === "Toast") {
+          statements.push(`alert("${step.message}");`);
+        } else if (step.type === "Call") {
+          const method = step.method || "POST";
+          statements.push(`await fetch("${step.url}", { method: "${method}" });`);
+        }
+      });
+
+      return `  const ${handlerName} = async () => {
+    ${statements.join("\n    ")}
+  };`;
+    }).join("\n\n");
+
+    return {
+      handlers: handlers + "\n\n",
+      handlerImports: imports
+    };
   }
 }
 

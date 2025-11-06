@@ -59,7 +59,7 @@ if (!command || !input) {
   console.log("");
   console.log("Options:");
   console.log(
-    "  --target <framework>         Target framework (react|vue) [default: react]"
+    "  --target <framework>         Target framework (react|vue|svelte) [default: react]"
   );
   console.log("");
   console.log("Available frameworks:", pluginRegistry.getAvailablePlugins().join(", "));

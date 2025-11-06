@@ -1,9 +1,9 @@
-import type { UIHFile, LayoutBlock, MotionBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, Node } from "uih-parser";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
 
 /**
- * Vue 3 code generation plugin with composition API
+ * Vue 3 code generation plugin with Composition API
  */
 export class VuePlugin implements CodegenPlugin {
   readonly name = "vue";
@@ -19,8 +19,31 @@ export class VuePlugin implements CodegenPlugin {
       | MotionBlock
       | undefined;
 
+    const logic = file.blocks.find((b) => b.type === "Logic") as
+      | LogicBlock
+      | undefined;
+
+    const state = file.blocks.find((b) => b.type === "State") as
+      | StateBlock
+      | undefined;
+
+    const data = file.blocks.find((b) => b.type === "Data") as
+      | DataBlock
+      | undefined;
+
     const template = layout.nodes.map((n) => this.emitNode(n, 0)).join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
+    const { stateRefs, stateImports } = state ? this.generateStateRefs(state) : { stateRefs: "", stateImports: new Set<string>() };
+    const { dataFetches, dataImports } = data ? this.generateDataFetches(data) : { dataFetches: "", dataImports: new Set<string>() };
+    const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
+
+    // Merge all imports
+    const imports = new Set<string>();
+    stateImports.forEach(imp => imports.add(imp));
+    dataImports.forEach(imp => imports.add(imp));
+    handlerImports.forEach(imp => imports.add(imp));
+
+    const importStr = imports.size > 0 ? `import { ${[...imports].join(", ")} } from "vue";\n` : "";
 
     const code = `<template>
   <div class="container mx-auto p-6">
@@ -29,7 +52,7 @@ export class VuePlugin implements CodegenPlugin {
 </template>
 
 <script setup lang="ts">
-// Vue 3 Composition API
+${importStr}${stateRefs}${dataFetches}${handlers}
 </script>
 
 ${motionStyles ? `<style scoped>\n${motionStyles}\n</style>` : ""}
@@ -127,7 +150,7 @@ ${indentStr}</${vueComponent}>`;
   }
 
   private mapToVueComponent(name: string): string {
-    // Map React component names to Vue equivalents or use generic div
+    // Map component names to Vue equivalents
     const mapping: Record<string, string> = {
       Button: "button",
       Input: "input",
@@ -142,6 +165,11 @@ ${indentStr}</${vueComponent}>`;
       Avatar: "div",
       Dialog: "div",
       Tooltip: "div",
+      Switch: "input",
+      Separator: "hr",
+      Alert: "div",
+      Progress: "progress",
+      Skeleton: "div",
     };
 
     return mapping[name] || "div";
@@ -151,7 +179,6 @@ ${indentStr}</${vueComponent}>`;
     const cssRules = motion.rules.map((rule) => {
       const { selector, event, props } = rule;
 
-      // Convert motion props to CSS properties
       const cssProps: string[] = [];
       const transitions: string[] = [];
 
@@ -176,20 +203,102 @@ ${indentStr}</${vueComponent}>`;
       }
       cssProps.push(`transition: ${transitions.join(", ")};`);
 
-      // Generate CSS rule based on event type
       let pseudo = "";
-      if (event === "hover") {
-        pseudo = ":hover";
-      } else if (event === "focus") {
-        pseudo = ":focus";
-      } else if (event === "active") {
-        pseudo = ":active";
-      }
+      if (event === "hover") pseudo = ":hover";
+      else if (event === "focus") pseudo = ":focus";
+      else if (event === "active") pseudo = ":active";
 
       return `${selector}${pseudo} {\n  ${cssProps.join("\n  ")}\n}`;
     });
 
     return cssRules.join("\n\n");
+  }
+
+  private generateStateRefs(state: StateBlock): { stateRefs: string; stateImports: Set<string> } {
+    const imports = new Set<string>();
+    imports.add("ref");
+
+    const refs = state.declarations.map((decl) => {
+      let initialValue: string;
+      if (typeof decl.initialValue === "string") {
+        initialValue = `"${decl.initialValue}"`;
+      } else if (typeof decl.initialValue === "boolean") {
+        initialValue = String(decl.initialValue);
+      } else {
+        initialValue = String(decl.initialValue);
+      }
+
+      return `const ${decl.name} = ref(${initialValue});`;
+    }).join("\n");
+
+    return {
+      stateRefs: refs + "\n\n",
+      stateImports: imports
+    };
+  }
+
+  private generateDataFetches(data: DataBlock): { dataFetches: string; dataImports: Set<string> } {
+    const imports = new Set<string>();
+    imports.add("ref");
+    imports.add("onMounted");
+
+    const fetches = data.fetches.map((fetch) => {
+      const varName = fetch.name;
+      const loadingVar = `${varName}Loading`;
+      const errorVar = `${varName}Error`;
+
+      return `const ${varName} = ref(null);
+const ${loadingVar} = ref(true);
+const ${errorVar} = ref(null);
+
+onMounted(async () => {
+  try {
+    const response = await fetch("${fetch.url}");
+    ${varName}.value = await response.json();
+  } catch (err) {
+    ${errorVar}.value = err;
+  } finally {
+    ${loadingVar}.value = false;
+  }
+});`;
+    }).join("\n\n");
+
+    return {
+      dataFetches: fetches + "\n\n",
+      dataImports: imports
+    };
+  }
+
+  private generateLogicHandlers(logic: LogicBlock): { handlers: string; handlerImports: Set<string> } {
+    const imports = new Set<string>();
+
+    const handlers = logic.events.map((event) => {
+      const handlerName = `handle${event.name.charAt(0).toUpperCase()}${event.name.slice(1)}`;
+      const statements: string[] = [];
+
+      event.steps.forEach((step) => {
+        if (step.type === "Navigate") {
+          // Vue Router navigation
+          statements.push(`// Navigate to ${step.to}`);
+          statements.push(`window.location.href = "${step.to}";`);
+        } else if (step.type === "Toast") {
+          // Simple alert for now (can be replaced with Vue toast library)
+          statements.push(`alert("${step.message}");`);
+        } else if (step.type === "Call") {
+          const method = step.method || "POST";
+          statements.push(`await fetch("${step.url}", { method: "${method}" });`);
+        }
+      });
+
+      return `const ${handlerName} = async () => {
+  ${statements.join("\n  ")}
+};`;
+    }).join("\n\n");
+
+    return {
+      handlers: handlers + "\n\n",
+      handlerImports: imports
+    };
   }
 }
 
