@@ -1,7 +1,7 @@
 {
   "name": "vscode-uih",
-  "displayName": "UIH Language Support",
-  "description": "Syntax highlighting and language support for UIH (Universal UI Hierarchy)",
+  "displayName": "UIH",
+  "description": "UIH - Universal UI Hierarchy meta-language for React, Vue, and Svelte",
   "version": "1.0.0",
   "publisher": "LeeJaeWon",
   "license": "MIT",
