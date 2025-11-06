@@ -11,6 +11,16 @@ export class SveltePlugin implements CodegenPlugin {
   readonly fileExtension = ".svelte";
 
   async generate(file: UIHFile): Promise<string> {
+    // Generate user imports from .uih files
+    const userImports = file.imports.map((imp) => {
+      const importPath = imp.from.replace(/\.uih$/, "");
+      if (imp.names.length === 1) {
+        return `  import ${imp.names[0]} from "${importPath}";`;
+      } else {
+        return `  import { ${imp.names.join(", ")} } from "${importPath}";`;
+      }
+    }).join("\n");
+
     const layout = file.blocks.find((b) => b.type === "Layout") as
       | LayoutBlock
       | undefined;
@@ -47,7 +57,7 @@ export class SveltePlugin implements CodegenPlugin {
     const importStr = imports.size > 0 ? `  import { ${[...imports].join(", ")} } from "svelte";\n` : "";
 
     const code = `<script lang="ts">
-${importStr}${stateVars}${dataFetches}${handlers}
+${userImports ? userImports + "\n" : ""}${importStr}${stateVars}${dataFetches}${handlers}
 </script>
 
 <div class="container mx-auto p-6">

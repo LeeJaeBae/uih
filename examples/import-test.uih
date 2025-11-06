@@ -1,0 +1,18 @@
+import CustomButton from "./components/Button.uih"
+
+meta {
+  route: "/import-test";
+  theme: "light";
+}
+
+layout {
+  Card { "Import Test" }
+
+  Text { "This is the main page" }
+
+  CustomButton
+
+  Separator
+
+  Text { "Component imported successfully!" }
+}

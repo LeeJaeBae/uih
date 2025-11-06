@@ -1,7 +1,14 @@
 export type Literal = string | number | boolean;
 
+export interface ImportStatement {
+  type: "Import";
+  names: string[];
+  from: string;
+}
+
 export interface UIHFile {
   type: "UIHFile";
+  imports: ImportStatement[];
   blocks: Block[];
 }
 

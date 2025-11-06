@@ -1,6 +1,8 @@
 import { CstParser } from "chevrotain";
 import {
   allTokens,
+  Import,
+  From,
   Meta,
   Style,
   Layout,
@@ -51,6 +53,9 @@ export class UIHParser extends CstParser {
 
   public uihFile = this.RULE("uihFile", () => {
     this.MANY(() => {
+      this.SUBRULE(this.importStatement);
+    });
+    this.MANY2(() => {
       this.SUBRULE(this.block);
     });
   });
@@ -370,6 +375,20 @@ export class UIHParser extends CstParser {
     this.CONSUME(Identifier);
     this.CONSUME(Colon);
     this.CONSUME(StringLiteral);
+    this.OPTION(() => {
+      this.CONSUME(Semicolon);
+    });
+  });
+
+  private importStatement = this.RULE("importStatement", () => {
+    this.CONSUME(Import);
+    this.CONSUME(Identifier); // first import name
+    this.MANY(() => {
+      this.CONSUME(Comma);
+      this.CONSUME2(Identifier); // additional imports
+    });
+    this.CONSUME(From);
+    this.CONSUME(StringLiteral); // module path
     this.OPTION(() => {
       this.CONSUME(Semicolon);
     });

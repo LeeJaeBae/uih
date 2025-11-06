@@ -11,6 +11,16 @@ export class ReactPlugin implements CodegenPlugin {
   readonly fileExtension = ".tsx";
 
   async generate(file: UIHFile): Promise<string> {
+    // Generate user imports from .uih files
+    const userImports = file.imports.map((imp) => {
+      const importPath = imp.from.replace(/\.uih$/, "");
+      if (imp.names.length === 1) {
+        return `import ${imp.names[0]} from "${importPath}";`;
+      } else {
+        return `import { ${imp.names.join(", ")} } from "${importPath}";`;
+      }
+    }).join("\n");
+
     const layout = file.blocks.find((b) => b.type === "Layout") as
       | LayoutBlock
       | undefined;
@@ -52,7 +62,7 @@ export class ReactPlugin implements CodegenPlugin {
 
     const importStr = [...imports].filter(Boolean).join("\n");
     const code = `
-${importStr}
+${userImports ? userImports + "\n" : ""}${importStr}
 ${fetcher ? fetcher : ""}
 export default function Page() {
 ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handlers : ""}

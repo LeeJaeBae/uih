@@ -1,0 +1,11 @@
+meta {
+  route: "/button";
+}
+
+state {
+  count: 0;
+}
+
+layout {
+  Button(variant:"primary") { "Click me: {count}" }
+}

@@ -1,6 +1,8 @@
 import { createToken, Lexer } from "chevrotain";
 
 // Keywords
+export const Import = createToken({ name: "Import", pattern: /import/ });
+export const From = createToken({ name: "From", pattern: /from/ });
 export const Meta = createToken({ name: "Meta", pattern: /meta/ });
 export const Style = createToken({ name: "Style", pattern: /style/ });
 export const Layout = createToken({ name: "Layout", pattern: /layout/ });
@@ -88,6 +90,8 @@ export const allTokens = [
   BlockComment,
   WhiteSpace,
   // Keywords first
+  Import,
+  From,
   Meta,
   Style,
   Layout,

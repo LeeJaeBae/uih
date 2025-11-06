@@ -10,6 +10,16 @@ export class VuePlugin implements CodegenPlugin {
   readonly fileExtension = ".vue";
 
   async generate(file: UIHFile): Promise<string> {
+    // Generate user imports from .uih files
+    const userImports = file.imports.map((imp) => {
+      const importPath = imp.from.replace(/\.uih$/, "");
+      if (imp.names.length === 1) {
+        return `import ${imp.names[0]} from "${importPath}";`;
+      } else {
+        return `import { ${imp.names.join(", ")} } from "${importPath}";`;
+      }
+    }).join("\n");
+
     const layout = file.blocks.find((b) => b.type === "Layout") as
       | LayoutBlock
       | undefined;
@@ -52,7 +62,7 @@ export class VuePlugin implements CodegenPlugin {
 </template>
 
 <script setup lang="ts">
-${importStr}${stateRefs}${dataFetches}${handlers}
+${userImports ? userImports + "\n" : ""}${importStr}${stateRefs}${dataFetches}${handlers}
 </script>
 
 ${motionStyles ? `<style scoped>\n${motionStyles}\n</style>` : ""}

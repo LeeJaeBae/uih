@@ -1,6 +1,7 @@
 import { parserInstance } from "./parser-chevrotain.js";
 import type {
   UIHFile,
+  ImportStatement,
   MetaBlock,
   StyleBlock,
   LayoutBlock,
@@ -31,8 +32,9 @@ export class UIHVisitor extends BaseCstVisitor {
   }
 
   uihFile(ctx: any): UIHFile {
+    const imports = ctx.importStatement?.map((i: any) => this.visit(i)) ?? [];
     const blocks = ctx.block?.map((b: any) => this.visit(b)) ?? [];
-    return { type: "UIHFile", blocks };
+    return { type: "UIHFile", imports, blocks };
   }
 
   block(ctx: any) {
@@ -356,6 +358,12 @@ export class UIHVisitor extends BaseCstVisitor {
       key: ctx.Identifier[0].image,
       value: stripQuotes(ctx.StringLiteral[0].image),
     };
+  }
+
+  importStatement(ctx: any): ImportStatement {
+    const names = ctx.Identifier.map((id: any) => id.image);
+    const from = stripQuotes(ctx.StringLiteral[0].image);
+    return { type: "Import", names, from };
   }
 }
 

@@ -1,0 +1,17 @@
+import Button from "./components/Button.uih"
+import Card, Badge, Avatar from "./components"
+
+meta {
+  route: "/multi-import";
+  theme: "light";
+}
+
+layout {
+  Text { "Multi-import Test" }
+
+  Button
+
+  Separator
+
+  Text { "Multiple components imported!" }
+}
