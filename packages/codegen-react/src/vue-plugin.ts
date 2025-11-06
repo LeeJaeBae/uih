@@ -10,8 +10,12 @@ export class VuePlugin implements CodegenPlugin {
   readonly fileExtension = ".vue";
 
   async generate(file: UIHFile): Promise<string> {
-    // Generate user imports from .uih files
+    // Generate user imports from .uih files and collect imported component names
+    const importedComponents = new Set<string>();
     const userImports = file.imports.map((imp) => {
+      // Track all imported component names
+      imp.names.forEach(name => importedComponents.add(name));
+
       const importPath = imp.from.replace(/\.uih$/, "");
       if (imp.names.length === 1) {
         return `import ${imp.names[0]} from "${importPath}";`;
@@ -41,7 +45,7 @@ export class VuePlugin implements CodegenPlugin {
       | DataBlock
       | undefined;
 
-    const template = layout.nodes.map((n) => this.emitNode(n, 0)).join("\n");
+    const template = layout.nodes.map((n) => this.emitNode(n, 0, importedComponents)).join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
     const { stateRefs, stateImports } = state ? this.generateStateRefs(state) : { stateRefs: "", stateImports: new Set<string>() };
     const { dataFetches, dataImports } = data ? this.generateDataFetches(data) : { dataFetches: "", dataImports: new Set<string>() };
@@ -80,7 +84,7 @@ ${motionStyles ? `<style scoped>\n${motionStyles}\n</style>` : ""}
     return formatted;
   }
 
-  private emitNode(n: Node, indent: number = 0): string {
+  private emitNode(n: Node, indent: number = 0, importedComponents: Set<string>): string {
     const indentStr = "  ".repeat(indent);
 
     if (n.kind === "Text") {
@@ -89,12 +93,12 @@ ${motionStyles ? `<style scoped>\n${motionStyles}\n</style>` : ""}
 
     if (n.kind === "Conditional") {
       const thenJsx = n.thenNodes
-        .map((node) => this.emitNode(node, indent + 1))
+        .map((node) => this.emitNode(node, indent + 1, importedComponents))
         .join("\n");
 
       if (n.elseNodes && n.elseNodes.length > 0) {
         const elseJsx = n.elseNodes
-          .map((node) => this.emitNode(node, indent + 1))
+          .map((node) => this.emitNode(node, indent + 1, importedComponents))
           .join("\n");
 
         // Use template tag for multi-node conditionals
@@ -124,7 +128,7 @@ ${indentStr}</template>`;
 
     if (n.kind === "Loop") {
       const childrenJsx = n.children
-        .map((node) => this.emitNode(node, indent + 1))
+        .map((node) => this.emitNode(node, indent + 1, importedComponents))
         .join("\n");
 
       // Use template tag for loops
@@ -141,13 +145,17 @@ ${indentStr}</template>`;
       }
     }
 
-    // Element node
-    const vueComponent = this.mapToVueComponent(n.name || "div");
+    // Element node - check if it's an imported component first
+    const componentName = n.name || "div";
+    const vueComponent = importedComponents.has(componentName)
+      ? componentName // Use imported component as-is
+      : this.mapToVueComponent(componentName); // Map to HTML element
+
     const props = (n.props || [])
       .map((p) => `${p.key}="${p.value}"`)
       .join(" ");
     const children = (n.children || [])
-      .map((c) => this.emitNode(c, indent + 1))
+      .map((c) => this.emitNode(c, indent + 1, importedComponents))
       .join("\n");
 
     if (children) {

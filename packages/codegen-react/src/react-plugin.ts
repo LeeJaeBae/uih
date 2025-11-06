@@ -11,8 +11,12 @@ export class ReactPlugin implements CodegenPlugin {
   readonly fileExtension = ".tsx";
 
   async generate(file: UIHFile): Promise<string> {
-    // Generate user imports from .uih files
+    // Generate user imports from .uih files and collect imported component names
+    const importedComponents = new Set<string>();
     const userImports = file.imports.map((imp) => {
+      // Track all imported component names
+      imp.names.forEach(name => importedComponents.add(name));
+
       const importPath = imp.from.replace(/\.uih$/, "");
       if (imp.names.length === 1) {
         return `import ${imp.names[0]} from "${importPath}";`;
@@ -45,7 +49,7 @@ export class ReactPlugin implements CodegenPlugin {
     const imports = new Set<string>();
     const jsx = layout.nodes
       .map((n) => {
-        const nodeJsx = this.emitNode(n, imports);
+        const nodeJsx = this.emitNode(n, imports, importedComponents);
         // Wrap expression nodes (Loop, Conditional) in braces at top level
         return this.isExpressionNode(n) ? `{${nodeJsx}}` : nodeJsx;
       })
@@ -112,7 +116,7 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
     return jsx;
   }
 
-  private emitNode(n: Node, imports: Set<string>): string {
+  private emitNode(n: Node, imports: Set<string>, importedComponents: Set<string>): string {
     if (n.kind === "Text") {
       return n.text;
     }
@@ -122,7 +126,7 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
       const shouldWrapExpressions = n.thenNodes.length > 1;
       const thenJsx = n.thenNodes
         .map((node) => {
-          const nodeJsx = this.emitNode(node, imports);
+          const nodeJsx = this.emitNode(node, imports, importedComponents);
           // Wrap expression nodes in braces only when multiple children exist
           return shouldWrapExpressions && this.isExpressionNode(node)
             ? `{${nodeJsx}}`
@@ -137,7 +141,7 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
         const shouldWrapExpressionsElse = n.elseNodes.length > 1;
         const elseJsx = n.elseNodes
           .map((node) => {
-            const nodeJsx = this.emitNode(node, imports);
+            const nodeJsx = this.emitNode(node, imports, importedComponents);
             // Wrap expression nodes in braces only when multiple children exist
             return shouldWrapExpressionsElse && this.isExpressionNode(node)
               ? `{${nodeJsx}}`
@@ -162,7 +166,7 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
     if (n.kind === "Loop") {
       const childrenJsx = n.children
         .map((node) => {
-          const nodeJsx = this.emitNode(node, imports);
+          const nodeJsx = this.emitNode(node, imports, importedComponents);
           // Wrap expression nodes in braces inside Fragment
           return this.isExpressionNode(node) ? `{${nodeJsx}}` : nodeJsx;
         })
@@ -171,13 +175,41 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
       return `${n.iterableExpr}.map((${n.iteratorVar}) => (<React.Fragment key={${n.iteratorVar}.id || Math.random()}>${childrenJsx}</React.Fragment>))`;
     }
 
-    // Element node
+    // Element node - check if it's an imported component first
+    if (n.name && importedComponents.has(n.name)) {
+      // This is an imported custom component - render it directly
+      const propsObj = Object.fromEntries(
+        (n.props || []).map((p) => [p.key, String(p.value)])
+      );
+      const children = (n.children || [])
+        .map((c) => this.emitNode(c, imports, importedComponents))
+        .join("");
+
+      // Build props string
+      const propsStr = Object.entries(propsObj)
+        .map(([key, value]) => {
+          // Check if value is a variable reference (starts with { or doesn't have quotes)
+          if (value.startsWith("{") || !value.startsWith('"')) {
+            return `${key}={${value}}`;
+          }
+          return `${key}=${value}`;
+        })
+        .join(" ");
+
+      if (children) {
+        return `<${n.name}${propsStr ? " " + propsStr : ""}>${children}</${n.name}>`;
+      } else {
+        return `<${n.name}${propsStr ? " " + propsStr : ""} />`;
+      }
+    }
+
+    // Not an imported component - check shadcn registry
     const reg = (n.name && (shadRegistry as any)[n.name]) || null;
     const propsObj = Object.fromEntries(
       (n.props || []).map((p) => [p.key, String(p.value)])
     );
     const children = (n.children || [])
-      .map((c) => this.emitNode(c, imports))
+      .map((c) => this.emitNode(c, imports, importedComponents))
       .join("");
     if (reg?.import) imports.add(reg.import);
     if (reg?.render) return reg.render(propsObj, children);
