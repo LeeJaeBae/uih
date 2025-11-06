@@ -6,6 +6,8 @@
 
 인간이 작성한 UI 설명을 AI가 생성한 컴포넌트로 연결하는 범용 UI 메타 언어
 
+**🚀 [온라인 플레이그라운드에서 바로 시작하기](https://uih-playground.vercel.app)** - React, Vue, Svelte로 실시간 변환!
+
 ## 소개
 
 UIH는 선언적이고 직관적인 문법으로 UI를 정의하고, 이를 React, Vue, Svelte 등 다양한 프레임워크 코드로 변환하는 메타 언어입니다.
@@ -16,6 +18,16 @@ UIH는 선언적이고 직관적인 문법으로 UI를 정의하고, 이를 Reac
 - **프레임워크 중립적**: 하나의 정의로 여러 프레임워크 코드 생성
 - **AI 친화적**: LLM이 쉽게 생성하고 이해할 수 있는 구조
 - **블록 기반**: 메타, 스타일, 레이아웃, 로직을 명확히 분리
+
+## 온라인 플레이그라운드
+
+**[https://uih-playground.vercel.app](https://uih-playground.vercel.app)**
+
+브라우저에서 바로 UIH를 체험해보세요:
+- ✨ Monaco Editor로 실시간 코드 작성
+- 🔄 React, Vue, Svelte로 즉시 변환
+- 📚 8개 예제 갤러리
+- 🌓 다크/라이트 모드 지원
 
 ## 빠른 시작
 

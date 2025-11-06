@@ -1,3 +1,5 @@
 {
+  "buildCommand": "cd .. && pnpm install --frozen-lockfile && pnpm build && cd playground && pnpm build",
+  "installCommand": "echo 'Using buildCommand for installation'",
   "framework": "nextjs"
 }
