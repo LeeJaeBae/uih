@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.js";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
@@ -24,6 +24,10 @@ export class ReactPlugin implements CodegenPlugin {
       | LogicBlock
       | undefined;
 
+    const state = file.blocks.find((b) => b.type === "State") as
+      | StateBlock
+      | undefined;
+
     const imports = new Set<string>();
     const jsx = layout.nodes
       .map((n) => {
@@ -34,15 +38,17 @@ export class ReactPlugin implements CodegenPlugin {
       .join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
     const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
+    const { stateHooks, stateImports } = state ? this.generateStateHooks(state) : { stateHooks: "", stateImports: new Set<string>() };
 
-    // Merge logic imports with component imports
+    // Merge all imports
     handlerImports.forEach(imp => imports.add(imp));
+    stateImports.forEach(imp => imports.add(imp));
 
     const importStr = [...imports].filter(Boolean).join("\n");
     const code = `
 ${importStr}
 export default function Page() {
-${handlers ? handlers : ""}
+${stateHooks ? stateHooks : ""}${handlers ? handlers : ""}
   return (
     <>
       ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
@@ -246,6 +252,33 @@ ${handlers ? handlers : ""}
     return {
       handlers: hookCalls + "\n" + handlers + "\n",
       handlerImports: imports
+    };
+  }
+
+  private generateStateHooks(state: StateBlock): { stateHooks: string; stateImports: Set<string> } {
+    const imports = new Set<string>();
+    imports.add(`import { useState } from "react"`);
+
+    const hooks = state.declarations.map((decl) => {
+      const varName = decl.name;
+      const setterName = `set${varName.charAt(0).toUpperCase()}${varName.slice(1)}`;
+
+      // Format initial value for code generation
+      let initialValue: string;
+      if (typeof decl.initialValue === "string") {
+        initialValue = `"${decl.initialValue}"`;
+      } else if (typeof decl.initialValue === "boolean") {
+        initialValue = String(decl.initialValue);
+      } else {
+        initialValue = String(decl.initialValue);
+      }
+
+      return `  const [${varName}, ${setterName}] = useState(${initialValue});`;
+    }).join("\n");
+
+    return {
+      stateHooks: hooks + "\n\n",
+      stateImports: imports
     };
   }
 }

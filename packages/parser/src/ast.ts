@@ -12,7 +12,8 @@ export type Block =
   | MotionBlock
   | LogicBlock
   | I18nBlock
-  | BindBlock;
+  | BindBlock
+  | StateBlock;
 
 export interface MetaBlock {
   type: "Meta";
@@ -101,4 +102,14 @@ export interface I18nBlock {
 export interface BindBlock {
   type: "Bind";
   map: Record<string, string>;
+}
+
+export interface StateDeclaration {
+  name: string;
+  initialValue: Literal;
+}
+
+export interface StateBlock {
+  type: "State";
+  declarations: StateDeclaration[];
 }

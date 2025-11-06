@@ -8,6 +8,7 @@ import {
   Logic,
   I18n,
   Bind,
+  State,
   LCurly,
   RCurly,
   LParen,
@@ -58,6 +59,7 @@ export class UIHParser extends CstParser {
       { ALT: () => this.SUBRULE(this.logicBlock) },
       { ALT: () => this.SUBRULE(this.i18nBlock) },
       { ALT: () => this.SUBRULE(this.bindBlock) },
+      { ALT: () => this.SUBRULE(this.stateBlock) },
     ]);
   });
 
@@ -241,6 +243,7 @@ export class UIHParser extends CstParser {
       { ALT: () => this.CONSUME(Logic) },
       { ALT: () => this.CONSUME(I18n) },
       { ALT: () => this.CONSUME(Bind) },
+      { ALT: () => this.CONSUME(State) },
     ]);
   });
 
@@ -308,6 +311,28 @@ export class UIHParser extends CstParser {
     this.CONSUME(Arrow);
     this.CONSUME2(Identifier);
     this.CONSUME(Semicolon);
+  });
+
+  private stateBlock = this.RULE("stateBlock", () => {
+    this.CONSUME(State);
+    this.CONSUME(LCurly);
+    this.MANY(() => {
+      this.SUBRULE(this.stateDeclaration);
+    });
+    this.CONSUME(RCurly);
+  });
+
+  private stateDeclaration = this.RULE("stateDeclaration", () => {
+    this.CONSUME(Identifier);
+    this.CONSUME(Colon);
+    this.OR([
+      { ALT: () => this.CONSUME(StringLiteral) },
+      { ALT: () => this.CONSUME(NumberLiteral) },
+      { ALT: () => this.CONSUME2(Identifier) }, // for boolean: true/false
+    ]);
+    this.OPTION(() => {
+      this.CONSUME(Semicolon);
+    });
   });
 
   private keyValue = this.RULE("keyValue", () => {

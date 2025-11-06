@@ -8,6 +8,8 @@ import type {
   LogicBlock,
   I18nBlock,
   BindBlock,
+  StateBlock,
+  StateDeclaration,
   Node,
   ElementNode,
   TextNode,
@@ -39,6 +41,7 @@ export class UIHVisitor extends BaseCstVisitor {
     if (ctx.logicBlock) return this.visit(ctx.logicBlock);
     if (ctx.i18nBlock) return this.visit(ctx.i18nBlock);
     if (ctx.bindBlock) return this.visit(ctx.bindBlock);
+    if (ctx.stateBlock) return this.visit(ctx.stateBlock);
     return null;
   }
 
@@ -302,6 +305,28 @@ export class UIHVisitor extends BaseCstVisitor {
       from: ctx.Identifier[0].image,
       to: ctx.Identifier[1].image,
     };
+  }
+
+  stateBlock(ctx: any): StateBlock {
+    const declarations = ctx.stateDeclaration?.map((d: any) => this.visit(d)) ?? [];
+    return { type: "State", declarations };
+  }
+
+  stateDeclaration(ctx: any): StateDeclaration {
+    const name = ctx.Identifier[0].image;
+    let initialValue: any;
+
+    if (ctx.StringLiteral) {
+      initialValue = stripQuotes(ctx.StringLiteral[0].image);
+    } else if (ctx.NumberLiteral) {
+      initialValue = parseFloat(ctx.NumberLiteral[0].image);
+    } else if (ctx.Identifier && ctx.Identifier[1]) {
+      // Boolean: true/false
+      const val = ctx.Identifier[1].image;
+      initialValue = val === "true" ? true : val === "false" ? false : val;
+    }
+
+    return { name, initialValue };
   }
 
   keyValue(ctx: any) {

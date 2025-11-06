@@ -1,0 +1,24 @@
+meta {
+  route: "/counter";
+  theme: "light";
+}
+
+state {
+  count: 0;
+  name: "Guest";
+  isActive: true;
+}
+
+layout "centered" {
+  Card { "Counter App" }
+
+  Label(htmlFor:"name") { "Name" }
+  Input(id:"name", placeholder:"Enter your name", type:"text")
+
+  Text { count }
+
+  Button(variant:"primary") { "Increment" }
+  Button(variant:"secondary") { "Decrement" }
+
+  Switch(id:"active", label:"Active Mode")
+}

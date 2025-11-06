@@ -8,6 +8,7 @@ export const Motion = createToken({ name: "Motion", pattern: /motion/ });
 export const Logic = createToken({ name: "Logic", pattern: /logic/ });
 export const I18n = createToken({ name: "I18n", pattern: /i18n/ });
 export const Bind = createToken({ name: "Bind", pattern: /bind/ });
+export const State = createToken({ name: "State", pattern: /state/ });
 export const On = createToken({ name: "On", pattern: /on/ });
 export const If = createToken({ name: "If", pattern: /if/ });
 export const Else = createToken({ name: "Else", pattern: /else/ });
@@ -89,6 +90,7 @@ export const allTokens = [
   Logic,
   I18n,
   Bind,
+  State,
   On,
   If,
   Else,
