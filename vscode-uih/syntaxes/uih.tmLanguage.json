@@ -79,6 +79,18 @@
         {
           "name": "keyword.control.loop.uih",
           "match": "\\b(for|in)\\b"
+        },
+        {
+          "name": "keyword.operator.comparison.uih",
+          "match": "(===|!==|==|!=|>=|<=|>|<)"
+        },
+        {
+          "name": "keyword.operator.logical.uih",
+          "match": "(&&|\\|\\||!)"
+        },
+        {
+          "name": "constant.numeric.uih",
+          "match": "\\b\\d+(\\.\\d+)?\\b"
         }
       ]
     },
