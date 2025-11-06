@@ -41,6 +41,29 @@ export const shadRegistry = {
       return `<Checkbox ${propStr(p, ["id", "checked"])} />`;
     },
   },
+  RadioGroup: {
+    import: `import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"`,
+    render: (p: any, children: string) =>
+      `<RadioGroup ${propStr(p, ["value", "onValueChange", "defaultValue"])}>${children || ""}</RadioGroup>`,
+  },
+  RadioGroupItem: {
+    import: ``,
+    render: (p: any, children: string) => {
+      if (p.label) {
+        return `<div className="flex items-center space-x-2"><RadioGroupItem ${propStr(p, ["value", "id"])} /><Label htmlFor="${p.id || ''}">${p.label}</Label></div>`;
+      }
+      return `<RadioGroupItem ${propStr(p, ["value", "id"])} />`;
+    },
+  },
+  Switch: {
+    import: `import { Switch } from "@/components/ui/switch"`,
+    render: (p: any) => {
+      if (p.label) {
+        return `<div className="flex items-center space-x-2"><Switch ${propStr(p, ["id", "checked", "onCheckedChange"])} /><Label htmlFor="${p.id || ''}">${p.label}</Label></div>`;
+      }
+      return `<Switch ${propStr(p, ["id", "checked", "onCheckedChange"])} />`;
+    },
+  },
   Label: {
     import: `import { Label } from "@/components/ui/label"`,
     render: (p: any, children: string) =>
@@ -70,6 +93,71 @@ export const shadRegistry = {
     import: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"`,
     render: (p: any, children: string) =>
       `<TooltipProvider><Tooltip><TooltipTrigger asChild>${children || "<Button>Hover</Button>"}</TooltipTrigger><TooltipContent><p>${p.content || "Tooltip"}</p></TooltipContent></Tooltip></TooltipProvider>`,
+  },
+  Sheet: {
+    import: `import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"`,
+    render: (p: any, children: string) =>
+      `<Sheet><SheetTrigger asChild>${p.trigger || "<Button>Open</Button>"}</SheetTrigger><SheetContent ${propStr(p, ["side"])}><SheetHeader><SheetTitle>${p.title || "Sheet"}</SheetTitle></SheetHeader>${children || ""}</SheetContent></Sheet>`,
+  },
+  Tabs: {
+    import: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"`,
+    render: (p: any, children: string) =>
+      `<Tabs ${propStr(p, ["defaultValue", "value"])}>${children || ""}</Tabs>`,
+  },
+  TabsList: {
+    import: ``,
+    render: (_: any, children: string) =>
+      `<TabsList>${children || ""}</TabsList>`,
+  },
+  TabsTrigger: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<TabsTrigger ${propStr(p, ["value"])}>${children || ""}</TabsTrigger>`,
+  },
+  TabsContent: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<TabsContent ${propStr(p, ["value"])}>${children || ""}</TabsContent>`,
+  },
+  Accordion: {
+    import: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"`,
+    render: (p: any, children: string) =>
+      `<Accordion ${propStr(p, ["type", "collapsible"])}>${children || ""}</Accordion>`,
+  },
+  AccordionItem: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<AccordionItem ${propStr(p, ["value"])}>${children || ""}</AccordionItem>`,
+  },
+  AccordionTrigger: {
+    import: ``,
+    render: (_: any, children: string) =>
+      `<AccordionTrigger>${children || ""}</AccordionTrigger>`,
+  },
+  AccordionContent: {
+    import: ``,
+    render: (_: any, children: string) =>
+      `<AccordionContent>${children || ""}</AccordionContent>`,
+  },
+  Separator: {
+    import: `import { Separator } from "@/components/ui/separator"`,
+    render: (p: any) =>
+      `<Separator ${propStr(p, ["orientation", "className"])} />`,
+  },
+  Alert: {
+    import: `import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"`,
+    render: (p: any, children: string) =>
+      `<Alert ${propStr(p, ["variant"])}>${p.title ? `<AlertTitle>${p.title}</AlertTitle>` : ""}<AlertDescription>${children || ""}</AlertDescription></Alert>`,
+  },
+  Progress: {
+    import: `import { Progress } from "@/components/ui/progress"`,
+    render: (p: any) =>
+      `<Progress ${propStr(p, ["value", "max", "className"])} />`,
+  },
+  Skeleton: {
+    import: `import { Skeleton } from "@/components/ui/skeleton"`,
+    render: (p: any) =>
+      `<Skeleton ${propStr(p, ["className"])} />`,
   },
   Text: {
     import: ``,

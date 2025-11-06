@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.js";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
@@ -20,6 +20,10 @@ export class ReactPlugin implements CodegenPlugin {
       | MotionBlock
       | undefined;
 
+    const logic = file.blocks.find((b) => b.type === "Logic") as
+      | LogicBlock
+      | undefined;
+
     const imports = new Set<string>();
     const jsx = layout.nodes
       .map((n) => {
@@ -29,11 +33,16 @@ export class ReactPlugin implements CodegenPlugin {
       })
       .join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
+    const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
+
+    // Merge logic imports with component imports
+    handlerImports.forEach(imp => imports.add(imp));
 
     const importStr = [...imports].filter(Boolean).join("\n");
     const code = `
 ${importStr}
 export default function Page() {
+${handlers ? handlers : ""}
   return (
     <>
       ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
@@ -196,6 +205,48 @@ export default function Page() {
     });
 
     return cssRules.join("\n");
+  }
+
+  private generateLogicHandlers(logic: LogicBlock): { handlers: string; handlerImports: Set<string> } {
+    const imports = new Set<string>();
+    const handlers = logic.events.map((event) => {
+      const handlerName = `handle${event.name.charAt(0).toUpperCase()}${event.name.slice(1)}`;
+      const statements: string[] = [];
+
+      event.steps.forEach((step) => {
+        if (step.type === "Navigate") {
+          // Next.js router navigation
+          imports.add(`import { useRouter } from "next/navigation"`);
+          statements.push(`router.push("${step.to}");`);
+        } else if (step.type === "Toast") {
+          // shadcn/ui toast
+          imports.add(`import { useToast } from "@/hooks/use-toast"`);
+          statements.push(`toast({ title: "${step.message}" });`);
+        } else if (step.type === "Call") {
+          // API call
+          const method = step.method || "POST";
+          statements.push(`await fetch("${step.url}", { method: "${method}" });`);
+        }
+      });
+
+      return `  const ${handlerName} = async () => {
+    ${statements.join("\n    ")}
+  };`;
+    }).join("\n\n");
+
+    // Add hook calls at the start of the component
+    let hookCalls = "";
+    if (imports.has(`import { useRouter } from "next/navigation"`)) {
+      hookCalls += "  const router = useRouter();\n";
+    }
+    if (imports.has(`import { useToast } from "@/hooks/use-toast"`)) {
+      hookCalls += "  const { toast } = useToast();\n";
+    }
+
+    return {
+      handlers: hookCalls + "\n" + handlers + "\n",
+      handlerImports: imports
+    };
   }
 }
 
