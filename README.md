@@ -1,5 +1,9 @@
 # UIH - Universal UI Hierarchy
 
+[![VS Code Extension](https://img.shields.io/visual-studio-marketplace/v/LeeJaeWon.vscode-uih?label=VS%20Code&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=LeeJaeWon.vscode-uih)
+[![npm version](https://img.shields.io/npm/v/uih-cli?label=CLI)](https://www.npmjs.com/package/uih-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 인간이 작성한 UI 설명을 AI가 생성한 컴포넌트로 연결하는 범용 UI 메타 언어
 
 ## 소개
@@ -17,6 +21,14 @@ UIH는 선언적이고 직관적인 문법으로 UI를 정의하고, 이를 Reac
 
 ### 설치
 
+**VSCode 확장 (권장)**:
+1. VS Code에서 Extensions view 열기 (`Cmd+Shift+X`)
+2. "UIH" 검색
+3. Install 클릭
+
+또는 [마켓플레이스에서 설치](https://marketplace.visualstudio.com/items?itemName=LeeJaeWon.vscode-uih)
+
+**CLI 도구**:
 ```bash
 # CLI 도구 설치
 pnpm add -g uih-cli
