@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm install --frozen-lockfile && pnpm build && pnpm --filter uih-playground build",
+  "outputDirectory": "playground/.next",
+  "installCommand": "pnpm install --frozen-lockfile"
+}
