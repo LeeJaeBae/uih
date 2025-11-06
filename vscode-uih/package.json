@@ -4,6 +4,7 @@
   "description": "Syntax highlighting and language support for UIH (Universal UI Hierarchy)",
   "version": "1.0.0",
   "publisher": "LeeJaeWon",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/LeeJaeBae/uih.git"
