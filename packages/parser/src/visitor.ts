@@ -10,6 +10,8 @@ import type {
   BindBlock,
   StateBlock,
   StateDeclaration,
+  DataBlock,
+  DataFetch,
   Node,
   ElementNode,
   TextNode,
@@ -42,6 +44,7 @@ export class UIHVisitor extends BaseCstVisitor {
     if (ctx.i18nBlock) return this.visit(ctx.i18nBlock);
     if (ctx.bindBlock) return this.visit(ctx.bindBlock);
     if (ctx.stateBlock) return this.visit(ctx.stateBlock);
+    if (ctx.dataBlock) return this.visit(ctx.dataBlock);
     return null;
   }
 
@@ -327,6 +330,25 @@ export class UIHVisitor extends BaseCstVisitor {
     }
 
     return { name, initialValue };
+  }
+
+  dataBlock(ctx: any): DataBlock {
+    const fetches = ctx.dataFetch?.map((f: any) => this.visit(f)) ?? [];
+    return { type: "Data", fetches };
+  }
+
+  dataFetch(ctx: any): DataFetch {
+    const name = ctx.Identifier[0].image;
+    let method: "GET" | "POST" | "PUT" | "DELETE" = "GET";
+
+    if (ctx.GET) method = "GET";
+    else if (ctx.POST) method = "POST";
+    else if (ctx.PUT) method = "PUT";
+    else if (ctx.DELETE) method = "DELETE";
+
+    const url = stripQuotes(ctx.StringLiteral[0].image);
+
+    return { name, method, url };
   }
 
   keyValue(ctx: any) {

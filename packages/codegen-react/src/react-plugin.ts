@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.js";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
@@ -28,6 +28,10 @@ export class ReactPlugin implements CodegenPlugin {
       | StateBlock
       | undefined;
 
+    const data = file.blocks.find((b) => b.type === "Data") as
+      | DataBlock
+      | undefined;
+
     const imports = new Set<string>();
     const jsx = layout.nodes
       .map((n) => {
@@ -39,16 +43,19 @@ export class ReactPlugin implements CodegenPlugin {
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
     const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
     const { stateHooks, stateImports } = state ? this.generateStateHooks(state) : { stateHooks: "", stateImports: new Set<string>() };
+    const { dataHooks, dataImports, fetcher } = data ? this.generateDataHooks(data) : { dataHooks: "", dataImports: new Set<string>(), fetcher: "" };
 
     // Merge all imports
     handlerImports.forEach(imp => imports.add(imp));
     stateImports.forEach(imp => imports.add(imp));
+    dataImports.forEach(imp => imports.add(imp));
 
     const importStr = [...imports].filter(Boolean).join("\n");
     const code = `
 ${importStr}
+${fetcher ? fetcher : ""}
 export default function Page() {
-${stateHooks ? stateHooks : ""}${handlers ? handlers : ""}
+${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handlers : ""}
   return (
     <>
       ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
@@ -279,6 +286,28 @@ ${stateHooks ? stateHooks : ""}${handlers ? handlers : ""}
     return {
       stateHooks: hooks + "\n\n",
       stateImports: imports
+    };
+  }
+
+  private generateDataHooks(data: DataBlock): { dataHooks: string; dataImports: Set<string>; fetcher: string } {
+    const imports = new Set<string>();
+    imports.add(`import useSWR from "swr"`);
+
+    // Generate fetcher function
+    const fetcher = `\nconst fetcher = (url: string) => fetch(url).then((res) => res.json());\n`;
+
+    const hooks = data.fetches.map((fetch) => {
+      const varName = fetch.name;
+      const errorVar = `${varName}Error`;
+      const loadingVar = `${varName}Loading`;
+
+      return `  const { data: ${varName}, error: ${errorVar}, isLoading: ${loadingVar} } = useSWR("${fetch.url}", fetcher);`;
+    }).join("\n");
+
+    return {
+      dataHooks: hooks + "\n\n",
+      dataImports: imports,
+      fetcher
     };
   }
 }

@@ -1,0 +1,29 @@
+meta {
+  route: "/users";
+  theme: "light";
+}
+
+data {
+  users: GET "/api/users";
+  posts: GET "/api/posts";
+}
+
+layout "centered" {
+  Card { "User Dashboard" }
+
+  if (usersLoading) {
+    Text { "Loading users..." }
+  }
+
+  if (usersError) {
+    Alert(variant:"destructive", title:"Error") { "Failed to load users" }
+  }
+
+  Separator
+
+  Text { "Data fetching with SWR" }
+
+  if (posts) {
+    Badge(variant:"secondary") { "Posts loaded" }
+  }
+}

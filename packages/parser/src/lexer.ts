@@ -9,11 +9,16 @@ export const Logic = createToken({ name: "Logic", pattern: /logic/ });
 export const I18n = createToken({ name: "I18n", pattern: /i18n/ });
 export const Bind = createToken({ name: "Bind", pattern: /bind/ });
 export const State = createToken({ name: "State", pattern: /state/ });
+export const Data = createToken({ name: "Data", pattern: /data/ });
 export const On = createToken({ name: "On", pattern: /on/ });
 export const If = createToken({ name: "If", pattern: /if/ });
 export const Else = createToken({ name: "Else", pattern: /else/ });
 export const For = createToken({ name: "For", pattern: /for/ });
 export const In = createToken({ name: "In", pattern: /in/ });
+export const GET = createToken({ name: "GET", pattern: /GET/ });
+export const POST = createToken({ name: "POST", pattern: /POST/ });
+export const PUT = createToken({ name: "PUT", pattern: /PUT/ });
+export const DELETE = createToken({ name: "DELETE", pattern: /DELETE/ });
 
 // Identifiers and Literals
 export const Identifier = createToken({
@@ -91,11 +96,16 @@ export const allTokens = [
   I18n,
   Bind,
   State,
+  Data,
   On,
   If,
   Else,
   For,
   In,
+  GET,
+  POST,
+  PUT,
+  DELETE,
   // Operators (longer patterns first)
   StrictEqual,
   StrictNotEqual,

@@ -9,6 +9,7 @@ import {
   I18n,
   Bind,
   State,
+  Data,
   LCurly,
   RCurly,
   LParen,
@@ -25,6 +26,10 @@ import {
   Else,
   For,
   In,
+  GET,
+  POST,
+  PUT,
+  DELETE,
   GreaterThan,
   LessThan,
   GreaterThanOrEqual,
@@ -60,6 +65,7 @@ export class UIHParser extends CstParser {
       { ALT: () => this.SUBRULE(this.i18nBlock) },
       { ALT: () => this.SUBRULE(this.bindBlock) },
       { ALT: () => this.SUBRULE(this.stateBlock) },
+      { ALT: () => this.SUBRULE(this.dataBlock) },
     ]);
   });
 
@@ -244,6 +250,7 @@ export class UIHParser extends CstParser {
       { ALT: () => this.CONSUME(I18n) },
       { ALT: () => this.CONSUME(Bind) },
       { ALT: () => this.CONSUME(State) },
+      { ALT: () => this.CONSUME(Data) },
     ]);
   });
 
@@ -330,6 +337,30 @@ export class UIHParser extends CstParser {
       { ALT: () => this.CONSUME(NumberLiteral) },
       { ALT: () => this.CONSUME2(Identifier) }, // for boolean: true/false
     ]);
+    this.OPTION(() => {
+      this.CONSUME(Semicolon);
+    });
+  });
+
+  private dataBlock = this.RULE("dataBlock", () => {
+    this.CONSUME(Data);
+    this.CONSUME(LCurly);
+    this.MANY(() => {
+      this.SUBRULE(this.dataFetch);
+    });
+    this.CONSUME(RCurly);
+  });
+
+  private dataFetch = this.RULE("dataFetch", () => {
+    this.CONSUME(Identifier); // variable name
+    this.CONSUME(Colon);
+    this.OR([
+      { ALT: () => this.CONSUME(GET) },
+      { ALT: () => this.CONSUME(POST) },
+      { ALT: () => this.CONSUME(PUT) },
+      { ALT: () => this.CONSUME(DELETE) },
+    ]);
+    this.CONSUME(StringLiteral); // URL
     this.OPTION(() => {
       this.CONSUME(Semicolon);
     });

@@ -13,7 +13,8 @@ export type Block =
   | LogicBlock
   | I18nBlock
   | BindBlock
-  | StateBlock;
+  | StateBlock
+  | DataBlock;
 
 export interface MetaBlock {
   type: "Meta";
@@ -112,4 +113,15 @@ export interface StateDeclaration {
 export interface StateBlock {
   type: "State";
   declarations: StateDeclaration[];
+}
+
+export interface DataFetch {
+  name: string;
+  method: "GET" | "POST" | "PUT" | "DELETE";
+  url: string;
+}
+
+export interface DataBlock {
+  type: "Data";
+  fetches: DataFetch[];
 }
