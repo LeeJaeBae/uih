@@ -80,9 +80,7 @@ export class UIHVisitor extends BaseCstVisitor {
     const props: NodeProp[] = ctx.propList
       ? this.visit(ctx.propList[0])
       : [];
-    const text = ctx.StringLiteral?.[0]
-      ? stripQuotes(ctx.StringLiteral[0].image)
-      : undefined;
+    const text = ctx.textContent ? this.visit(ctx.textContent[0]) : undefined;
     const children: Node[] = text ? [{ kind: "Text", text }] : [];
 
     return {
@@ -91,6 +89,17 @@ export class UIHVisitor extends BaseCstVisitor {
       props,
       children,
     };
+  }
+
+  textContent(ctx: any): string {
+    if (ctx.StringLiteral) {
+      return stripQuotes(ctx.StringLiteral[0].image);
+    }
+    if (ctx.Identifier) {
+      // Return identifier as expression (e.g., item.name)
+      return `{${ctx.Identifier[0].image}}`;
+    }
+    return "";
   }
 
   conditional(ctx: any): ConditionalNode {
@@ -133,10 +142,22 @@ export class UIHVisitor extends BaseCstVisitor {
 
   prop(ctx: any): NodeProp {
     const key = ctx.propName ? this.visit(ctx.propName[0]) : ctx.Identifier[0].image;
+    const value = ctx.propValue ? this.visit(ctx.propValue[0]) : "";
     return {
       key,
-      value: stripQuotes(ctx.StringLiteral[0].image),
+      value,
     };
+  }
+
+  propValue(ctx: any): string {
+    if (ctx.StringLiteral) {
+      return stripQuotes(ctx.StringLiteral[0].image);
+    }
+    if (ctx.Identifier) {
+      // Return identifier as expression (e.g., item.id)
+      return `{${ctx.Identifier[0].image}}`;
+    }
+    return "";
   }
 
   propName(ctx: any): string {

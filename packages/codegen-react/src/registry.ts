@@ -48,8 +48,8 @@ export const shadRegistry = {
   },
   Card: {
     import: `import { Card, CardContent } from "@/components/ui/card"`,
-    render: (_: any, children: string) =>
-      `<Card><CardContent>${children || ""}</CardContent></Card>`,
+    render: (p: any, children: string) =>
+      `<Card ${propStr(p, ["id", "className"])}><CardContent>${children || ""}</CardContent></Card>`,
   },
   Badge: {
     import: `import { Badge } from "@/components/ui/badge"`,
@@ -84,7 +84,16 @@ function propStr(p: any, allow: string[]) {
     .map((k) => {
       // Map UIH 'for' to React 'htmlFor'
       const propName = k === "for" ? "htmlFor" : k;
-      return `${propName}="${p[k]}"`;
+      const value = p[k];
+
+      // Check if value is an expression (starts with {)
+      if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
+        // Expression: remove quotes, use as-is
+        return `${propName}=${value}`;
+      }
+
+      // Regular string: wrap in quotes
+      return `${propName}="${value}"`;
     })
     .join(" ");
 }

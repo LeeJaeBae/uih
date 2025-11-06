@@ -4,19 +4,20 @@ meta {
 }
 
 layout "centered" {
-  Card(id:"list-card") { "User List" }
+  Card { "User List" }
 
   for (user in users) {
-    Card(id:"user-card") { "User Profile" }
-    Label(htmlFor:"name") { "Name" }
-    Text { "User name here" }
-    Badge(variant:"default") { "Active" }
+    Card(id:user.id) { user.name }
+    Label(htmlFor:"email") { "Email" }
+    Text { user.email }
+    Badge(variant:"default") { user.status }
   }
 
-  Card(id:"items-card") { "Product List" }
+  Card { "Product List" }
 
   for (product in products) {
-    Text { "Product" }
+    Card(id:product.id) { product.name }
+    Text { product.price }
     Button(variant:"primary") { "Buy" }
   }
 }

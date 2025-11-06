@@ -99,10 +99,18 @@ export class UIHParser extends CstParser {
     this.OPTION3(() => {
       this.CONSUME(LCurly);
       this.OPTION4(() => {
-        this.CONSUME(StringLiteral);
+        this.SUBRULE(this.textContent);
       });
       this.CONSUME(RCurly);
     });
+  });
+
+  // Allow both string literals and identifiers as text content
+  private textContent = this.RULE("textContent", () => {
+    this.OR([
+      { ALT: () => this.CONSUME(StringLiteral) },
+      { ALT: () => this.CONSUME(Identifier) },
+    ]);
   });
 
   private conditional = this.RULE("conditional", () => {
@@ -158,7 +166,15 @@ export class UIHParser extends CstParser {
   private prop = this.RULE("prop", () => {
     this.SUBRULE(this.propName);
     this.CONSUME(Colon);
-    this.CONSUME(StringLiteral);
+    this.SUBRULE(this.propValue);
+  });
+
+  // Allow both string literals and identifiers as property values
+  private propValue = this.RULE("propValue", () => {
+    this.OR([
+      { ALT: () => this.CONSUME(StringLiteral) },
+      { ALT: () => this.CONSUME(Identifier) },
+    ]);
   });
 
   // Allow keywords as property names (e.g., for:"email", if:"condition")
