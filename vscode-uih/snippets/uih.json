@@ -1,0 +1,173 @@
+{
+  "Meta Block": {
+    "prefix": "meta",
+    "body": [
+      "meta {",
+      "\troute: \"${1:/path}\";",
+      "\ttheme: \"${2|light,dark|}\";",
+      "}"
+    ],
+    "description": "Create a meta block with route and theme"
+  },
+  "Style Block": {
+    "prefix": "style",
+    "body": [
+      "style {",
+      "\tcolor.primary: \"${1:#0E5EF7}\";",
+      "\tradius.card: \"${2:12px}\";",
+      "}"
+    ],
+    "description": "Create a style block with design tokens"
+  },
+  "Layout Block": {
+    "prefix": "layout",
+    "body": [
+      "layout ${1:\"centered\"} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create a layout block"
+  },
+  "Motion Block": {
+    "prefix": "motion",
+    "body": [
+      "motion {",
+      "\ton ${1|hover,focus,active,click|}(${2:#selector}) {",
+      "\t\tscale: \"${3:1.05}\";",
+      "\t\tduration: \"${4:200ms}\";",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a motion block with animation"
+  },
+  "Logic Block": {
+    "prefix": "logic",
+    "body": [
+      "logic {",
+      "\ton ${1:submit} {",
+      "\t\tnavigate: \"${2:/next}\";",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a logic block with event handler"
+  },
+  "I18n Block": {
+    "prefix": "i18n",
+    "body": [
+      "i18n {",
+      "\t${1:title}.en: \"${2:Hello}\";",
+      "\t${1:title}.ko: \"${3:안녕하세요}\";",
+      "}"
+    ],
+    "description": "Create an i18n block"
+  },
+  "Bind Block": {
+    "prefix": "bind",
+    "body": [
+      "bind {",
+      "\t#${1:input} -> ${2:data.field};",
+      "}"
+    ],
+    "description": "Create a bind block"
+  },
+  "Card Component": {
+    "prefix": "card",
+    "body": [
+      "Card(id:\"${1:card}\") { \"${2:Content}\" }"
+    ],
+    "description": "Insert a Card component"
+  },
+  "Button Component": {
+    "prefix": "button",
+    "body": [
+      "Button(variant:\"${1|primary,secondary,destructive,outline,ghost|}\") { \"${2:Label}\" }"
+    ],
+    "description": "Insert a Button component"
+  },
+  "Input Component": {
+    "prefix": "input",
+    "body": [
+      "Input(id:\"${1:input}\", placeholder:\"${2:Enter text}\")"
+    ],
+    "description": "Insert an Input component"
+  },
+  "Badge Component": {
+    "prefix": "badge",
+    "body": [
+      "Badge(variant:\"${1|default,secondary,success,destructive,outline|}\") { \"${2:Label}\" }"
+    ],
+    "description": "Insert a Badge component"
+  },
+  "Textarea Component": {
+    "prefix": "textarea",
+    "body": [
+      "Textarea(id:\"${1:textarea}\", placeholder:\"${2:Enter text}\")"
+    ],
+    "description": "Insert a Textarea component"
+  },
+  "Select Component": {
+    "prefix": "select",
+    "body": [
+      "Select(id:\"${1:select}\") {",
+      "\tSelectItem(value:\"${2:option1}\") { \"${3:Option 1}\" }",
+      "\tSelectItem(value:\"${4:option2}\") { \"${5:Option 2}\" }",
+      "}"
+    ],
+    "description": "Insert a Select component with options"
+  },
+  "Checkbox Component": {
+    "prefix": "checkbox",
+    "body": [
+      "Checkbox(id:\"${1:checkbox}\", label:\"${2:Label}\")"
+    ],
+    "description": "Insert a Checkbox component"
+  },
+  "Conditional": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Insert a conditional block"
+  },
+  "Conditional with Else": {
+    "prefix": "ifelse",
+    "body": [
+      "if (${1:condition}) {",
+      "\t${2:// then branch}",
+      "} else {",
+      "\t${3:// else branch}",
+      "}"
+    ],
+    "description": "Insert a conditional block with else"
+  },
+  "Loop": {
+    "prefix": "for",
+    "body": [
+      "for (${1:item} in ${2:items}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Insert a loop block"
+  },
+  "Complete UIH File": {
+    "prefix": "uih",
+    "body": [
+      "meta {",
+      "\troute: \"${1:/path}\";",
+      "\ttheme: \"${2|light,dark|}\";",
+      "}",
+      "",
+      "style {",
+      "\tcolor.primary: \"${3:#0E5EF7}\";",
+      "\tradius.card: \"${4:12px}\";",
+      "}",
+      "",
+      "layout \"${5:centered}\" {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create a complete UIH file template"
+  }
+}

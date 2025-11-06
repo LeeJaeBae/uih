@@ -1,0 +1,58 @@
+{
+  "name": "vscode-uih",
+  "displayName": "UIH Language Support",
+  "description": "Syntax highlighting and language support for UIH (Universal UI Hierarchy)",
+  "version": "1.0.0",
+  "publisher": "LeeJaeWon",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeJaeBae/uih.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "uih",
+    "ui",
+    "meta-language",
+    "react",
+    "vue",
+    "svelte"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "uih",
+        "aliases": [
+          "UIH",
+          "uih"
+        ],
+        "extensions": [
+          ".uih"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "uih",
+        "scopeName": "source.uih",
+        "path": "./syntaxes/uih.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "uih",
+        "path": "./snippets/uih.json"
+      }
+    ]
+  }
+}

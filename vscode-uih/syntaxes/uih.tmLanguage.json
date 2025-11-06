@@ -1,0 +1,201 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "UIH",
+  "scopeName": "source.uih",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#blocks"
+    },
+    {
+      "include": "#control-flow"
+    },
+    {
+      "include": "#components"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.uih",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.uih",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "blocks": {
+      "patterns": [
+        {
+          "name": "meta.block.uih",
+          "begin": "\\b(meta|style|layout|motion|logic|i18n|bind)\\b(\\s+\"[^\"]*\")?\\s*\\{",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.block.uih"
+            },
+            "2": {
+              "name": "string.quoted.double.block-label.uih"
+            }
+          },
+          "end": "\\}",
+          "patterns": [
+            {
+              "include": "#control-flow"
+            },
+            {
+              "include": "#components"
+            },
+            {
+              "include": "#key-value-pairs"
+            },
+            {
+              "include": "#motion-rules"
+            },
+            {
+              "include": "#bind-rules"
+            },
+            {
+              "include": "#comments"
+            }
+          ]
+        }
+      ]
+    },
+    "control-flow": {
+      "patterns": [
+        {
+          "name": "keyword.control.conditional.uih",
+          "match": "\\b(if|else)\\b"
+        },
+        {
+          "name": "keyword.control.loop.uih",
+          "match": "\\b(for|in)\\b"
+        }
+      ]
+    },
+    "components": {
+      "patterns": [
+        {
+          "name": "meta.component.uih",
+          "begin": "\\b([A-Z][a-zA-Z0-9]*)\\s*\\(",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.type.component.uih"
+            }
+          },
+          "end": "\\)",
+          "patterns": [
+            {
+              "include": "#component-props"
+            }
+          ]
+        }
+      ]
+    },
+    "component-props": {
+      "patterns": [
+        {
+          "name": "meta.component-prop.uih",
+          "match": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*(\"[^\"]*\"|'[^']*'|[^,)]+)",
+          "captures": {
+            "1": {
+              "name": "variable.parameter.prop-name.uih"
+            },
+            "2": {
+              "name": "string.quoted.prop-value.uih"
+            }
+          }
+        }
+      ]
+    },
+    "key-value-pairs": {
+      "patterns": [
+        {
+          "name": "meta.key-value.uih",
+          "match": "([a-zA-Z_][a-zA-Z0-9_.]*)\\s*:\\s*([^;]+);",
+          "captures": {
+            "1": {
+              "name": "variable.other.property.uih"
+            },
+            "2": {
+              "name": "string.unquoted.value.uih"
+            }
+          }
+        }
+      ]
+    },
+    "motion-rules": {
+      "patterns": [
+        {
+          "name": "meta.motion-rule.uih",
+          "match": "\\b(on)\\s+(hover|focus|active|click)\\s*\\(([^)]+)\\)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.motion.uih"
+            },
+            "2": {
+              "name": "entity.name.function.event.uih"
+            },
+            "3": {
+              "name": "entity.name.tag.selector.uih"
+            }
+          }
+        }
+      ]
+    },
+    "bind-rules": {
+      "patterns": [
+        {
+          "name": "meta.bind-rule.uih",
+          "match": "(#[a-zA-Z0-9_-]+)\\s*(->)\\s*([a-zA-Z_][a-zA-Z0-9_.]*)",
+          "captures": {
+            "1": {
+              "name": "entity.name.tag.selector.uih"
+            },
+            "2": {
+              "name": "keyword.operator.bind.uih"
+            },
+            "3": {
+              "name": "variable.other.property.uih"
+            }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.uih",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.uih",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.uih",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.uih",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
