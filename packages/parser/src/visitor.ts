@@ -103,7 +103,7 @@ export class UIHVisitor extends BaseCstVisitor {
   }
 
   conditional(ctx: any): ConditionalNode {
-    const condition = ctx.Identifier[0].image;
+    const condition = this.visit(ctx.conditionExpression[0]);
     const thenNodes = ctx.thenBlock ? this.visit(ctx.thenBlock[0]) : [];
     const elseNodes = ctx.elseBlock ? this.visit(ctx.elseBlock[0]) : undefined;
 
@@ -113,6 +113,66 @@ export class UIHVisitor extends BaseCstVisitor {
       thenNodes,
       elseNodes,
     };
+  }
+
+  conditionExpression(ctx: any): string {
+    // Build expression string from all tokens
+    const parts: string[] = [];
+
+    // Collect all operators into a single array with their positions
+    const operators: Array<{pos: number, text: string}> = [];
+
+    const operatorTypes = [
+      'GreaterThan', 'LessThan', 'GreaterThanOrEqual', 'LessThanOrEqual',
+      'Equal', 'NotEqual', 'StrictEqual', 'StrictNotEqual',
+      'And', 'Or'
+    ];
+
+    operatorTypes.forEach(opType => {
+      if (ctx[opType]) {
+        ctx[opType].forEach((token: any) => {
+          operators.push({
+            pos: token.startOffset,
+            text: token.image
+          });
+        });
+      }
+    });
+
+    // Sort operators by position
+    operators.sort((a, b) => a.pos - b.pos);
+
+    // Build expression
+    parts.push(this.visit(ctx.conditionTerm[0]));
+
+    for (let i = 0; i < operators.length; i++) {
+      parts.push(operators[i].text);
+      if (i + 1 < ctx.conditionTerm.length) {
+        parts.push(this.visit(ctx.conditionTerm[i + 1]));
+      }
+    }
+
+    return parts.join(" ");
+  }
+
+  conditionTerm(ctx: any): string {
+    let result = "";
+
+    // Optional NOT operator
+    if (ctx.Not) {
+      result += "!";
+    }
+
+    // Term value
+    if (ctx.Identifier) {
+      result += ctx.Identifier[0].image;
+    } else if (ctx.NumberLiteral) {
+      result += ctx.NumberLiteral[0].image;
+    } else if (ctx.conditionExpression) {
+      result += "(" + this.visit(ctx.conditionExpression[0]) + ")";
+    }
+
+    return result;
   }
 
   thenBlock(ctx: any): Node[] {

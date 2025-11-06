@@ -25,6 +25,26 @@ export const StringLiteral = createToken({
   pattern: /"(?:[^"\\]|\\.)*"/,
 });
 
+export const NumberLiteral = createToken({
+  name: "NumberLiteral",
+  pattern: /\d+(\.\d+)?/,
+});
+
+// Comparison Operators (must come before single-char operators)
+export const GreaterThanOrEqual = createToken({ name: "GreaterThanOrEqual", pattern: />=/ });
+export const LessThanOrEqual = createToken({ name: "LessThanOrEqual", pattern: /<=/ });
+export const StrictEqual = createToken({ name: "StrictEqual", pattern: /===/ });
+export const StrictNotEqual = createToken({ name: "StrictNotEqual", pattern: /!==/ });
+export const Equal = createToken({ name: "Equal", pattern: /==/ });
+export const NotEqual = createToken({ name: "NotEqual", pattern: /!=/ });
+export const GreaterThan = createToken({ name: "GreaterThan", pattern: />/ });
+export const LessThan = createToken({ name: "LessThan", pattern: /</ });
+
+// Logical Operators
+export const And = createToken({ name: "And", pattern: /&&/ });
+export const Or = createToken({ name: "Or", pattern: /\|\|/ });
+export const Not = createToken({ name: "Not", pattern: /!/ });
+
 // Symbols
 export const LCurly = createToken({ name: "LCurly", pattern: /{/ });
 export const RCurly = createToken({ name: "RCurly", pattern: /}/ });
@@ -74,9 +94,22 @@ export const allTokens = [
   Else,
   For,
   In,
+  // Operators (longer patterns first)
+  StrictEqual,
+  StrictNotEqual,
+  GreaterThanOrEqual,
+  LessThanOrEqual,
+  Equal,
+  NotEqual,
+  And,
+  Or,
+  GreaterThan,
+  LessThan,
+  Not,
   // Then identifiers and literals
   Identifier,
   StringLiteral,
+  NumberLiteral,
   // Symbols
   Arrow,
   LCurly,

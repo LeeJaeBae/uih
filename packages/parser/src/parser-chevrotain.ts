@@ -18,11 +18,23 @@ import {
   Arrow,
   Identifier,
   StringLiteral,
+  NumberLiteral,
   On,
   If,
   Else,
   For,
   In,
+  GreaterThan,
+  LessThan,
+  GreaterThanOrEqual,
+  LessThanOrEqual,
+  Equal,
+  NotEqual,
+  StrictEqual,
+  StrictNotEqual,
+  And,
+  Or,
+  Not,
 } from "./lexer.js";
 
 export class UIHParser extends CstParser {
@@ -116,13 +128,49 @@ export class UIHParser extends CstParser {
   private conditional = this.RULE("conditional", () => {
     this.CONSUME(If);
     this.CONSUME(LParen);
-    this.CONSUME(Identifier); // condition expression
+    this.SUBRULE(this.conditionExpression);
     this.CONSUME(RParen);
     this.SUBRULE(this.thenBlock);
     this.OPTION(() => {
       this.CONSUME(Else);
       this.SUBRULE(this.elseBlock);
     });
+  });
+
+  private conditionExpression = this.RULE("conditionExpression", () => {
+    // Simple expression parsing: term (operator term)*
+    this.SUBRULE(this.conditionTerm);
+
+    this.MANY(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(GreaterThan) },
+        { ALT: () => this.CONSUME(LessThan) },
+        { ALT: () => this.CONSUME(GreaterThanOrEqual) },
+        { ALT: () => this.CONSUME(LessThanOrEqual) },
+        { ALT: () => this.CONSUME(Equal) },
+        { ALT: () => this.CONSUME(NotEqual) },
+        { ALT: () => this.CONSUME(StrictEqual) },
+        { ALT: () => this.CONSUME(StrictNotEqual) },
+        { ALT: () => this.CONSUME(And) },
+        { ALT: () => this.CONSUME(Or) },
+      ]);
+      this.SUBRULE2(this.conditionTerm);
+    });
+  });
+
+  private conditionTerm = this.RULE("conditionTerm", () => {
+    this.OPTION(() => {
+      this.CONSUME(Not);
+    });
+    this.OR([
+      { ALT: () => this.CONSUME(Identifier) },
+      { ALT: () => this.CONSUME(NumberLiteral) },
+      { ALT: () => {
+        this.CONSUME(LParen);
+        this.SUBRULE(this.conditionExpression);
+        this.CONSUME(RParen);
+      }},
+    ]);
   });
 
   private thenBlock = this.RULE("thenBlock", () => {
