@@ -312,6 +312,8 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ React/Vue/Svelte 실시간 변환
 - ✅ 8개 예제 갤러리
 - ✅ 다크/라이트 모드 지원
+- ✅ 주석 지원 (`//`, `/* */`)
+- ✅ 예약어를 속성 이름으로 사용 가능 (`for`, `if` 등)
 
 ### v0.6 (완료)
 - ✅ 중첩된 조건/반복 최적화 (불필요한 Fragment 제거)
@@ -341,9 +343,10 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ Meta, Style, Layout, Logic, I18n, Bind 블록
 
 ### v1.0 (계획)
-- 📋 주석 지원 (`//`, `/* */`)
 - 📋 타입 검증 (컴파일 타임 에러 체크)
 - 📋 코드 공유 기능 (URL 기반)
+- 📋 에러 하이라이팅 (Monaco Editor)
+- 📋 자동완성 지원 (IntelliSense)
 - 📋 npm 패키지 정식 배포
 
 ## 문서
