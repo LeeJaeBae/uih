@@ -1,0 +1,41 @@
+// 회원가입 폼 예제
+// 주석 지원 테스트
+
+meta {
+  route: "/form";
+  theme: "light";
+}
+
+/*
+ * 스타일 정의
+ * - 프라이머리 색상: 파란색
+ * - 폼 간격: 16px
+ */
+style {
+  color.primary: "#2563eb";
+  spacing.form: "16px";
+}
+
+layout "centered" {
+  // 폼 헤더
+  Card { "회원가입" }
+
+  // 이메일 필드 (for 속성 테스트)
+  Label(for:"email") { "이메일" }
+  Input(id:"email", type:"email", placeholder:"email@example.com")
+
+  // 비밀번호 필드
+  Label(for:"password") { "비밀번호" }
+  Input(id:"password", type:"password", placeholder:"8자 이상")
+
+  /* 국가 선택 */
+  Label(for:"country") { "국가" }
+  Select(id:"country", options:"한국,미국,일본,중국")
+
+  // 약관 동의
+  Checkbox(id:"terms", label:"이용약관에 동의합니다")
+  Checkbox(id:"marketing", label:"마케팅 수신 동의")
+
+  // 제출 버튼
+  Button(variant:"primary") { "가입하기" }
+}

@@ -156,9 +156,28 @@ export class UIHParser extends CstParser {
   });
 
   private prop = this.RULE("prop", () => {
-    this.CONSUME(Identifier);
+    this.SUBRULE(this.propName);
     this.CONSUME(Colon);
     this.CONSUME(StringLiteral);
+  });
+
+  // Allow keywords as property names (e.g., for:"email", if:"condition")
+  private propName = this.RULE("propName", () => {
+    this.OR([
+      { ALT: () => this.CONSUME(Identifier) },
+      { ALT: () => this.CONSUME(For) },
+      { ALT: () => this.CONSUME(In) },
+      { ALT: () => this.CONSUME(On) },
+      { ALT: () => this.CONSUME(If) },
+      { ALT: () => this.CONSUME(Else) },
+      { ALT: () => this.CONSUME(Meta) },
+      { ALT: () => this.CONSUME(Style) },
+      { ALT: () => this.CONSUME(Layout) },
+      { ALT: () => this.CONSUME(Motion) },
+      { ALT: () => this.CONSUME(Logic) },
+      { ALT: () => this.CONSUME(I18n) },
+      { ALT: () => this.CONSUME(Bind) },
+    ]);
   });
 
   private motionBlock = this.RULE("motionBlock", () => {

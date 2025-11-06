@@ -35,6 +35,19 @@ export const Semicolon = createToken({ name: "Semicolon", pattern: /;/ });
 export const Comma = createToken({ name: "Comma", pattern: /,/ });
 export const Arrow = createToken({ name: "Arrow", pattern: /->/ });
 
+// Comments (ignored)
+export const LineComment = createToken({
+  name: "LineComment",
+  pattern: /\/\/[^\n\r]*/,
+  group: Lexer.SKIPPED,
+});
+
+export const BlockComment = createToken({
+  name: "BlockComment",
+  pattern: /\/\*[\s\S]*?\*\//,
+  group: Lexer.SKIPPED,
+});
+
 // Whitespace (ignored)
 export const WhiteSpace = createToken({
   name: "WhiteSpace",
@@ -43,7 +56,10 @@ export const WhiteSpace = createToken({
 });
 
 // All tokens in order (keywords must come before Identifier)
+// Comments and whitespace first (will be skipped)
 export const allTokens = [
+  LineComment,
+  BlockComment,
   WhiteSpace,
   // Keywords first
   Meta,

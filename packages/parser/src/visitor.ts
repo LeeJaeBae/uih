@@ -132,10 +132,29 @@ export class UIHVisitor extends BaseCstVisitor {
   }
 
   prop(ctx: any): NodeProp {
+    const key = ctx.propName ? this.visit(ctx.propName[0]) : ctx.Identifier[0].image;
     return {
-      key: ctx.Identifier[0].image,
+      key,
       value: stripQuotes(ctx.StringLiteral[0].image),
     };
+  }
+
+  propName(ctx: any): string {
+    // Return the image of whichever token matched
+    if (ctx.Identifier) return ctx.Identifier[0].image;
+    if (ctx.For) return ctx.For[0].image;
+    if (ctx.In) return ctx.In[0].image;
+    if (ctx.On) return ctx.On[0].image;
+    if (ctx.If) return ctx.If[0].image;
+    if (ctx.Else) return ctx.Else[0].image;
+    if (ctx.Meta) return ctx.Meta[0].image;
+    if (ctx.Style) return ctx.Style[0].image;
+    if (ctx.Layout) return ctx.Layout[0].image;
+    if (ctx.Motion) return ctx.Motion[0].image;
+    if (ctx.Logic) return ctx.Logic[0].image;
+    if (ctx.I18n) return ctx.I18n[0].image;
+    if (ctx.Bind) return ctx.Bind[0].image;
+    throw new Error("Invalid propName");
   }
 
   motionBlock(ctx: any): MotionBlock {

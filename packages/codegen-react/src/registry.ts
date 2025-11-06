@@ -16,8 +16,15 @@ export const shadRegistry = {
   },
   Select: {
     import: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"`,
-    render: (p: any, children: string) =>
-      `<Select ${propStr(p, ["value", "onValueChange"])}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>${children || ""}</SelectContent></Select>`,
+    render: (p: any, children: string) => {
+      // Parse options if provided
+      const options = p.options ? p.options.split(',').map((o: string) => o.trim()) : [];
+      const optionItems = options.map((opt: string) =>
+        `<SelectItem value="${opt}">${opt}</SelectItem>`
+      ).join('');
+
+      return `<Select ${propStr(p, ["id", "value", "onValueChange"])}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>${optionItems || children || ""}</SelectContent></Select>`;
+    },
   },
   SelectItem: {
     import: ``,
@@ -26,13 +33,18 @@ export const shadRegistry = {
   },
   Checkbox: {
     import: `import { Checkbox } from "@/components/ui/checkbox"`,
-    render: (p: any) =>
-      `<Checkbox ${propStr(p, ["id", "checked"])} />`,
+    render: (p: any) => {
+      // If label is provided, wrap with Label
+      if (p.label) {
+        return `<div className="flex items-center space-x-2"><Checkbox ${propStr(p, ["id", "checked"])} /><label htmlFor="${p.id || ''}" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">${p.label}</label></div>`;
+      }
+      return `<Checkbox ${propStr(p, ["id", "checked"])} />`;
+    },
   },
   Label: {
     import: `import { Label } from "@/components/ui/label"`,
     render: (p: any, children: string) =>
-      `<Label ${propStr(p, ["htmlFor"])}>${children || ""}</Label>`,
+      `<Label ${propStr(p, ["htmlFor", "for"])}>${children || ""}</Label>`,
   },
   Card: {
     import: `import { Card, CardContent } from "@/components/ui/card"`,
@@ -69,6 +81,10 @@ function propStr(p: any, allow: string[]) {
   if (!p) return "";
   return allow
     .filter((k) => k in p)
-    .map((k) => `${k}="${p[k]}"`)
+    .map((k) => {
+      // Map UIH 'for' to React 'htmlFor'
+      const propName = k === "for" ? "htmlFor" : k;
+      return `${propName}="${p[k]}"`;
+    })
     .join(" ");
 }
