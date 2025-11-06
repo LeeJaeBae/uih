@@ -305,7 +305,15 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 
 ## 로드맵
 
-### v0.6 (현재)
+### v0.7 (현재)
+- ✅ 온라인 플레이그라운드 (https://uih-playground.vercel.app)
+- ✅ VSCode 확장 (https://marketplace.visualstudio.com/items?itemName=LeeJaeWon.vscode-uih)
+- ✅ Monaco Editor 통합 (실시간 코드 편집)
+- ✅ React/Vue/Svelte 실시간 변환
+- ✅ 8개 예제 갤러리
+- ✅ 다크/라이트 모드 지원
+
+### v0.6 (완료)
 - ✅ 중첩된 조건/반복 최적화 (불필요한 Fragment 제거)
 - ✅ 중첩 테스트 케이스 추가
 - ✅ 복잡한 중첩 예제 (nested.uih)
@@ -333,10 +341,10 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ Meta, Style, Layout, Logic, I18n, Bind 블록
 
 ### v1.0 (계획)
-- 📋 온라인 플레이그라운드
-- 📋 VSCode 확장
-- 📋 주석 지원
-- 📋 타입 검증
+- 📋 주석 지원 (`//`, `/* */`)
+- 📋 타입 검증 (컴파일 타임 에러 체크)
+- 📋 코드 공유 기능 (URL 기반)
+- 📋 npm 패키지 정식 배포
 
 ## 문서
 
