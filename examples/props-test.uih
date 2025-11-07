@@ -1,0 +1,18 @@
+import Button from "./components/Button.uih"
+
+meta {
+  route: "/props-test";
+  theme: "light";
+}
+
+layout {
+  Text { "Props Test" }
+
+  Button(variant:"primary", size:"large")
+
+  Button(variant:"secondary", size:"small")
+
+  Separator
+
+  Text { "Props passed to imported components!" }
+}

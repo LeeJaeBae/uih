@@ -178,21 +178,24 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
     // Element node - check if it's an imported component first
     if (n.name && importedComponents.has(n.name)) {
       // This is an imported custom component - render it directly
-      const propsObj = Object.fromEntries(
-        (n.props || []).map((p) => [p.key, String(p.value)])
-      );
       const children = (n.children || [])
         .map((c) => this.emitNode(c, imports, importedComponents))
         .join("");
 
       // Build props string
-      const propsStr = Object.entries(propsObj)
-        .map(([key, value]) => {
-          // Check if value is a variable reference (starts with { or doesn't have quotes)
-          if (value.startsWith("{") || !value.startsWith('"')) {
-            return `${key}={${value}}`;
+      const propsStr = (n.props || [])
+        .map((p) => {
+          const value = String(p.value);
+          // Check if value is a variable reference (starts with {)
+          if (value.startsWith("{")) {
+            return `${p.key}={${value}}`;
           }
-          return `${key}=${value}`;
+          // Check if value is a number
+          if (!isNaN(Number(value))) {
+            return `${p.key}={${value}}`;
+          }
+          // String literal - add quotes
+          return `${p.key}="${value}"`;
         })
         .join(" ");
 

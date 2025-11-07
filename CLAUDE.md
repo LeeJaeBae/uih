@@ -113,6 +113,109 @@ logic {
 }
 ```
 
+## Import System (Component Reuse)
+
+UIH supports importing components from other `.uih` files for reuse across your project.
+
+### Syntax
+
+**Single Import**:
+```uih
+import ComponentName from "./path/to/Component.uih"
+```
+
+**Multiple Imports**:
+```uih
+import Component1, Component2, Component3 from "./components"
+```
+
+### Usage Example
+
+**Creating a Reusable Component** (`components/Button.uih`):
+```uih
+meta {
+  route: "/button";
+}
+
+state {
+  count: 0;
+}
+
+layout {
+  Button(variant:"primary") { "Click me: {count}" }
+}
+```
+
+**Importing and Using** (`page.uih`):
+```uih
+import Button from "./components/Button.uih"
+
+meta {
+  route: "/page";
+}
+
+layout {
+  Text { "My Page" }
+
+  # Use imported component without props
+  Button
+
+  # Use imported component with props
+  Button(variant:"secondary", size:"large")
+}
+```
+
+### Key Features
+
+1. **Props Passing**: Pass props to imported components just like built-in components
+2. **Path Resolution**: Relative paths supported (e.g., `./components/Button.uih`)
+3. **File Extension**: `.uih` extension is automatically stripped in generated code
+4. **Framework Support**: Works with React, Vue, and Svelte code generation
+
+### Generated Code
+
+When compiled, imports are transformed to framework-specific syntax:
+
+**React** (`.tsx`):
+```tsx
+import Button from "./components/Button";
+
+export default function Page() {
+  return (
+    <>
+      <Button variant="secondary" size="large" />
+    </>
+  );
+}
+```
+
+**Vue** (`.vue`):
+```vue
+<script setup lang="ts">
+import Button from "./components/Button";
+</script>
+
+<template>
+  <Button variant="secondary" size="large" />
+</template>
+```
+
+**Svelte** (`.svelte`):
+```svelte
+<script lang="ts">
+  import Button from "./components/Button";
+</script>
+
+<Button variant="secondary" size="large" />
+```
+
+### Examples
+
+See `examples/` directory for working examples:
+- `examples/import-test.uih` - Single component import
+- `examples/multi-import-test.uih` - Multiple component imports
+- `examples/props-test.uih` - Props passing to imported components
+
 ## Important Build Details
 
 - **Build Tool**: tsup (not tsc) for all packages

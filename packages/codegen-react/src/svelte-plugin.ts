@@ -130,7 +130,19 @@ ${indentStr}{/each}`;
       : this.mapToSvelteComponent(componentName); // Map to HTML element
 
     const props = (n.props || [])
-      .map((p) => `${p.key}="${p.value}"`)
+      .map((p) => {
+        const value = String(p.value);
+        // Check if value is a variable reference (starts with {)
+        if (value.startsWith("{")) {
+          return `${p.key}=${value}`;
+        }
+        // Check if value is a number
+        if (!isNaN(Number(value))) {
+          return `${p.key}={${value}}`;
+        }
+        // String literal
+        return `${p.key}="${value}"`;
+      })
       .join(" ");
     const children = (n.children || [])
       .map((c) => this.emitNode(c, indent + 1, importedComponents))
