@@ -2,17 +2,17 @@ export const shadRegistry = {
   Button: {
     import: `import { Button } from "@/components/ui/button"`,
     render: (p: any, children: string) =>
-      `<Button ${propStr(p, ["variant", "size"])}>${children || ""}</Button>`,
+      `<Button ${propStr(p, ["variant", "size", "class"])}>${children || ""}</Button>`,
   },
   Input: {
     import: `import { Input } from "@/components/ui/input"`,
     render: (p: any) =>
-      `<Input ${propStr(p, ["id", "placeholder", "type", "value", "disabled"])} />`,
+      `<Input ${propStr(p, ["id", "placeholder", "type", "value", "disabled", "class"])} />`,
   },
   Textarea: {
     import: `import { Textarea } from "@/components/ui/textarea"`,
     render: (p: any, children: string) =>
-      `<Textarea ${propStr(p, ["id", "placeholder", "rows"])}>${children || ""}</Textarea>`,
+      `<Textarea ${propStr(p, ["id", "placeholder", "rows", "class"])}>${children || ""}</Textarea>`,
   },
   Select: {
     import: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"`,
@@ -67,17 +67,17 @@ export const shadRegistry = {
   Label: {
     import: `import { Label } from "@/components/ui/label"`,
     render: (p: any, children: string) =>
-      `<Label ${propStr(p, ["htmlFor", "for"])}>${children || ""}</Label>`,
+      `<Label ${propStr(p, ["htmlFor", "for", "class"])}>${children || ""}</Label>`,
   },
   Card: {
     import: `import { Card, CardContent } from "@/components/ui/card"`,
     render: (p: any, children: string) =>
-      `<Card ${propStr(p, ["id", "className"])}><CardContent>${children || ""}</CardContent></Card>`,
+      `<Card ${propStr(p, ["id", "class"])}><CardContent>${children || ""}</CardContent></Card>`,
   },
   Badge: {
     import: `import { Badge } from "@/components/ui/badge"`,
     render: (p: any, children: string) =>
-      `<Badge ${propStr(p, ["variant"])}>${children || ""}</Badge>`,
+      `<Badge ${propStr(p, ["variant", "class"])}>${children || ""}</Badge>`,
   },
   Avatar: {
     import: `import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"`,
@@ -170,8 +170,11 @@ function propStr(p: any, allow: string[]) {
   return allow
     .filter((k) => k in p)
     .map((k) => {
-      // Map UIH 'for' to React 'htmlFor'
-      const propName = k === "for" ? "htmlFor" : k;
+      // Map UIH props to React props
+      let propName = k;
+      if (k === "for") propName = "htmlFor";
+      if (k === "class") propName = "className";
+
       const value = p[k];
 
       // Check if value is an expression (starts with {)

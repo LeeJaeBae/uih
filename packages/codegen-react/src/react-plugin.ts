@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { shadRegistry } from "./registry.js";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
@@ -46,6 +46,10 @@ export class ReactPlugin implements CodegenPlugin {
       | DataBlock
       | undefined;
 
+    const style = file.blocks.find((b) => b.type === "Style") as
+      | StyleBlock
+      | undefined;
+
     const imports = new Set<string>();
     const jsx = layout.nodes
       .map((n) => {
@@ -55,6 +59,7 @@ export class ReactPlugin implements CodegenPlugin {
       })
       .join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
+    const styleVars = style ? this.generateStyleVars(style) : "";
     const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
     const { stateHooks, stateImports } = state ? this.generateStateHooks(state) : { stateHooks: "", stateImports: new Set<string>() };
     const { dataHooks, dataImports, fetcher } = data ? this.generateDataHooks(data) : { dataHooks: "", dataImports: new Set<string>(), fetcher: "" };
@@ -65,6 +70,7 @@ export class ReactPlugin implements CodegenPlugin {
     dataImports.forEach(imp => imports.add(imp));
 
     const importStr = [...imports].filter(Boolean).join("\n");
+    const allStyles = [styleVars, motionStyles].filter(Boolean).join("\n\n");
     const code = `
 ${userImports ? userImports + "\n" : ""}${importStr}
 ${fetcher ? fetcher : ""}
@@ -72,7 +78,7 @@ export default function Page() {
 ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handlers : ""}
   return (
     <>
-      ${motionStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${motionStyles}\` }} />` : ""}
+      ${allStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${allStyles}\` }} />` : ""}
       <div className="container mx-auto p-6">
         ${jsx}
       </div>
@@ -185,17 +191,19 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
       // Build props string
       const propsStr = (n.props || [])
         .map((p) => {
+          // Map UIH 'class' to React 'className'
+          const propName = p.key === "class" ? "className" : p.key;
           const value = String(p.value);
           // Check if value is a variable reference (already has braces)
           if (value.startsWith("{") && value.endsWith("}")) {
-            return `${p.key}=${value}`;
+            return `${propName}=${value}`;
           }
           // Check if value is a number
           if (!isNaN(Number(value))) {
-            return `${p.key}={${value}}`;
+            return `${propName}={${value}}`;
           }
           // String literal - add quotes
-          return `${p.key}="${value}"`;
+          return `${propName}="${value}"`;
         })
         .join(" ");
 
@@ -263,6 +271,19 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
     });
 
     return cssRules.join("\n");
+  }
+
+  private generateStyleVars(style: StyleBlock): string {
+    // Convert style tokens to CSS variables
+    // e.g., "color.primary" -> "--color-primary"
+    const cssVars = Object.entries(style.tokens)
+      .map(([key, value]) => {
+        const varName = key.replace(/\./g, "-");
+        return `  --${varName}: ${value};`;
+      })
+      .join("\n");
+
+    return `:root {\n${cssVars}\n}`;
   }
 
   private generateLogicHandlers(logic: LogicBlock): { handlers: string; handlerImports: Set<string> } {

@@ -1,4 +1,4 @@
-import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, Node } from "uih-parser";
+import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
 
@@ -45,8 +45,13 @@ export class VuePlugin implements CodegenPlugin {
       | DataBlock
       | undefined;
 
+    const style = file.blocks.find((b) => b.type === "Style") as
+      | StyleBlock
+      | undefined;
+
     const template = layout.nodes.map((n) => this.emitNode(n, 0, importedComponents)).join("\n");
     const motionStyles = motion ? this.generateMotionStyles(motion) : "";
+    const styleVars = style ? this.generateStyleVars(style) : "";
     const { stateRefs, stateImports } = state ? this.generateStateRefs(state) : { stateRefs: "", stateImports: new Set<string>() };
     const { dataFetches, dataImports } = data ? this.generateDataFetches(data) : { dataFetches: "", dataImports: new Set<string>() };
     const { handlers, handlerImports } = logic ? this.generateLogicHandlers(logic) : { handlers: "", handlerImports: new Set<string>() };
@@ -58,6 +63,7 @@ export class VuePlugin implements CodegenPlugin {
     handlerImports.forEach(imp => imports.add(imp));
 
     const importStr = imports.size > 0 ? `import { ${[...imports].join(", ")} } from "vue";\n` : "";
+    const allStyles = [styleVars, motionStyles].filter(Boolean).join("\n\n");
 
     const code = `<template>
   <div class="container mx-auto p-6">
@@ -69,7 +75,7 @@ export class VuePlugin implements CodegenPlugin {
 ${userImports ? userImports + "\n" : ""}${importStr}${stateRefs}${dataFetches}${handlers}
 </script>
 
-${motionStyles ? `<style scoped>\n${motionStyles}\n</style>` : ""}
+${allStyles ? `<style scoped>\n${allStyles}\n</style>` : ""}
 `;
 
     // Format with prettier (Vue parser)
@@ -242,6 +248,19 @@ ${indentStr}</${vueComponent}>`;
     });
 
     return cssRules.join("\n\n");
+  }
+
+  private generateStyleVars(style: StyleBlock): string {
+    // Convert style tokens to CSS variables
+    // e.g., "color.primary" -> "--color-primary"
+    const cssVars = Object.entries(style.tokens)
+      .map(([key, value]) => {
+        const varName = key.replace(/\./g, "-");
+        return `  --${varName}: ${value};`;
+      })
+      .join("\n");
+
+    return `:root {\n${cssVars}\n}`;
   }
 
   private generateStateRefs(state: StateBlock): { stateRefs: string; stateImports: Set<string> } {
