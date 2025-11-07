@@ -230,11 +230,16 @@ export class UIHParser extends CstParser {
     this.SUBRULE(this.propValue);
   });
 
-  // Allow both string literals and identifiers as property values
+  // Allow string literals, identifiers, and variable references {identifier}
   private propValue = this.RULE("propValue", () => {
     this.OR([
       { ALT: () => this.CONSUME(StringLiteral) },
       { ALT: () => this.CONSUME(Identifier) },
+      { ALT: () => {
+        this.CONSUME(LCurly);
+        this.CONSUME2(Identifier);
+        this.CONSUME(RCurly);
+      }},
     ]);
   });
 

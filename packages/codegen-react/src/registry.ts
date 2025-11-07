@@ -7,7 +7,7 @@ export const shadRegistry = {
   Input: {
     import: `import { Input } from "@/components/ui/input"`,
     render: (p: any) =>
-      `<Input ${propStr(p, ["id", "placeholder", "type", "value"])} />`,
+      `<Input ${propStr(p, ["id", "placeholder", "type", "value", "disabled"])} />`,
   },
   Textarea: {
     import: `import { Textarea } from "@/components/ui/textarea"`,

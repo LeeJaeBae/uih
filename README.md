@@ -143,6 +143,98 @@ Input(id:"email", type:"email", placeholder:"Email")
 Card(id:"profile") { "User Profile" }
 ```
 
+## 컴포넌트 재사용 (Import 시스템)
+
+UIH는 다른 `.uih` 파일에서 컴포넌트를 임포트하여 재사용할 수 있습니다.
+
+### Import 문법
+
+**단일 컴포넌트 임포트**:
+```uih
+import Button from "./components/Button.uih"
+```
+
+**다중 컴포넌트 임포트**:
+```uih
+import Card, Badge, Avatar from "./components"
+```
+
+### 사용 예제
+
+**재사용 가능한 컴포넌트 생성** (`components/Button.uih`):
+```uih
+meta {
+  route: "/button";
+}
+
+state {
+  count: 0;
+}
+
+layout {
+  Button(variant:"primary") { "Click me: {count}" }
+}
+```
+
+**컴포넌트 임포트 및 사용** (`page.uih`):
+```uih
+import Button from "./components/Button.uih"
+
+meta {
+  route: "/page";
+}
+
+layout {
+  Text { "My Page" }
+
+  # Props 없이 사용
+  Button
+
+  # Props 전달
+  Button(variant:"secondary", size:"large")
+}
+```
+
+### 생성된 코드
+
+임포트는 각 프레임워크의 표준 import 구문으로 변환됩니다:
+
+**React** (`.tsx`):
+```tsx
+import Button from "./components/Button";
+
+export default function Page() {
+  return <Button variant="secondary" size="large" />;
+}
+```
+
+**Vue** (`.vue`):
+```vue
+<script setup lang="ts">
+import Button from "./components/Button";
+</script>
+
+<template>
+  <Button variant="secondary" size="large" />
+</template>
+```
+
+**Svelte** (`.svelte`):
+```svelte
+<script lang="ts">
+  import Button from "./components/Button";
+</script>
+
+<Button variant="secondary" size="large" />
+```
+
+### 주요 기능
+
+- ✅ **Props 전달**: 임포트한 컴포넌트에 props 전달 가능
+- ✅ **상대 경로**: `./components/Button.uih` 형태로 상대 경로 지원
+- ✅ **자동 확장자 제거**: `.uih` 확장자는 생성된 코드에서 자동으로 제거
+- ✅ **다중 프레임워크**: React, Vue, Svelte 모두 지원
+
 ## 실전 예제
 
 ### 예약 폼

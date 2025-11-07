@@ -221,8 +221,14 @@ export class UIHVisitor extends BaseCstVisitor {
     if (ctx.StringLiteral) {
       return stripQuotes(ctx.StringLiteral[0].image);
     }
+    // Explicit variable reference: {identifier}
+    if (ctx.LCurly && ctx.RCurly) {
+      // Identifier is at position [1] due to CONSUME2
+      const varName = ctx.Identifier[1]?.image || ctx.Identifier[0]?.image;
+      return `{${varName}}`;
+    }
     if (ctx.Identifier) {
-      // Return identifier as expression (e.g., item.id)
+      // Bare identifier (for backward compatibility)
       return `{${ctx.Identifier[0].image}}`;
     }
     return "";

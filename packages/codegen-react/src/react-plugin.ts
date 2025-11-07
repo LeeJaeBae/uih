@@ -186,9 +186,9 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
       const propsStr = (n.props || [])
         .map((p) => {
           const value = String(p.value);
-          // Check if value is a variable reference (starts with {)
-          if (value.startsWith("{")) {
-            return `${p.key}={${value}}`;
+          // Check if value is a variable reference (already has braces)
+          if (value.startsWith("{") && value.endsWith("}")) {
+            return `${p.key}=${value}`;
           }
           // Check if value is a number
           if (!isNaN(Number(value))) {

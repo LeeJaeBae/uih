@@ -1,0 +1,28 @@
+import CustomButton from "./components/Button.uih"
+
+meta {
+  route: "/variable-test";
+  theme: "light";
+}
+
+state {
+  count: 0;
+  userName: "홍길동";
+  isActive: true;
+}
+
+layout {
+  Text { "변수 참조 테스트" }
+
+  Text { "카운트: {count}" }
+
+  CustomButton(count:{count}, variant:"primary")
+
+  Text { "사용자: {userName}" }
+
+  Input(placeholder:{userName}, disabled:{isActive})
+
+  Separator
+
+  Text { "변수가 올바르게 전달되었습니다!" }
+}
