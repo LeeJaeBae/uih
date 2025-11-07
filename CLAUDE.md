@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-UIH (Universal UI Hierarchy) is a meta-language that bridges human-written interface descriptions and AI-generated components. The project compiles `.uih` files into framework-specific code (currently React).
+UIH (Universal UI Hierarchy) is a meta-language that bridges human-written interface descriptions and AI-generated components. The project compiles `.uih` files into framework-specific code (React, Vue, and Svelte).
 
 ## Repository Structure
 
@@ -43,7 +43,12 @@ pnpm dev                # Run CLI in dev mode with examples/booking.uih
 ### CLI Usage
 ```bash
 pnpm build              # Must build first
-node packages/cli/dist/index.js compile <input.uih> [outDir]
+node packages/cli/dist/index.js compile <input.uih> [outDir] --target <react|vue|svelte>
+
+# Examples
+node packages/cli/dist/index.js compile examples/booking.uih out --target react
+node packages/cli/dist/index.js compile examples/booking.uih out --target vue
+node packages/cli/dist/index.js compile examples/booking.uih out --target svelte
 ```
 
 ## Architecture Details
@@ -79,10 +84,11 @@ node packages/cli/dist/index.js compile <input.uih> [outDir]
 
 ### CLI (packages/cli)
 
-**Single Command**: `compile <file.uih> [outDir]`
+**Single Command**: `compile <file.uih> [outDir] --target <framework>`
 - Reads .uih file
 - Calls parser → codegen pipeline
-- Writes output to `{outDir}/Page.tsx`
+- Supports three target frameworks: `react`, `vue`, `svelte`
+- Writes output to `{outDir}/Page.{tsx|vue|svelte}`
 - Logs AST to console for debugging
 
 ## UIH Language Structure
@@ -111,6 +117,148 @@ logic {
     navigate: "/next";
   }
 }
+```
+
+## Styling System
+
+UIH supports modern styling approaches with Tailwind CSS and CSS variables, designed for AI-friendly code generation.
+
+### Tailwind CSS Support
+
+UIH fully supports Tailwind CSS utility classes through the `class` prop:
+
+**UIH Input**:
+```uih
+layout {
+  Button(class:"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") {
+    "Click me"
+  }
+}
+```
+
+**React Output**:
+```tsx
+<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Click me
+</Button>
+```
+
+**Key Features**:
+- `class` prop automatically converted to `className` in React
+- Vue and Svelte keep `class` as-is (native support)
+- Full Tailwind utility class support
+- Works with all components (built-in and imported)
+
+### CSS Variables (Design Tokens)
+
+The `style` block generates CSS variables for design consistency:
+
+**UIH Input**:
+```uih
+style {
+  color.primary: "#0E5EF7";
+  color.secondary: "#64748b";
+  color.success: "#10b981";
+  spacing.card: "1.5rem";
+  radius.button: "8px";
+}
+
+layout {
+  Button(class:"bg-[var(--color-primary)] text-white px-4 py-2") {
+    "Primary Button"
+  }
+}
+```
+
+**React Output**:
+```tsx
+<style dangerouslySetInnerHTML={{ __html: `:root {
+  --color-primary: #0E5EF7;
+  --color-secondary: #64748b;
+  --color-success: #10b981;
+  --spacing-card: 1.5rem;
+  --radius-button: 8px;
+}` }} />
+
+<Button className="bg-[var(--color-primary)] text-white px-4 py-2">
+  Primary Button
+</Button>
+```
+
+**Naming Convention**:
+- Dot notation in UIH: `color.primary`, `spacing.card`
+- Converted to kebab-case CSS variables: `--color-primary`, `--spacing-card`
+- Use with Tailwind's arbitrary value syntax: `bg-[var(--color-primary)]`
+
+### Combining Tailwind and CSS Variables
+
+**Complete Example** (`examples/tailwind-test.uih`):
+```uih
+meta {
+  route: "/demo";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+  color.secondary: "#64748b";
+}
+
+layout {
+  Text(class:"text-3xl font-bold text-gray-900 mb-6") {
+    "Tailwind + CSS Variables"
+  }
+
+  Button(
+    class:"bg-[var(--color-primary)] hover:bg-blue-700 text-white px-4 py-2 rounded",
+    variant:"primary"
+  ) {
+    "Primary Button"
+  }
+
+  Input(
+    placeholder:"Focus to see primary color ring",
+    class:"w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[var(--color-primary)]"
+  )
+}
+```
+
+**Why This Approach?**
+
+This design is optimized for AI code generation:
+1. **AI knows Tailwind**: LLMs are trained on Tailwind, no custom syntax needed
+2. **Design tokens**: CSS variables provide consistent theming
+3. **Full flexibility**: Combine Tailwind utilities with design system variables
+4. **Framework agnostic**: Works across React, Vue, and Svelte
+
+### Framework Output
+
+**Vue** (`.vue`):
+```vue
+<template>
+  <button class="bg-[var(--color-primary)] text-white px-4 py-2">
+    Button
+  </button>
+</template>
+
+<style scoped>
+:root {
+  --color-primary: #0E5EF7;
+}
+</style>
+```
+
+**Svelte** (`.svelte`):
+```svelte
+<button class="bg-[var(--color-primary)] text-white px-4 py-2">
+  Button
+</button>
+
+<style>
+  :root {
+    --color-primary: #0E5EF7;
+  }
+</style>
 ```
 
 ## Import System (Component Reuse)
@@ -231,7 +379,14 @@ See `examples/` directory for working examples:
 - **Source**: `packages/*/src/*.ts`
 - **Built Output**: `packages/*/dist/`
 - **Examples**: `examples/*.uih`
-- **Generated Code**: `out/Page.tsx` (default CLI output)
+  - `examples/booking.uih` - Basic form example
+  - `examples/simple-tailwind.uih` - Basic Tailwind example
+  - `examples/tailwind-test.uih` - Comprehensive styling showcase
+  - `examples/import-test.uih` - Component import examples
+- **Generated Code**:
+  - React: `out/Page.tsx`
+  - Vue: `out/Page.vue`
+  - Svelte: `out/Page.svelte`
 
 ## Commit Convention
 
@@ -310,5 +465,6 @@ improved parser
 
 1. **Parser Replacement Planned** (parser/src/index.ts:15-19): Current regex parser is temporary, tree-sitter/chevrotain migration intended
 2. **No Tests Written**: vitest configured in parser package but no test files exist
-3. **Limited Component Support**: Only 4 shadcn/ui components in registry
+3. **Limited Component Support**: Registry has basic shadcn/ui components, expand as needed
 4. **Type Safety**: Multiple `any` types in codegen registry (registry.ts:4,9,14,19)
+5. **Parser Limitations**: Nested component children in layout blocks have limited support (works for single Text nodes only)
