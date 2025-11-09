@@ -1,0 +1,114 @@
+meta {
+  route: "/pure-tailwind";
+  theme: "light";
+}
+
+style {
+  color.brand: "#6366f1";
+  color.accent: "#ec4899";
+  shadow.card: "0 4px 6px -1px rgb(0 0 0 / 0.1)";
+}
+
+layout {
+  Container(class:"bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20 px-8 rounded-3xl mb-8 shadow-2xl") {
+    Heading(class:"text-5xl font-extrabold mb-4 text-center") {
+      "Pure Tailwind CSS"
+    }
+    Text(class:"text-xl text-purple-100 text-center max-w-2xl mx-auto") {
+      "shadcn 없이 순수 Tailwind CSS만 사용하는 아름다운 UI"
+    }
+  }
+
+  Container(class:"grid grid-cols-1 md:grid-cols-3 gap-6 mb-8") {
+    Container(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Container(class:"w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4") {
+        Text(class:"text-2xl") { "🚀" }
+      }
+      Heading(class:"text-xl font-bold text-gray-900 mb-2") { "Fast" }
+      Text(class:"text-gray-600") { "Lightning-fast performance" }
+    }
+
+    # Card 2
+    Container(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Container(class:"w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4") {
+        Text(class:"text-2xl") { "🎨" }
+      }
+      Heading(class:"text-xl font-bold text-gray-900 mb-2") { "Beautiful" }
+      Text(class:"text-gray-600") { "Stunning visual design" }
+    }
+
+    # Card 3
+    Container(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Container(class:"w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mb-4") {
+        Text(class:"text-2xl") { "⚡" }
+      }
+      Heading(class:"text-xl font-bold text-gray-900 mb-2") { "Powerful" }
+      Text(class:"text-gray-600") { "Feature-rich components" }
+    }
+  }
+
+  # Form Section
+  Container(class:"bg-white p-8 rounded-2xl shadow-xl border border-gray-200 mb-8") {
+    Heading(class:"text-2xl font-bold text-gray-900 mb-6") { "Contact Form" }
+
+    FormGroup(class:"mb-4") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Name" }
+      TextInput(
+        placeholder:"Your name",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-brand)] focus:border-transparent transition-all"
+      )
+    }
+
+    FormGroup(class:"mb-4") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Email" }
+      TextInput(
+        placeholder:"your@email.com",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
+      )
+    }
+
+    FormGroup(class:"mb-6") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Message" }
+      TextArea(
+        placeholder:"Write your message here...",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-brand)] focus:border-transparent transition-all h-32 resize-none"
+      )
+    }
+
+    SubmitButton(class:"w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl") {
+      "Send Message"
+    }
+  }
+
+  # Status Badges
+  Container(class:"flex flex-wrap gap-3 mb-8") {
+    StatusBadge(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800") {
+      "✓ Active"
+    }
+    StatusBadge(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800") {
+      "⏳ Pending"
+    }
+    StatusBadge(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-800") {
+      "ℹ Info"
+    }
+    StatusBadge(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-800") {
+      "✗ Error"
+    }
+  }
+
+  # Button Group
+  Container(class:"flex flex-wrap gap-4") {
+    PrimaryButton(class:"bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md") {
+      "Primary"
+    }
+    SecondaryButton(class:"bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors") {
+      "Secondary"
+    }
+    OutlineButton(class:"border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-6 rounded-lg transition-colors") {
+      "Outline"
+    }
+    DangerButton(class:"bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md") {
+      "Danger"
+    }
+  }
+}

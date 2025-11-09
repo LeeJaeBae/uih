@@ -13,7 +13,7 @@ export class ReactPlugin implements CodegenPlugin {
   async generate(file: UIHFile): Promise<string> {
     // Generate user imports from .uih files and collect imported component names
     const importedComponents = new Set<string>();
-    const userImports = file.imports.map((imp) => {
+    const userImports = (file.imports || []).map((imp) => {
       // Track all imported component names
       imp.names.forEach(name => importedComponents.add(name));
 

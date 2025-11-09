@@ -163,13 +163,213 @@ export const shadRegistry = {
     import: ``,
     render: (_: any, children: string) => `<p>${children || ""}</p>`,
   },
+
+  // Pure HTML Elements for Tailwind CSS
+  Div: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<div ${propStr(p, ["id", "class"])}>${children || ""}</div>`,
+  },
+  Span: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<span ${propStr(p, ["id", "class"])}>${children || ""}</span>`,
+  },
+  P: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<p ${propStr(p, ["id", "class"])}>${children || ""}</p>`,
+  },
+  H1: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h1 ${propStr(p, ["id", "class"])}>${children || ""}</h1>`,
+  },
+  H2: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h2 ${propStr(p, ["id", "class"])}>${children || ""}</h2>`,
+  },
+  H3: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h3 ${propStr(p, ["id", "class"])}>${children || ""}</h3>`,
+  },
+  H4: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h4 ${propStr(p, ["id", "class"])}>${children || ""}</h4>`,
+  },
+  H5: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h5 ${propStr(p, ["id", "class"])}>${children || ""}</h5>`,
+  },
+  H6: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<h6 ${propStr(p, ["id", "class"])}>${children || ""}</h6>`,
+  },
+  Section: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<section ${propStr(p, ["id", "class"])}>${children || ""}</section>`,
+  },
+  Article: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<article ${propStr(p, ["id", "class"])}>${children || ""}</article>`,
+  },
+  Aside: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<aside ${propStr(p, ["id", "class"])}>${children || ""}</aside>`,
+  },
+  Header: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<header ${propStr(p, ["id", "class"])}>${children || ""}</header>`,
+  },
+  Footer: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<footer ${propStr(p, ["id", "class"])}>${children || ""}</footer>`,
+  },
+  Nav: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<nav ${propStr(p, ["id", "class"])}>${children || ""}</nav>`,
+  },
+  Main: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<main ${propStr(p, ["id", "class"])}>${children || ""}</main>`,
+  },
+  Form: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<form ${propStr(p, ["id", "class", "action", "method"])}>${children || ""}</form>`,
+  },
+  Ul: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<ul ${propStr(p, ["id", "class"])}>${children || ""}</ul>`,
+  },
+  Ol: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<ol ${propStr(p, ["id", "class"])}>${children || ""}</ol>`,
+  },
+  Li: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<li ${propStr(p, ["id", "class"])}>${children || ""}</li>`,
+  },
+  A: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<a ${propStr(p, ["id", "class", "href", "target", "rel"])}>${children || ""}</a>`,
+  },
+  Img: {
+    import: ``,
+    render: (p: any) =>
+      `<img ${propStr(p, ["id", "class", "src", "alt", "width", "height"])} />`,
+  },
+
+  // Media Elements
+  Video: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<video ${propStr(p, ["id", "class", "src", "controls", "autoplay", "loop", "muted", "width", "height"])}>${children || ""}</video>`,
+  },
+  Audio: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<audio ${propStr(p, ["id", "class", "src", "controls", "autoplay", "loop", "muted"])}>${children || ""}</audio>`,
+  },
+  Source: {
+    import: ``,
+    render: (p: any) =>
+      `<source ${propStr(p, ["src", "type"])} />`,
+  },
+
+  // Table Elements
+  Table: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<table ${propStr(p, ["id", "class"])}>${children || ""}</table>`,
+  },
+  Thead: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<thead ${propStr(p, ["id", "class"])}>${children || ""}</thead>`,
+  },
+  Tbody: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<tbody ${propStr(p, ["id", "class"])}>${children || ""}</tbody>`,
+  },
+  Tfoot: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<tfoot ${propStr(p, ["id", "class"])}>${children || ""}</tfoot>`,
+  },
+  Tr: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<tr ${propStr(p, ["id", "class"])}>${children || ""}</tr>`,
+  },
+  Td: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<td ${propStr(p, ["id", "class", "colspan", "rowspan"])}>${children || ""}</td>`,
+  },
+  Th: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<th ${propStr(p, ["id", "class", "colspan", "rowspan", "scope"])}>${children || ""}</th>`,
+  },
+
+  // Form Elements (HTML native, Note: Select and Label already exist as shadcn components)
+  Option: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<option ${propStr(p, ["value", "selected", "disabled"])}>${children || ""}</option>`,
+  },
+  Fieldset: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<fieldset ${propStr(p, ["id", "class"])}>${children || ""}</fieldset>`,
+  },
+  Legend: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<legend ${propStr(p, ["id", "class"])}>${children || ""}</legend>`,
+  },
+
+  // Canvas and SVG
+  Canvas: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<canvas ${propStr(p, ["id", "class", "width", "height"])}>${children || ""}</canvas>`,
+  },
+  Svg: {
+    import: ``,
+    render: (p: any, children: string) =>
+      `<svg ${propStr(p, ["id", "class", "width", "height", "viewBox"])}>${children || ""}</svg>`,
+  },
 };
 
 function propStr(p: any, allow: string[]) {
   if (!p) return "";
-  return allow
+
+  // Collect all props from allow list and dynamic props (event handlers, aria, data, role)
+  const allProps: string[] = [];
+
+  // Process allowed props
+  allow
     .filter((k) => k in p)
-    .map((k) => {
+    .forEach((k) => {
       // Map UIH props to React props
       let propName = k;
       if (k === "for") propName = "htmlFor";
@@ -180,11 +380,57 @@ function propStr(p: any, allow: string[]) {
       // Check if value is an expression (starts with {)
       if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
         // Expression: remove quotes, use as-is
-        return `${propName}=${value}`;
+        allProps.push(`${propName}=${value}`);
+      } else if (typeof value === "boolean") {
+        // Boolean attribute
+        if (value) {
+          allProps.push(propName);
+        }
+      } else {
+        // Regular string: wrap in quotes
+        allProps.push(`${propName}="${value}"`);
       }
+    });
 
-      // Regular string: wrap in quotes
-      return `${propName}="${value}"`;
-    })
-    .join(" ");
+  // Process event handlers (onClick, onChange, onSubmit, etc.)
+  Object.keys(p).forEach((k) => {
+    if (k.startsWith("on") && k.length > 2 && k[2] === k[2].toUpperCase()) {
+      const value = p[k];
+      if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
+        allProps.push(`${k}=${value}`);
+      }
+    }
+  });
+
+  // Process aria-* attributes
+  Object.keys(p).forEach((k) => {
+    if (k.startsWith("aria-")) {
+      const value = p[k];
+      if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
+        allProps.push(`${k}=${value}`);
+      } else {
+        allProps.push(`${k}="${value}"`);
+      }
+    }
+  });
+
+  // Process data-* attributes
+  Object.keys(p).forEach((k) => {
+    if (k.startsWith("data-")) {
+      const value = p[k];
+      if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
+        allProps.push(`${k}=${value}`);
+      } else {
+        allProps.push(`${k}="${value}"`);
+      }
+    }
+  });
+
+  // Process role attribute
+  if ("role" in p && !allow.includes("role")) {
+    const value = p.role;
+    allProps.push(`role="${value}"`);
+  }
+
+  return allProps.join(" ");
 }

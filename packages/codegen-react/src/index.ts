@@ -25,3 +25,23 @@ export async function generateReact(file: UIHFile): Promise<string> {
   const plugin = createReactPlugin();
   return plugin.generate(file);
 }
+
+/**
+ * Generate Vue code from UIH AST
+ * @deprecated Use createVuePlugin().generate() instead
+ * This function is maintained for backward compatibility
+ */
+export async function generateVue(file: UIHFile): Promise<string> {
+  const plugin = createVuePlugin();
+  return plugin.generate(file);
+}
+
+/**
+ * Generate Svelte code from UIH AST
+ * @deprecated Use createSveltePlugin().generate() instead
+ * This function is maintained for backward compatibility
+ */
+export async function generateSvelte(file: UIHFile): Promise<string> {
+  const plugin = createSveltePlugin();
+  return plugin.generate(file);
+}

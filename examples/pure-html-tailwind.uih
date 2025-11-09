@@ -1,0 +1,108 @@
+meta {
+  route: "/pure-html";
+  theme: "light";
+}
+
+style {
+  color.brand: "#6366f1";
+  color.accent: "#ec4899";
+}
+
+layout {
+  Div(class:"bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20 px-8 rounded-3xl mb-8 shadow-2xl") {
+    H1(class:"text-5xl font-extrabold mb-4 text-center") {
+      "Pure Tailwind CSS"
+    }
+    Text(class:"text-xl text-purple-100 text-center max-w-2xl mx-auto") {
+      "shadcn 없이 순수 Tailwind만 사용"
+    }
+  }
+
+  Div(class:"grid grid-cols-1 md:grid-cols-3 gap-6 mb-8") {
+    Div(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Div(class:"w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4") {
+        Span(class:"text-2xl") { "🚀" }
+      }
+      H2(class:"text-xl font-bold text-gray-900 mb-2") { "Fast" }
+      Text(class:"text-gray-600") { "Lightning-fast performance" }
+    }
+
+    Div(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Div(class:"w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4") {
+        Span(class:"text-2xl") { "🎨" }
+      }
+      H2(class:"text-xl font-bold text-gray-900 mb-2") { "Beautiful" }
+      Text(class:"text-gray-600") { "Stunning visual design" }
+    }
+
+    Div(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100") {
+      Div(class:"w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mb-4") {
+        Span(class:"text-2xl") { "⚡" }
+      }
+      H2(class:"text-xl font-bold text-gray-900 mb-2") { "Powerful" }
+      Text(class:"text-gray-600") { "Feature-rich components" }
+    }
+  }
+
+  Div(class:"bg-white p-8 rounded-2xl shadow-xl border border-gray-200 mb-8") {
+    H2(class:"text-2xl font-bold text-gray-900 mb-6") { "Contact Form" }
+
+    Div(class:"mb-4") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Name" }
+      Input(
+        placeholder:"Your name",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-brand)] focus:border-transparent transition-all"
+      )
+    }
+
+    Div(class:"mb-4") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Email" }
+      Input(
+        placeholder:"your@email.com",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
+      )
+    }
+
+    Div(class:"mb-6") {
+      Label(class:"block text-sm font-medium text-gray-700 mb-2") { "Message" }
+      Textarea(
+        placeholder:"Write your message here...",
+        class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-brand)] focus:border-transparent transition-all h-32 resize-none"
+      )
+    }
+
+    Button(class:"w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl") {
+      "Send Message"
+    }
+  }
+
+  Div(class:"flex flex-wrap gap-3 mb-8") {
+    Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800") {
+      "✓ Active"
+    }
+    Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800") {
+      "⏳ Pending"
+    }
+    Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-blue-800") {
+      "ℹ Info"
+    }
+    Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-800") {
+      "✗ Error"
+    }
+  }
+
+  Div(class:"flex flex-wrap gap-4") {
+    Button(class:"bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md") {
+      "Primary"
+    }
+    Button(class:"bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors") {
+      "Secondary"
+    }
+    Button(class:"border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-6 rounded-lg transition-colors") {
+      "Outline"
+    }
+    Button(class:"bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md") {
+      "Danger"
+    }
+  }
+}

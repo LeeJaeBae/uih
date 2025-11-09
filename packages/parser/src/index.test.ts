@@ -113,6 +113,138 @@ bind {
     });
   });
 
+  describe("State Block", () => {
+    it("should parse state declarations", () => {
+      const input = `
+state {
+  count: 0;
+  isOpen: false;
+  username: "";
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      const stateBlock = ast.blocks.find((b) => b.type === "State");
+      expect(stateBlock).toBeDefined();
+      expect(stateBlock?.type).toBe("State");
+    });
+
+    it("should parse state with different types", () => {
+      const input = `
+state {
+  count: 0;
+  message: "Hello";
+  isActive: true;
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+    });
+  });
+
+  describe("Data Block", () => {
+    it("should parse data fetching block", () => {
+      const input = `
+data {
+  users: GET "/api/users";
+  profile: GET "/api/profile/{id}";
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      const dataBlock = ast.blocks.find((b) => b.type === "Data");
+      expect(dataBlock).toBeDefined();
+      expect(dataBlock?.type).toBe("Data");
+    });
+
+    it("should parse different HTTP methods", () => {
+      const input = `
+data {
+  users: GET "/api/users";
+  createUser: POST "/api/users";
+  updateUser: PUT "/api/users/{id}";
+  deleteUser: DELETE "/api/users/{id}";
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+    });
+  });
+
+  describe("Import Statements", () => {
+    it("should parse single import", () => {
+      const input = `
+import Button from "./components/Button.uih"
+
+layout {
+  Button(variant:"primary") { "Click me" }
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      expect(ast.imports).toBeDefined();
+      expect(ast.imports?.length).toBe(1);
+      expect(ast.imports?.[0].names).toContain("Button");
+      expect(ast.imports?.[0].from).toBe("./components/Button.uih");
+    });
+
+    it("should parse multiple imports from same file", () => {
+      const input = `
+import Button, Input, Card from "./components"
+
+layout {
+  Card { "Content" }
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      expect(ast.imports).toBeDefined();
+      expect(ast.imports?.length).toBe(1);
+      expect(ast.imports?.[0].names).toEqual(["Button", "Input", "Card"]);
+    });
+
+    it("should parse multiple import statements", () => {
+      const input = `
+import Button from "./Button.uih"
+import Card from "./Card.uih"
+
+layout {
+  Card { "Content" }
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      expect(ast.imports?.length).toBe(2);
+    });
+  });
+
+  describe("Variable References", () => {
+    it("should parse variable references in props", () => {
+      const input = `
+state {
+  count: 0;
+}
+
+layout {
+  Text { "Count: {count}" }
+  Button(id:"{userId}") { "Click" }
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+    });
+
+    it("should parse multiple variables in single prop", () => {
+      const input = `
+layout {
+  Text { "Hello {firstName} {lastName}" }
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+    });
+  });
+
   describe("Complete UIH File", () => {
     it("should parse complete booking example", () => {
       const input = `
@@ -146,6 +278,34 @@ logic {
       expect(ast.blocks[1].type).toBe("Style");
       expect(ast.blocks[2].type).toBe("Layout");
       expect(ast.blocks[3].type).toBe("Logic");
+    });
+
+    it("should parse complete example with state and data", () => {
+      const input = `
+import Counter from "./components/Counter.uih"
+
+meta {
+  route: "/users";
+}
+
+state {
+  selectedId: 0;
+}
+
+data {
+  users: GET "/api/users";
+}
+
+layout {
+  Text { "User count: {users.length}" }
+  Counter
+}
+`;
+      const ast = parse(input);
+      expect(ast).toMatchSnapshot();
+      expect(ast.imports).toBeDefined();
+      expect(ast.blocks.some((b) => b.type === "State")).toBe(true);
+      expect(ast.blocks.some((b) => b.type === "Data")).toBe(true);
     });
   });
 });

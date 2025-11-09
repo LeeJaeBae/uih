@@ -1,0 +1,334 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Vue Code Generator > Advanced Features > should generate Canvas element 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <canvas :width="800" :height="600" />
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Advanced Features > should generate Table with accessibility attributes 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <table class="w-full" role="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Advanced Features > should generate Video with event handlers 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <video
+      src="/video.mp4"
+      controls="true"
+      :onPlay="handlePlay"
+      aria-label="Tutorial video"
+    />
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Basic Components > should generate Button component 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <button variant="primary">Click me</button>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Basic Components > should generate Input component 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <input placeholder="Enter text" />
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > CSS Variables > should generate scoped style block with CSS variables 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <button>Button</button>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped>
+:root {
+  --color-primary: #0e5ef7;
+  --spacing-card: 1.5rem;
+}
+</style>
+"
+`;
+
+exports[`Vue Code Generator > Complete Integration > should generate complete Vue SFC with all features 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <CustomHeader />
+    <p class="text-2xl font-bold">Count: {count}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import CustomHeader from "./components/Header";
+import { ref, onMounted } from "vue";
+const count = ref(0);
+
+const users = ref(null);
+const usersLoading = ref(true);
+const usersError = ref(null);
+
+onMounted(async () => {
+  try {
+    const response = await fetch("/api/users");
+    users.value = await response.json();
+  } catch (err) {
+    usersError.value = err;
+  } finally {
+    usersLoading.value = false;
+  }
+});
+</script>
+
+<style scoped>
+:root {
+  --color-primary: #0e5ef7;
+}
+</style>
+"
+`;
+
+exports[`Vue Code Generator > Conditional Rendering > should generate v-if directive 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <span v-if="isActive"> Active </span>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Conditional Rendering > should generate v-if v-else directives 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <span v-if="isPremium" variant="success"> Premium </span>
+    <span v-else> Free </span>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Data Block > should generate useFetch composable 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <p>Users loaded</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+const users = ref(null);
+const usersLoading = ref(true);
+const usersError = ref(null);
+
+onMounted(async () => {
+  try {
+    const response = await fetch("/api/users");
+    users.value = await response.json();
+  } catch (err) {
+    usersError.value = err;
+  } finally {
+    usersLoading.value = false;
+  }
+});
+</script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate Div with Tailwind classes 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <div class="container mx-auto p-4">Hello World</div>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate Form element 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <form action="/submit" class="space-y-4">Form content</form>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate Image (Img) with src and alt 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <img src="/logo.png" alt="Logo" class="w-32 h-32" />
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate Link (A) with href 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <a href="https://example.com" class="text-blue-500 underline">
+      Click here
+    </a>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate heading tags 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold">Main Title</h1>
+    <h2 class="text-2xl">Subtitle</h2>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate list elements 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <ul class="list-disc">
+      <li>Item 1</li>
+      <li>Item 2</li>
+    </ul>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > HTML Elements > should generate semantic HTML elements 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <header class="bg-gray-100">Header</header>
+    <main class="container">
+      <section>Content</section>
+    </main>
+    <footer class="mt-8">Footer</footer>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Import Statements > should handle imported components 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <Counter :initial="10" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import Counter from "./components/Counter";
+</script>
+"
+`;
+
+exports[`Vue Code Generator > Loop Rendering > should generate v-for directive 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <div v-for="user in users" :key="user.id || Math.random()">User</div>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > State Block > should generate ref declarations 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <p>Count: {count}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+const count = ref(0);
+const isOpen = ref(false);
+</script>
+"
+`;
+
+exports[`Vue Code Generator > Tailwind CSS Support > should preserve class attribute 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <button class="bg-blue-500 text-white px-4 py-2">Click me</button>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Variable References > should render variable references in v-bind 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <input :value="username" />
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+"
+`;
+
+exports[`Vue Code Generator > Variable References > should render variable references with mustache syntax 1`] = `
+"<template>
+  <div class="container mx-auto p-6">
+    <p>Count: {count}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+const count = ref(0);
+</script>
+"
+`;

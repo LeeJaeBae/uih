@@ -1,0 +1,79 @@
+meta {
+  route: "/html-test";
+}
+
+style {
+  color.primary: "#6366f1";
+  color.accent: "#ec4899";
+}
+
+layout {
+  Div(class:"bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20 px-8 rounded-3xl mb-8 shadow-2xl") {
+    "Pure Tailwind CSS with HTML Elements"
+  }
+
+  H1(class:"text-5xl font-extrabold mb-4 text-center") {
+    "Welcome"
+  }
+
+  P(class:"text-xl text-gray-600 text-center max-w-2xl mx-auto mb-8") {
+    "This is a demo using pure HTML elements with Tailwind CSS"
+  }
+
+  Div(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100 mb-4") {
+    "Feature Card 1"
+  }
+
+  Div(class:"bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow border border-gray-100 mb-4") {
+    "Feature Card 2"
+  }
+
+  H2(class:"text-2xl font-bold text-gray-900 mb-6") { "Form Section" }
+
+  Form(class:"bg-white p-8 rounded-2xl shadow-xl border border-gray-200 mb-8") {
+    "Contact Form"
+  }
+
+  Div(class:"mb-4") {
+    "Form Group"
+  }
+
+  Input(
+    placeholder:"Your name",
+    class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all"
+  )
+
+  Input(
+    placeholder:"your@email.com",
+    class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
+  )
+
+  Textarea(
+    placeholder:"Write your message here...",
+    class:"w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-all h-32 resize-none"
+  )
+
+  Button(class:"w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl") {
+    "Send Message"
+  }
+
+  Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800") {
+    "Active"
+  }
+
+  Span(class:"inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800") {
+    "Pending"
+  }
+
+  Button(class:"bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md") {
+    "Primary"
+  }
+
+  Button(class:"bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors") {
+    "Secondary"
+  }
+
+  A(href:"https://tailwindcss.com", class:"text-blue-600 hover:text-blue-800 underline") {
+    "Visit Tailwind CSS"
+  }
+}

@@ -12,7 +12,7 @@ export class VuePlugin implements CodegenPlugin {
   async generate(file: UIHFile): Promise<string> {
     // Generate user imports from .uih files and collect imported component names
     const importedComponents = new Set<string>();
-    const userImports = file.imports.map((imp) => {
+    const userImports = (file.imports || []).map((imp) => {
       // Track all imported component names
       imp.names.forEach(name => importedComponents.add(name));
 
@@ -206,6 +206,48 @@ ${indentStr}</${vueComponent}>`;
       Alert: "div",
       Progress: "progress",
       Skeleton: "div",
+      // Pure HTML Elements
+      Div: "div",
+      Span: "span",
+      P: "p",
+      H1: "h1",
+      H2: "h2",
+      H3: "h3",
+      H4: "h4",
+      H5: "h5",
+      H6: "h6",
+      Section: "section",
+      Article: "article",
+      Aside: "aside",
+      Header: "header",
+      Footer: "footer",
+      Nav: "nav",
+      Main: "main",
+      Form: "form",
+      Ul: "ul",
+      Ol: "ol",
+      Li: "li",
+      A: "a",
+      Img: "img",
+      // Media Elements
+      Video: "video",
+      Audio: "audio",
+      Source: "source",
+      // Table Elements
+      Table: "table",
+      Thead: "thead",
+      Tbody: "tbody",
+      Tfoot: "tfoot",
+      Tr: "tr",
+      Td: "td",
+      Th: "th",
+      // Form Elements
+      Option: "option",
+      Fieldset: "fieldset",
+      Legend: "legend",
+      // Canvas and SVG
+      Canvas: "canvas",
+      Svg: "svg",
     };
 
     return mapping[name] || "div";

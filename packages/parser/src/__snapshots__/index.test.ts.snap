@@ -11,6 +11,7 @@ exports[`UIH Parser > Bind Block > should parse bind mappings 1`] = `
       "type": "Bind",
     },
   ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -115,6 +116,130 @@ exports[`UIH Parser > Complete UIH File > should parse complete booking example 
       "type": "Logic",
     },
   ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Complete UIH File > should parse complete example with state and data 1`] = `
+{
+  "blocks": [
+    {
+      "entries": {
+        "route": "/users",
+      },
+      "type": "Meta",
+    },
+    {
+      "declarations": [
+        {
+          "initialValue": 0,
+          "name": "selectedId",
+        },
+      ],
+      "type": "State",
+    },
+    {
+      "fetches": [
+        {
+          "method": "GET",
+          "name": "users",
+          "url": "/api/users",
+        },
+      ],
+      "type": "Data",
+    },
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "User count: {users.length}",
+            },
+          ],
+          "kind": "Element",
+          "name": "Text",
+          "props": [],
+        },
+        {
+          "children": [],
+          "kind": "Element",
+          "name": "Counter",
+          "props": [],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [
+    {
+      "from": "./components/Counter.uih",
+      "names": [
+        "Counter",
+      ],
+      "type": "Import",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Data Block > should parse data fetching block 1`] = `
+{
+  "blocks": [
+    {
+      "fetches": [
+        {
+          "method": "GET",
+          "name": "users",
+          "url": "/api/users",
+        },
+        {
+          "method": "GET",
+          "name": "profile",
+          "url": "/api/profile/{id}",
+        },
+      ],
+      "type": "Data",
+    },
+  ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Data Block > should parse different HTTP methods 1`] = `
+{
+  "blocks": [
+    {
+      "fetches": [
+        {
+          "method": "GET",
+          "name": "users",
+          "url": "/api/users",
+        },
+        {
+          "method": "POST",
+          "name": "createUser",
+          "url": "/api/users",
+        },
+        {
+          "method": "PUT",
+          "name": "updateUser",
+          "url": "/api/users/{id}",
+        },
+        {
+          "method": "DELETE",
+          "name": "deleteUser",
+          "url": "/api/users/{id}",
+        },
+      ],
+      "type": "Data",
+    },
+  ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -134,6 +259,123 @@ exports[`UIH Parser > I18n Block > should parse i18n entries 1`] = `
         },
       },
       "type": "I18n",
+    },
+  ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Import Statements > should parse multiple import statements 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Content",
+            },
+          ],
+          "kind": "Element",
+          "name": "Card",
+          "props": [],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [
+    {
+      "from": "./Button.uih",
+      "names": [
+        "Button",
+      ],
+      "type": "Import",
+    },
+    {
+      "from": "./Card.uih",
+      "names": [
+        "Card",
+      ],
+      "type": "Import",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Import Statements > should parse multiple imports from same file 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Content",
+            },
+          ],
+          "kind": "Element",
+          "name": "Card",
+          "props": [],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [
+    {
+      "from": "./components",
+      "names": [
+        "Button",
+        "Input",
+        "Card",
+      ],
+      "type": "Import",
+    },
+  ],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Import Statements > should parse single import 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Click me",
+            },
+          ],
+          "kind": "Element",
+          "name": "Button",
+          "props": [
+            {
+              "key": "variant",
+              "value": "primary",
+            },
+          ],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [
+    {
+      "from": "./components/Button.uih",
+      "names": [
+        "Button",
+      ],
+      "type": "Import",
     },
   ],
   "type": "UIHFile",
@@ -197,6 +439,7 @@ exports[`UIH Parser > Layout Block > should parse layout with elements 1`] = `
       "type": "Layout",
     },
   ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -222,6 +465,7 @@ exports[`UIH Parser > Layout Block > should parse layout without label 1`] = `
       "type": "Layout",
     },
   ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -253,6 +497,7 @@ exports[`UIH Parser > Logic Block > should parse logic events 1`] = `
       "type": "Logic",
     },
   ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -268,6 +513,7 @@ exports[`UIH Parser > Meta Block > should parse basic meta block 1`] = `
       "type": "Meta",
     },
   ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -289,6 +535,59 @@ exports[`UIH Parser > Motion Block > should parse motion rules 1`] = `
       "type": "Motion",
     },
   ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > State Block > should parse state declarations 1`] = `
+{
+  "blocks": [
+    {
+      "declarations": [
+        {
+          "initialValue": 0,
+          "name": "count",
+        },
+        {
+          "initialValue": false,
+          "name": "isOpen",
+        },
+        {
+          "initialValue": "",
+          "name": "username",
+        },
+      ],
+      "type": "State",
+    },
+  ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > State Block > should parse state with different types 1`] = `
+{
+  "blocks": [
+    {
+      "declarations": [
+        {
+          "initialValue": 0,
+          "name": "count",
+        },
+        {
+          "initialValue": "Hello",
+          "name": "message",
+        },
+        {
+          "initialValue": true,
+          "name": "isActive",
+        },
+      ],
+      "type": "State",
+    },
+  ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
@@ -305,6 +604,84 @@ exports[`UIH Parser > Style Block > should parse style tokens 1`] = `
       "type": "Style",
     },
   ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Variable References > should parse multiple variables in single prop 1`] = `
+{
+  "blocks": [
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Hello {firstName} {lastName}",
+            },
+          ],
+          "kind": "Element",
+          "name": "Text",
+          "props": [],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [],
+  "type": "UIHFile",
+}
+`;
+
+exports[`UIH Parser > Variable References > should parse variable references in props 1`] = `
+{
+  "blocks": [
+    {
+      "declarations": [
+        {
+          "initialValue": 0,
+          "name": "count",
+        },
+      ],
+      "type": "State",
+    },
+    {
+      "mode": "default",
+      "nodes": [
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Count: {count}",
+            },
+          ],
+          "kind": "Element",
+          "name": "Text",
+          "props": [],
+        },
+        {
+          "children": [
+            {
+              "kind": "Text",
+              "text": "Click",
+            },
+          ],
+          "kind": "Element",
+          "name": "Button",
+          "props": [
+            {
+              "key": "id",
+              "value": "{userId}",
+            },
+          ],
+        },
+      ],
+      "type": "Layout",
+    },
+  ],
+  "imports": [],
   "type": "UIHFile",
 }
 `;
