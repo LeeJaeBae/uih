@@ -1,0 +1,117 @@
+# Pricing Table Example
+# SaaS 제품의 가격 테이블 패턴
+# 디자이너 팁: 중앙의 "인기" 플랜을 강조(scale-105)하고, gradient로 시선을 끕니다
+
+meta {
+  route: "/pricing";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+}
+
+layout {
+  Div(class:"min-h-screen bg-gray-50 py-20") {
+    Div(class:"container mx-auto px-6") {
+      # Header
+      Div(class:"text-center mb-16") {
+        H1(class:"text-5xl font-bold mb-4") { "간단하고 투명한 가격" }
+        P(class:"text-xl text-gray-600") {
+          "프로젝트 규모에 맞는 플랜을 선택하세요"
+        }
+      }
+
+      # Pricing Cards
+      Div(class:"grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto") {
+        # Free Plan
+        Card(class:"p-8 bg-white rounded-2xl shadow-sm border-2 border-gray-200") {
+          H3(class:"text-2xl font-bold mb-2") { "무료" }
+          Div(class:"mb-6") {
+            Span(class:"text-5xl font-bold") { "₩0" }
+            Span(class:"text-gray-600") { "/월" }
+          }
+          Ul(class:"space-y-4 mb-8") {
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "3개 프로젝트" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "기본 컴포넌트" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "커뮤니티 지원" }
+            }
+          }
+          Button(class:"w-full py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-semibold") {
+            "시작하기"
+          }
+        }
+
+        # Pro Plan (Featured)
+        Card(class:"p-8 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-2xl shadow-xl transform scale-105") {
+          Span(class:"inline-block px-3 py-1 bg-white text-blue-600 rounded-full text-sm font-semibold mb-4") {
+            "인기"
+          }
+          H3(class:"text-2xl font-bold mb-2") { "프로" }
+          Div(class:"mb-6") {
+            Span(class:"text-5xl font-bold") { "₩29,000" }
+            Span(class:"text-blue-100") { "/월" }
+          }
+          Ul(class:"space-y-4 mb-8") {
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "무제한 프로젝트" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "모든 컴포넌트" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "우선 지원" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "고급 기능" }
+            }
+          }
+          Button(class:"w-full py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 font-semibold") {
+            "지금 시작"
+          }
+        }
+
+        # Enterprise Plan
+        Card(class:"p-8 bg-white rounded-2xl shadow-sm border-2 border-gray-200") {
+          H3(class:"text-2xl font-bold mb-2") { "엔터프라이즈" }
+          Div(class:"mb-6") {
+            Span(class:"text-5xl font-bold") { "맞춤" }
+          }
+          Ul(class:"space-y-4 mb-8") {
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "모든 Pro 기능" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "전담 지원" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "온프레미스" }
+            }
+            Li(class:"flex items-center gap-2") {
+              Span { "✅" }
+              Span { "SLA 보장" }
+            }
+          }
+          Button(class:"w-full py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary)] rounded-lg hover:bg-blue-50 font-semibold") {
+            "문의하기"
+          }
+        }
+      }
+    }
+  }
+}
