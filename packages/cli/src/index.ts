@@ -2,6 +2,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { parse } from "uih-parser";
 import { pluginRegistry } from "uih-codegen-react";
+import { generateUIH, loadProjectContext } from "uih-ai";
 import { dirname, resolve } from "node:path";
 import { watch } from "chokidar";
 
@@ -12,6 +13,8 @@ function parseArgs(args: string[]) {
     input?: string;
     outDir: string;
     target: string;
+    output?: string;
+    apiKey?: string;
   } = {
     outDir: "out",
     target: "react",
@@ -25,6 +28,12 @@ function parseArgs(args: string[]) {
       // Handle flags
       if (arg === "--target") {
         parsed.target = args[i + 1] || "react";
+        i += 2;
+      } else if (arg === "--output" || arg === "-o") {
+        parsed.output = args[i + 1];
+        i += 2;
+      } else if (arg === "--api-key") {
+        parsed.apiKey = args[i + 1];
         i += 2;
       } else {
         console.error(`Unknown flag: ${arg}`);
@@ -47,22 +56,28 @@ function parseArgs(args: string[]) {
 }
 
 const args = parseArgs(process.argv);
-const { command, input, outDir, target } = args;
+const { command, input, outDir, target, output, apiKey } = args;
 
-if (!command || !input) {
-  console.log("Usage: uih <command> <file.uih> [options]");
+if (!command || (command !== "generate" && !input)) {
+  console.log("Usage: uih <command> [arguments] [options]");
   console.log("");
   console.log("Commands:");
-  console.log("  compile <file.uih> [outDir]  Compile UIH file to framework code");
-  console.log("  validate <file.uih>          Validate UIH file syntax");
-  console.log("  watch <file.uih> [outDir]    Watch and recompile on changes");
+  console.log("  compile <file.uih> [outDir]     Compile UIH file to framework code");
+  console.log("  validate <file.uih>             Validate UIH file syntax");
+  console.log("  watch <file.uih> [outDir]       Watch and recompile on changes");
+  console.log("  generate <description>          Generate UIH from natural language (AI)");
   console.log("");
   console.log("Options:");
-  console.log(
-    "  --target <framework>         Target framework (react|vue|svelte) [default: react]"
-  );
+  console.log("  --target <framework>            Target framework (react|vue|svelte) [default: react]");
+  console.log("  --output, -o <file.uih>         Output file for generate command");
+  console.log("  --api-key <key>                 Anthropic API key (or set ANTHROPIC_API_KEY env)");
   console.log("");
   console.log("Available frameworks:", pluginRegistry.getAvailablePlugins().join(", "));
+  console.log("");
+  console.log("Examples:");
+  console.log("  uih compile login.uih out --target react");
+  console.log("  uih generate \"로그인 페이지 만들어줘\" --output login.uih");
+  console.log("  uih generate \"dashboard with stats\" -o dashboard.uih");
   process.exit(1);
 }
 
@@ -151,6 +166,66 @@ function watchFile(
   });
 }
 
+async function generate(prompt: string, outputPath?: string, apiKey?: string) {
+  try {
+    console.log("🤖 Generating UIH code with Claude...");
+    console.log(`📝 Prompt: "${prompt}"`);
+    console.log("");
+
+    // Load project context from current directory
+    console.log("🔍 Analyzing existing .uih files for context...");
+    const projectContext = await loadProjectContext(process.cwd());
+    if (projectContext && !projectContext.includes("Project using UIH v0.7.1")) {
+      console.log("✅ Found project patterns - will maintain consistency");
+      console.log("");
+    }
+
+    const result = await generateUIH({
+      prompt,
+      projectContext,
+      apiKey,
+    });
+
+    if (!result.isValid) {
+      console.error("⚠️  Generated code has syntax errors:");
+      result.errors?.forEach((err) => console.error(`   ${err}`));
+      console.log("");
+      console.log("Generated code (with errors):");
+      console.log(result.code);
+      process.exit(1);
+    }
+
+    // Write to file if output path is specified
+    if (outputPath) {
+      mkdirSync(dirname(outputPath), { recursive: true });
+      writeFileSync(outputPath, result.code, "utf8");
+      console.log(`✅ Generated UIH code saved to: ${outputPath}`);
+    } else {
+      console.log("✅ Generated UIH code:");
+      console.log("");
+      console.log(result.code);
+      console.log("");
+      console.log("💡 Tip: Use --output or -o flag to save to a file");
+    }
+
+    if (result.usage) {
+      console.log("");
+      console.log(
+        `📊 Token usage: ${result.usage.inputTokens} input + ${result.usage.outputTokens} output = ${result.usage.inputTokens + result.usage.outputTokens} total`
+      );
+    }
+  } catch (err: any) {
+    console.error("❌ Generation failed:", err.message);
+    if (err.message.includes("ANTHROPIC_API_KEY")) {
+      console.log("");
+      console.log("💡 Get your API key from: https://console.anthropic.com/");
+      console.log("   Set it with: export ANTHROPIC_API_KEY=your-key-here");
+      console.log("   Or use: uih generate \"...\" --api-key your-key-here");
+    }
+    process.exit(1);
+  }
+}
+
 if (command === "compile") {
   compile(input, outDir, target).catch(() => {
     process.exit(1);
@@ -159,6 +234,15 @@ if (command === "compile") {
   validate(input);
 } else if (command === "watch") {
   watchFile(input, outDir, target);
+} else if (command === "generate") {
+  if (!input) {
+    console.error("❌ Please provide a description for generation");
+    console.log("Example: uih generate \"로그인 페이지 만들어줘\" --output login.uih");
+    process.exit(1);
+  }
+  generate(input, output, apiKey).catch(() => {
+    process.exit(1);
+  });
 } else {
   console.error(`Unknown command: ${command}`);
   process.exit(1);

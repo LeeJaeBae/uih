@@ -32,6 +32,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "uih-ai": "workspace:*",
     "uih-codegen-react": "workspace:*",
     "uih-parser": "workspace:*"
   },
