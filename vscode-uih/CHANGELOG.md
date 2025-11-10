@@ -2,6 +2,22 @@
 
 All notable changes to the "vscode-uih" extension will be documented in this file.
 
+## [1.1.1] - 2025-01-10
+
+### Updated
+- Compatibility with UIH v0.7.1
+- Updated to match core package improvements:
+  - Enhanced type safety in code generation
+  - Improved error handling with custom error classes
+  - 100% test coverage across all packages
+
+## [1.1.0] - 2025-01-06
+
+### Added
+- Enhanced syntax highlighting for HTML elements
+- Support for Tailwind CSS class attributes
+- Variable reference syntax highlighting ({variable})
+
 ## [1.0.0] - 2025-01-06
 
 ### Added

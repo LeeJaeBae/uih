@@ -2,7 +2,7 @@
   "name": "vscode-uih",
   "displayName": "UIH",
   "description": "UIH - Universal UI Hierarchy meta-language for React, Vue, and Svelte",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "LeeJaeWon",
   "license": "MIT",
   "icon": "icon.png",
