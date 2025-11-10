@@ -1,6 +1,5 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { UIHMissingBlockError } from "uih-parser";
-import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
 
 /**
@@ -84,16 +83,22 @@ ${userImports ? userImports + "\n" : ""}${importStr}${stateRefs}${dataFetches}${
 ${allStyles ? `<style scoped>\n${allStyles}\n</style>` : ""}
 `;
 
-    // Format with prettier (Vue parser)
-    const formatted = await prettier.format(code.trim(), {
-      parser: "vue",
-      semi: true,
-      singleQuote: false,
-      trailingComma: "es5",
-      printWidth: 80,
-    });
-
-    return formatted;
+    // Format with prettier (optional - fallback to unformatted if unavailable)
+    try {
+      const prettier = await import("prettier");
+      const formatted = await prettier.default.format(code.trim(), {
+        parser: "vue",
+        semi: true,
+        singleQuote: false,
+        trailingComma: "es5",
+        printWidth: 80,
+      });
+      return formatted;
+    } catch (error) {
+      // Prettier unavailable or formatting failed - return unformatted code
+      console.warn("Prettier formatting failed, returning unformatted code:", error);
+      return code.trim();
+    }
   }
 
   private emitNode(n: Node, indent: number = 0, importedComponents: Set<string>): string {

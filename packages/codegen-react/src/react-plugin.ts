@@ -1,7 +1,6 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { UIHMissingBlockError } from "uih-parser";
 import { shadRegistry } from "./registry.js";
-import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
 
 /**
@@ -93,16 +92,22 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
 }
 `;
 
-    // Format with prettier
-    const formatted = await prettier.format(code.trim(), {
-      parser: "typescript",
-      semi: true,
-      singleQuote: false,
-      trailingComma: "es5",
-      printWidth: 80,
-    });
-
-    return formatted;
+    // Format with prettier (optional - fallback to unformatted if unavailable)
+    try {
+      const prettier = await import("prettier");
+      const formatted = await prettier.default.format(code.trim(), {
+        parser: "typescript",
+        semi: true,
+        singleQuote: false,
+        trailingComma: "es5",
+        printWidth: 80,
+      });
+      return formatted;
+    } catch (error) {
+      // Prettier unavailable or formatting failed - return unformatted code
+      console.warn("Prettier formatting failed, returning unformatted code:", error);
+      return code.trim();
+    }
   }
 
   // Helper: Check if nodes need Fragment wrapper (multiple nodes or no nodes)

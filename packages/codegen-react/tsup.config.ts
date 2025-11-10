@@ -7,4 +7,5 @@ export default defineConfig({
   dts: { resolve: true },
   platform: "node",
   skipNodeModulesBundle: true,
+  external: ["uih-parser", "chevrotain"],
 });
