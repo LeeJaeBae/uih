@@ -1,5 +1,24 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`UIH CLI E2E Tests > compile command > should compile basic UIH file to React component 1`] = `
+"import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+export default function Page() {
+  return (
+    <>
+      <div className="container mx-auto p-6">
+        <Card id="demo">
+          <CardContent>Test Card</CardContent>
+        </Card>
+        <Button variant="primary">Click</Button>
+      </div>
+    </>
+  );
+}
+"
+`;
+
 exports[`UIH CLI E2E Tests > compile command > should compile form example 1`] = `
 "import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

@@ -1,24 +1,45 @@
-export const shadRegistry = {
+/**
+ * Component props type definition
+ * Props can be strings, numbers, booleans, or variable references
+ */
+export interface ComponentProps {
+  [key: string]: string | number | boolean | undefined;
+}
+
+/**
+ * Component registry entry
+ */
+export interface ShadComponent {
+  import: string;
+  render: (props: ComponentProps, children: string) => string;
+}
+
+/**
+ * Registry of all available components
+ */
+export const shadRegistry: Record<string, ShadComponent> = {
   Button: {
     import: `import { Button } from "@/components/ui/button"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Button ${propStr(p, ["variant", "size", "class"])}>${children || ""}</Button>`,
   },
   Input: {
     import: `import { Input } from "@/components/ui/input"`,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<Input ${propStr(p, ["id", "placeholder", "type", "value", "disabled", "class"])} />`,
   },
   Textarea: {
     import: `import { Textarea } from "@/components/ui/textarea"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Textarea ${propStr(p, ["id", "placeholder", "rows", "class"])}>${children || ""}</Textarea>`,
   },
   Select: {
     import: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"`,
-    render: (p: any, children: string) => {
+    render: (p: ComponentProps, children: string) => {
       // Parse options if provided
-      const options = p.options ? p.options.split(',').map((o: string) => o.trim()) : [];
+      const options = p.options && typeof p.options === 'string'
+        ? p.options.split(',').map((o: string) => o.trim())
+        : [];
       const optionItems = options.map((opt: string) =>
         `<SelectItem value="${opt}">${opt}</SelectItem>`
       ).join('');
@@ -28,12 +49,12 @@ export const shadRegistry = {
   },
   SelectItem: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<SelectItem ${propStr(p, ["value"])}>${children || ""}</SelectItem>`,
   },
   Checkbox: {
     import: `import { Checkbox } from "@/components/ui/checkbox"`,
-    render: (p: any) => {
+    render: (p: ComponentProps) => {
       // If label is provided, wrap with Label
       if (p.label) {
         return `<div className="flex items-center space-x-2"><Checkbox ${propStr(p, ["id", "checked"])} /><label htmlFor="${p.id || ''}" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">${p.label}</label></div>`;
@@ -43,12 +64,12 @@ export const shadRegistry = {
   },
   RadioGroup: {
     import: `import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<RadioGroup ${propStr(p, ["value", "onValueChange", "defaultValue"])}>${children || ""}</RadioGroup>`,
   },
   RadioGroupItem: {
     import: ``,
-    render: (p: any, children: string) => {
+    render: (p: ComponentProps, children: string) => {
       if (p.label) {
         return `<div className="flex items-center space-x-2"><RadioGroupItem ${propStr(p, ["value", "id"])} /><Label htmlFor="${p.id || ''}">${p.label}</Label></div>`;
       }
@@ -57,7 +78,7 @@ export const shadRegistry = {
   },
   Switch: {
     import: `import { Switch } from "@/components/ui/switch"`,
-    render: (p: any) => {
+    render: (p: ComponentProps) => {
       if (p.label) {
         return `<div className="flex items-center space-x-2"><Switch ${propStr(p, ["id", "checked", "onCheckedChange"])} /><Label htmlFor="${p.id || ''}">${p.label}</Label></div>`;
       }
@@ -66,301 +87,307 @@ export const shadRegistry = {
   },
   Label: {
     import: `import { Label } from "@/components/ui/label"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Label ${propStr(p, ["htmlFor", "for", "class"])}>${children || ""}</Label>`,
   },
   Card: {
     import: `import { Card, CardContent } from "@/components/ui/card"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Card ${propStr(p, ["id", "class"])}><CardContent>${children || ""}</CardContent></Card>`,
   },
   Badge: {
     import: `import { Badge } from "@/components/ui/badge"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Badge ${propStr(p, ["variant", "class"])}>${children || ""}</Badge>`,
   },
   Avatar: {
     import: `import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Avatar><AvatarImage ${propStr(p, ["src", "alt"])} /><AvatarFallback>${children || "?"}</AvatarFallback></Avatar>`,
   },
   Dialog: {
     import: `import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Dialog><DialogTrigger asChild>${p.trigger || "<Button>Open</Button>"}</DialogTrigger><DialogContent><DialogHeader><DialogTitle>${p.title || "Dialog"}</DialogTitle></DialogHeader>${children || ""}</DialogContent></Dialog>`,
   },
   Tooltip: {
     import: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<TooltipProvider><Tooltip><TooltipTrigger asChild>${children || "<Button>Hover</Button>"}</TooltipTrigger><TooltipContent><p>${p.content || "Tooltip"}</p></TooltipContent></Tooltip></TooltipProvider>`,
   },
   Sheet: {
     import: `import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Sheet><SheetTrigger asChild>${p.trigger || "<Button>Open</Button>"}</SheetTrigger><SheetContent ${propStr(p, ["side"])}><SheetHeader><SheetTitle>${p.title || "Sheet"}</SheetTitle></SheetHeader>${children || ""}</SheetContent></Sheet>`,
   },
   Tabs: {
     import: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Tabs ${propStr(p, ["defaultValue", "value"])}>${children || ""}</Tabs>`,
   },
   TabsList: {
     import: ``,
-    render: (_: any, children: string) =>
+    render: (_: ComponentProps, children: string) =>
       `<TabsList>${children || ""}</TabsList>`,
   },
   TabsTrigger: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<TabsTrigger ${propStr(p, ["value"])}>${children || ""}</TabsTrigger>`,
   },
   TabsContent: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<TabsContent ${propStr(p, ["value"])}>${children || ""}</TabsContent>`,
   },
   Accordion: {
     import: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Accordion ${propStr(p, ["type", "collapsible"])}>${children || ""}</Accordion>`,
   },
   AccordionItem: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<AccordionItem ${propStr(p, ["value"])}>${children || ""}</AccordionItem>`,
   },
   AccordionTrigger: {
     import: ``,
-    render: (_: any, children: string) =>
+    render: (_: ComponentProps, children: string) =>
       `<AccordionTrigger>${children || ""}</AccordionTrigger>`,
   },
   AccordionContent: {
     import: ``,
-    render: (_: any, children: string) =>
+    render: (_: ComponentProps, children: string) =>
       `<AccordionContent>${children || ""}</AccordionContent>`,
   },
   Separator: {
     import: `import { Separator } from "@/components/ui/separator"`,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<Separator ${propStr(p, ["orientation", "className"])} />`,
   },
   Alert: {
     import: `import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"`,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<Alert ${propStr(p, ["variant"])}>${p.title ? `<AlertTitle>${p.title}</AlertTitle>` : ""}<AlertDescription>${children || ""}</AlertDescription></Alert>`,
   },
   Progress: {
     import: `import { Progress } from "@/components/ui/progress"`,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<Progress ${propStr(p, ["value", "max", "className"])} />`,
   },
   Skeleton: {
     import: `import { Skeleton } from "@/components/ui/skeleton"`,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<Skeleton ${propStr(p, ["className"])} />`,
   },
   Text: {
     import: ``,
-    render: (_: any, children: string) => `<p>${children || ""}</p>`,
+    render: (_: ComponentProps, children: string) => `<p>${children || ""}</p>`,
   },
 
   // Pure HTML Elements for Tailwind CSS
   Div: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<div ${propStr(p, ["id", "class"])}>${children || ""}</div>`,
   },
   Span: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<span ${propStr(p, ["id", "class"])}>${children || ""}</span>`,
   },
   P: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<p ${propStr(p, ["id", "class"])}>${children || ""}</p>`,
   },
   H1: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h1 ${propStr(p, ["id", "class"])}>${children || ""}</h1>`,
   },
   H2: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h2 ${propStr(p, ["id", "class"])}>${children || ""}</h2>`,
   },
   H3: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h3 ${propStr(p, ["id", "class"])}>${children || ""}</h3>`,
   },
   H4: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h4 ${propStr(p, ["id", "class"])}>${children || ""}</h4>`,
   },
   H5: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h5 ${propStr(p, ["id", "class"])}>${children || ""}</h5>`,
   },
   H6: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<h6 ${propStr(p, ["id", "class"])}>${children || ""}</h6>`,
   },
   Section: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<section ${propStr(p, ["id", "class"])}>${children || ""}</section>`,
   },
   Article: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<article ${propStr(p, ["id", "class"])}>${children || ""}</article>`,
   },
   Aside: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<aside ${propStr(p, ["id", "class"])}>${children || ""}</aside>`,
   },
   Header: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<header ${propStr(p, ["id", "class"])}>${children || ""}</header>`,
   },
   Footer: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<footer ${propStr(p, ["id", "class"])}>${children || ""}</footer>`,
   },
   Nav: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<nav ${propStr(p, ["id", "class"])}>${children || ""}</nav>`,
   },
   Main: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<main ${propStr(p, ["id", "class"])}>${children || ""}</main>`,
   },
   Form: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<form ${propStr(p, ["id", "class", "action", "method"])}>${children || ""}</form>`,
   },
   Ul: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<ul ${propStr(p, ["id", "class"])}>${children || ""}</ul>`,
   },
   Ol: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<ol ${propStr(p, ["id", "class"])}>${children || ""}</ol>`,
   },
   Li: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<li ${propStr(p, ["id", "class"])}>${children || ""}</li>`,
   },
   A: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<a ${propStr(p, ["id", "class", "href", "target", "rel"])}>${children || ""}</a>`,
   },
   Img: {
     import: ``,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<img ${propStr(p, ["id", "class", "src", "alt", "width", "height"])} />`,
   },
 
   // Media Elements
   Video: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<video ${propStr(p, ["id", "class", "src", "controls", "autoplay", "loop", "muted", "width", "height"])}>${children || ""}</video>`,
   },
   Audio: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<audio ${propStr(p, ["id", "class", "src", "controls", "autoplay", "loop", "muted"])}>${children || ""}</audio>`,
   },
   Source: {
     import: ``,
-    render: (p: any) =>
+    render: (p: ComponentProps) =>
       `<source ${propStr(p, ["src", "type"])} />`,
   },
 
   // Table Elements
   Table: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<table ${propStr(p, ["id", "class"])}>${children || ""}</table>`,
   },
   Thead: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<thead ${propStr(p, ["id", "class"])}>${children || ""}</thead>`,
   },
   Tbody: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<tbody ${propStr(p, ["id", "class"])}>${children || ""}</tbody>`,
   },
   Tfoot: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<tfoot ${propStr(p, ["id", "class"])}>${children || ""}</tfoot>`,
   },
   Tr: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<tr ${propStr(p, ["id", "class"])}>${children || ""}</tr>`,
   },
   Td: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<td ${propStr(p, ["id", "class", "colspan", "rowspan"])}>${children || ""}</td>`,
   },
   Th: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<th ${propStr(p, ["id", "class", "colspan", "rowspan", "scope"])}>${children || ""}</th>`,
   },
 
   // Form Elements (HTML native, Note: Select and Label already exist as shadcn components)
   Option: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<option ${propStr(p, ["value", "selected", "disabled"])}>${children || ""}</option>`,
   },
   Fieldset: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<fieldset ${propStr(p, ["id", "class"])}>${children || ""}</fieldset>`,
   },
   Legend: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<legend ${propStr(p, ["id", "class"])}>${children || ""}</legend>`,
   },
 
   // Canvas and SVG
   Canvas: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<canvas ${propStr(p, ["id", "class", "width", "height"])}>${children || ""}</canvas>`,
   },
   Svg: {
     import: ``,
-    render: (p: any, children: string) =>
+    render: (p: ComponentProps, children: string) =>
       `<svg ${propStr(p, ["id", "class", "width", "height", "viewBox"])}>${children || ""}</svg>`,
   },
 };
 
-function propStr(p: any, allow: string[]) {
+/**
+ * Helper function to generate prop string for components
+ * @param p Component props
+ * @param allow Allowed prop names
+ * @returns Formatted prop string
+ */
+function propStr(p: ComponentProps, allow: string[]): string {
   if (!p) return "";
 
   // Collect all props from allow list and dynamic props (event handlers, aria, data, role)

@@ -178,7 +178,7 @@ describe("React Code Generator", () => {
         ],
       };
 
-      await expect(generateReact(ast)).rejects.toThrow("Layout block required");
+      await expect(generateReact(ast)).rejects.toThrow("Required block 'Layout' is missing");
     });
   });
 

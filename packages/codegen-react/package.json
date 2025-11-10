@@ -1,6 +1,6 @@
 {
   "name": "uih-codegen-react",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Multi-framework code generator for UIH - supports React, Vue, and Svelte with plugin system",
   "keywords": [
     "uih",

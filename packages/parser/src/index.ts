@@ -15,3 +15,4 @@ export function parse(source: string): UIHFile {
 }
 
 export * from "./ast.js";
+export * from "./errors.js";

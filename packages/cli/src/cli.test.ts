@@ -26,7 +26,7 @@ describe("UIH CLI E2E Tests", () => {
   });
 
   describe("compile command", () => {
-    it.skip("should compile basic UIH file to React component", () => {
+    it("should compile basic UIH file to React component", () => {
       // Create test fixture
       const inputPath = resolve(FIXTURES_DIR, "basic.uih");
       const input = `
@@ -49,7 +49,7 @@ layout "centered" {
       );
 
       // Verify output
-      expect(output).toContain("Generated:");
+      expect(output).toContain("Generated");
 
       const generatedPath = resolve(TEST_DIR, "Page.tsx");
       expect(existsSync(generatedPath)).toBe(true);

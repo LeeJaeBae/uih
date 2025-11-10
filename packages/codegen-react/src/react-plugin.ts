@@ -1,4 +1,5 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
+import { UIHMissingBlockError } from "uih-parser";
 import { shadRegistry } from "./registry.js";
 import prettier from "prettier";
 import type { CodegenPlugin } from "./plugin.js";
@@ -28,7 +29,12 @@ export class ReactPlugin implements CodegenPlugin {
     const layout = file.blocks.find((b) => b.type === "Layout") as
       | LayoutBlock
       | undefined;
-    if (!layout) throw new Error("Layout block required");
+    if (!layout) {
+      throw new UIHMissingBlockError(
+        "Layout",
+        "React code generation requires a layout block to define the component structure"
+      );
+    }
 
     const motion = file.blocks.find((b) => b.type === "Motion") as
       | MotionBlock
