@@ -1,6 +1,6 @@
 {
   "name": "uih-parser",
-  "version": "0.7.1",
+  "version": "0.7.3",
   "description": "UIH language parser - converts .uih files to AST using Chevrotain",
   "keywords": [
     "uih",
