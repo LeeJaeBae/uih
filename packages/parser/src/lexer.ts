@@ -25,7 +25,7 @@ export const DELETE = createToken({ name: "DELETE", pattern: /DELETE/ });
 // Identifiers and Literals
 export const Identifier = createToken({
   name: "Identifier",
-  pattern: /[a-zA-Z_#][a-zA-Z0-9.\-_#]*/,
+  pattern: /[a-zA-Z_][a-zA-Z0-9.\-_]*/,
 });
 
 export const StringLiteral = createToken({
@@ -64,6 +64,12 @@ export const Comma = createToken({ name: "Comma", pattern: /,/ });
 export const Arrow = createToken({ name: "Arrow", pattern: /->/ });
 
 // Comments (ignored)
+export const HashComment = createToken({
+  name: "HashComment",
+  pattern: /#[^\n\r]*/,
+  group: Lexer.SKIPPED,
+});
+
 export const LineComment = createToken({
   name: "LineComment",
   pattern: /\/\/[^\n\r]*/,
@@ -86,6 +92,7 @@ export const WhiteSpace = createToken({
 // All tokens in order (keywords must come before Identifier)
 // Comments and whitespace first (will be skipped)
 export const allTokens = [
+  HashComment,
   LineComment,
   BlockComment,
   WhiteSpace,

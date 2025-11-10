@@ -88,8 +88,24 @@ export class UIHVisitor extends BaseCstVisitor {
     const props: NodeProp[] = ctx.propList
       ? this.visit(ctx.propList[0])
       : [];
-    const text = ctx.textContent ? this.visit(ctx.textContent[0]) : undefined;
-    const children: Node[] = text ? [{ kind: "Text", text }] : [];
+
+    // Process children: can be nodes (elements, conditionals, loops) or text content
+    const children: Node[] = [];
+
+    // Visit nested nodes if present
+    if (ctx.node) {
+      for (const node of ctx.node) {
+        children.push(this.visit(node));
+      }
+    }
+
+    // Visit string literals as text
+    if (ctx.StringLiteral) {
+      for (const strLiteral of ctx.StringLiteral) {
+        const text = stripQuotes(strLiteral.image);
+        children.push({ kind: "Text", text });
+      }
+    }
 
     return {
       kind: "Element",

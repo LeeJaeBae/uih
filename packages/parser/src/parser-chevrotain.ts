@@ -123,8 +123,20 @@ export class UIHParser extends CstParser {
     });
     this.OPTION3(() => {
       this.CONSUME(LCurly);
-      this.OPTION4(() => {
-        this.SUBRULE(this.textContent);
+      this.MANY(() => {
+        this.OR([
+          // Check for child elements first (look for Identifier followed by '(' or '{')
+          {
+            GATE: () => {
+              const nextToken = this.LA(1);
+              if (nextToken.tokenType !== Identifier) return false;
+              const lookAhead = this.LA(2);
+              return lookAhead.tokenType === LParen || lookAhead.tokenType === LCurly;
+            },
+            ALT: () => this.SUBRULE(this.node)
+          },
+          { ALT: () => this.CONSUME(StringLiteral) },
+        ]);
       });
       this.CONSUME(RCurly);
     });
