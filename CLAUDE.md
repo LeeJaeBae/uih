@@ -41,6 +41,7 @@ uih/
 │   ├── parser/          # Core UIH language parser (AST generation)
 │   ├── codegen-react/   # React code generator (AST → JSX)
 │   └── cli/             # Command-line interface
+├── playground/          # Next.js playground with live UI preview
 ├── examples/            # Example .uih files
 ├── docs/                # Detailed documentation
 └── vscode-uih/          # VSCode extension
