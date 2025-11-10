@@ -6,6 +6,5 @@ export default defineConfig({
   target: "node18",
   dts: { resolve: true },
   platform: "node",
-  skipNodeModulesBundle: true,
-  external: ["uih-parser", "chevrotain"],
+  noExternal: ["uih-parser", "chevrotain"], // Bundle dependencies for Next.js compatibility
 });

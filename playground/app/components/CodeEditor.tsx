@@ -5,6 +5,7 @@ import Editor from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
 import { compileUIH, type TargetFramework } from "@/app/lib/compiler";
 import { examples } from "@/app/data/examples";
+import PreviewPanel from "./PreviewPanel";
 
 interface CodeEditorProps {
   defaultValue: string;
@@ -15,6 +16,7 @@ export default function CodeEditor({ defaultValue }: CodeEditorProps) {
   const [code, setCode] = useState(defaultValue);
   const [output, setOutput] = useState("");
   const [activeTab, setActiveTab] = useState<"react" | "vue" | "svelte">("react");
+  const [viewMode, setViewMode] = useState<"code" | "preview">("code");
   const [error, setError] = useState<string | null>(null);
 
   const handleEditorDidMount = useCallback((editor: editor.IStandaloneCodeEditor) => {
@@ -107,7 +109,7 @@ export default function CodeEditor({ defaultValue }: CodeEditorProps) {
 
       {/* 오른쪽: 출력 미리보기 */}
       <div className="flex-1 flex flex-col">
-        {/* 탭 */}
+        {/* 프레임워크 탭 */}
         <div className="flex border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
           <button
             onClick={() => handleTabChange("react")}
@@ -139,6 +141,31 @@ export default function CodeEditor({ defaultValue }: CodeEditorProps) {
           >
             Svelte
           </button>
+
+          {/* 구분선 */}
+          <div className="flex-1"></div>
+
+          {/* 뷰 모드 탭 */}
+          <button
+            onClick={() => setViewMode("code")}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              viewMode === "code"
+                ? "text-gray-900 dark:text-gray-100 border-b-2 border-gray-900 dark:border-gray-100"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            }`}
+          >
+            📄 코드
+          </button>
+          <button
+            onClick={() => setViewMode("preview")}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              viewMode === "preview"
+                ? "text-gray-900 dark:text-gray-100 border-b-2 border-gray-900 dark:border-gray-100"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            }`}
+          >
+            👁️ 미리보기
+          </button>
         </div>
 
         {/* 출력 */}
@@ -147,7 +174,7 @@ export default function CodeEditor({ defaultValue }: CodeEditorProps) {
             <div className="p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400">
               <pre className="text-sm">{error}</pre>
             </div>
-          ) : (
+          ) : viewMode === "code" ? (
             <Editor
               height="100%"
               language={activeTab === "vue" ? "vue" : activeTab === "svelte" ? "html" : "typescript"}
@@ -159,6 +186,8 @@ export default function CodeEditor({ defaultValue }: CodeEditorProps) {
                 automaticLayout: true,
               }}
             />
+          ) : (
+            <PreviewPanel code={output} framework={activeTab} />
           )}
         </div>
       </div>
