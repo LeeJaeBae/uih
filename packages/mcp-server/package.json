@@ -1,0 +1,34 @@
+{
+  "name": "uih-mcp-server",
+  "version": "0.2.0",
+  "description": "MCP server for UIH - enables Claude Code to generate UI components with interactive templates and automatic logic implementation",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "uih-mcp-server": "./bin/uih-mcp-server.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "uih",
+    "mcp",
+    "claude",
+    "ai",
+    "ui-generation"
+  ],
+  "author": "LeeJaeWon",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "uih-parser": "workspace:*",
+    "uih-codegen-react": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}
