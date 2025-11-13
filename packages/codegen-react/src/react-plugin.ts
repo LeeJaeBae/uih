@@ -184,8 +184,15 @@ ${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? s
 
   private emitNode(n: Node, imports: Set<string>, importedComponents: Set<string>): string {
     if (n.kind === "Text") {
-      // Safely handle text with special characters (quotes, braces, etc.)
-      // by wrapping in JSX expression with JSON.stringify
+      // If text contains newlines, use template literal to preserve them
+      if (n.text.includes('\n')) {
+        // Escape backticks and ${} in template literal (but NOT backslashes - preserve \n)
+        const escapedText = n.text
+          .replace(/`/g, '\\`')      // Escape backticks
+          .replace(/\$\{/g, '\\${'); // Escape ${}
+        return `{\`${escapedText}\`}`;
+      }
+      // Otherwise use JSON.stringify for safe escaping of quotes, braces, etc.
       return `{${JSON.stringify(n.text)}}`;
     }
 

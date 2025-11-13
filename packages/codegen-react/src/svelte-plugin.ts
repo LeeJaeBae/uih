@@ -106,7 +106,15 @@ ${allStyles ? `<style>\n${allStyles}\n</style>` : ""}
     const indentStr = "  ".repeat(indent);
 
     if (n.kind === "Text") {
-      // Safely handle text with special characters by using Svelte expression syntax
+      // If text contains newlines, use template literal to preserve them
+      if (n.text.includes('\n')) {
+        // Escape backticks and ${} in template literal (but NOT backslashes - preserve \n)
+        const escapedText = n.text
+          .replace(/`/g, '\\`')      // Escape backticks
+          .replace(/\$\{/g, '\\${'); // Escape ${}
+        return `${indentStr}{\`${escapedText}\`}`;
+      }
+      // Otherwise use JSON.stringify for safe escaping
       return `${indentStr}{${JSON.stringify(n.text)}}`;
     }
 

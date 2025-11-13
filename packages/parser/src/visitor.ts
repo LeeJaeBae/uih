@@ -392,8 +392,11 @@ export class UIHVisitor extends BaseCstVisitor {
 function stripQuotes(str: string): string {
   return str
     .replace(/^"(.*)"$/, "$1")  // Remove outer quotes
+    .replace(/\\n/g, '\n')       // Unescape newlines
+    .replace(/\\t/g, '\t')       // Unescape tabs
+    .replace(/\\r/g, '\r')       // Unescape carriage returns
     .replace(/\\"/g, '"')        // Unescape escaped quotes
-    .replace(/\\\\/g, '\\');     // Unescape escaped backslashes
+    .replace(/\\\\/g, '\\');     // Unescape escaped backslashes (must be last!)
 }
 
 export const visitor = new UIHVisitor();

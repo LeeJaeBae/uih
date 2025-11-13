@@ -1,0 +1,575 @@
+meta {
+  route: "/docs/ko/guide";
+  title: "UIH 완벽 가이드";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+  color.secondary: "#6B7280";
+  color.accent: "#10B981";
+  color.warning: "#F59E0B";
+  color.danger: "#EF4444";
+}
+
+layout {
+  Div(class:"min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800") {
+    Header(class:"bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50") {
+      Div(class:"container mx-auto px-6 py-4") {
+        Div(class:"flex items-center justify-between") {
+          Div(class:"flex items-center space-x-3") {
+            Div(class:"w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center") {
+              Span(class:"text-white font-bold text-xl") { "U" }
+            }
+            H1(class:"text-2xl font-bold text-gray-900 dark:text-white") { "UIH 완벽 가이드" }
+          }
+          Div(class:"flex items-center space-x-2") {
+            A(href:"/", class:"px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300") { "홈" }
+            A(href:"/editor", class:"px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300") { "에디터" }
+            A(href:"https://github.com/LeeJaeBae/uih", class:"px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300") { "GitHub" }
+          }
+        }
+      }
+    }
+
+    Main(class:"container mx-auto px-6 py-12") {
+      Div(class:"max-w-5xl mx-auto") {
+        Section(class:"mb-20") {
+          Div(class:"text-center mb-12") {
+            H2(class:"text-5xl font-extrabold text-gray-900 dark:text-white mb-4") { "UIH 완벽 가이드" }
+            P(class:"text-xl text-gray-600 dark:text-gray-300") {
+              "UIH의 모든 기능을 배우고 마스터하세요"
+            }
+          }
+
+          Div(class:"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12") {
+            A(href:"#syntax", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "📝" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "기본 문법" }
+              P(class:"text-gray-600 dark:text-gray-300") { "meta, layout, style, logic 블록 완벽 정복" }
+            }
+            A(href:"#components", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "🧩" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "컴포넌트" }
+              P(class:"text-gray-600 dark:text-gray-300") { "Core vs Shadcn 레지스트리 이해하기" }
+            }
+            A(href:"#cli", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "⚡" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "CLI 사용법" }
+              P(class:"text-gray-600 dark:text-gray-300") { "컴파일, watch, AI 생성 명령어" }
+            }
+            A(href:"#playground", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "🎮" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "Playground" }
+              P(class:"text-gray-600 dark:text-gray-300") { "라이브 에디터 및 프리뷰 사용하기" }
+            }
+            A(href:"#hello-world", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "🚀" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "Hello World" }
+              P(class:"text-gray-600 dark:text-gray-300") { "첫 UIH 프로젝트 시작하기" }
+            }
+            A(href:"#advanced", class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-500 transition-all") {
+              Div(class:"text-4xl mb-3") { "🎓" }
+              H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "고급 기능" }
+              P(class:"text-gray-600 dark:text-gray-300") { "Data, State, Motion 블록 활용" }
+            }
+          }
+        }
+
+        Section(id:"syntax", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "📝 UIH 기본 문법" }
+            P(class:"text-blue-100 text-lg") { "UIH는 5가지 핵심 블록으로 구성됩니다" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-4") {
+                Span(class:"text-3xl mr-3") { "1️⃣" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "Meta 블록" }
+              }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "페이지의 라우트, 제목, 테마 등 메타데이터를 정의합니다."
+              }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "meta {\n  route: \"/about\";\n  title: \"소개 페이지\";\n  theme: \"light\";\n  description: \"우리 회사를 소개합니다\";\n}" }
+              }
+              Div(class:"bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded") {
+                P(class:"text-blue-900 dark:text-blue-200 font-medium") {
+                  "💡 Tip: route는 Next.js 라우팅에, title은 SEO에 활용됩니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-4") {
+                Span(class:"text-3xl mr-3") { "2️⃣" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "Style 블록" }
+              }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "CSS 변수를 정의하여 디자인 시스템을 구축합니다."
+              }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "style {\n  color.primary: \"#0E5EF7\";\n  color.secondary: \"#6B7280\";\n  color.accent: \"#10B981\";\n  spacing.unit: \"8px\";\n  font.heading: \"Inter, sans-serif\";\n}" }
+              }
+              Div(class:"bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded") {
+                P(class:"text-green-900 dark:text-green-200 font-medium") {
+                  "✨ Tailwind에서 var(--color-primary)로 사용 가능합니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-4") {
+                Span(class:"text-3xl mr-3") { "3️⃣" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "Layout 블록" }
+              }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "실제 UI 구조를 정의하는 핵심 블록입니다."
+              }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "layout {\n  Div(class:\"container mx-auto p-6\") {\n    Header(class:\"mb-8\") {\n      H1(class:\"text-4xl font-bold\") { \"환영합니다\" }\n      P(class:\"text-gray-600\") { \"UIH로 빌드하세요\" }\n    }\n    \n    Section(class:\"grid grid-cols-2 gap-4\") {\n      Card(class:\"p-6\") {\n        H2 { \"기능 1\" }\n        P { \"설명\" }\n      }\n      Card(class:\"p-6\") {\n        H2 { \"기능 2\" }\n        P { \"설명\" }\n      }\n    }\n  }\n}" }
+              }
+              Div(class:"bg-purple-50 dark:bg-purple-900/20 border-l-4 border-purple-500 p-4 rounded") {
+                P(class:"text-purple-900 dark:text-purple-200 font-medium") {
+                  "🎨 모든 Tailwind CSS 유틸리티 클래스를 사용할 수 있습니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-4") {
+                Span(class:"text-3xl mr-3") { "4️⃣" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "Logic 블록" }
+              }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "버튼 클릭, 폼 제출 등 이벤트 핸들러를 선언적으로 정의합니다."
+              }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "logic {\n  on submit {\n    call \"/api/login\" method:\"POST\";\n    toast \"로그인 성공!\";\n    navigate \"/dashboard\";\n  }\n  \n  on cancel {\n    navigate \"/\";\n  }\n}" }
+              }
+              Div(class:"bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded") {
+                P(class:"text-yellow-900 dark:text-yellow-200 font-medium") {
+                  "⚡ Interactive 모드에서 자동으로 실제 로직으로 변환됩니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-4") {
+                Span(class:"text-3xl mr-3") { "5️⃣" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "State & Data 블록" }
+              }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "컴포넌트 상태와 API 데이터를 정의합니다."
+              }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "state {\n  count: 0;\n  isOpen: false;\n  username: \"\";\n}\n\ndata {\n  fetch users from \"/api/users\";\n  fetch posts from \"/api/posts\";\n}" }
+              }
+              Div(class:"bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-500 p-4 rounded") {
+                P(class:"text-indigo-900 dark:text-indigo-200 font-medium") {
+                  "🔄 자동으로 useState, useEffect로 변환됩니다 (React)"
+                }
+              }
+            }
+          }
+        }
+
+        Section(id:"components", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🧩 컴포넌트 레지스트리" }
+            P(class:"text-purple-100 text-lg") { "Core vs Shadcn - 프레임워크별 컴포넌트 이해하기" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🎯 Core Registry (42개 컴포넌트)" }
+              P(class:"text-gray-600 dark:text-gray-300 mb-6") {
+                "모든 프레임워크(React, Vue, Svelte)에서 사용 가능한 순수 HTML 컴포넌트입니다."
+              }
+
+              Div(class:"grid grid-cols-1 md:grid-cols-2 gap-6 mb-6") {
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "📄 레이아웃 & 구조" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "Div, Span, Section, Article\nHeader, Footer, Nav, Main\nAside" }
+                  }
+                }
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "📝 텍스트 & 제목" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "H1, H2, H3, H4, H5, H6\nP, Pre, Code, Text" }
+                  }
+                }
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "📋 폼 요소" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "Form, Input, Button\nTextarea, Select, Option\nCheckbox, Label\nFieldset, Legend" }
+                  }
+                }
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "📊 테이블 & 리스트" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "Table, Thead, Tbody, Tfoot\nTr, Td, Th\nUl, Ol, Li" }
+                  }
+                }
+              }
+
+              Div(class:"bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded") {
+                P(class:"text-blue-900 dark:text-blue-200 font-medium") {
+                  "✅ 프레임워크 독립적 - Vue, Svelte도 동일하게 작동"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "⚛️ Shadcn Registry (28개 컴포넌트)" }
+              P(class:"text-gray-600 dark:text-gray-300 mb-6") {
+                "React 전용 shadcn/ui 컴포넌트 - 고급 UI를 빠르게 구축합니다."
+              }
+
+              Div(class:"grid grid-cols-1 md:grid-cols-2 gap-6 mb-6") {
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "🎨 UI 컴포넌트" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "Button, Input, Card\nBadge, Avatar, Alert\nSkeleton, Progress" }
+                  }
+                }
+                Div(class:"bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4") {
+                  H4(class:"font-bold text-gray-900 dark:text-white mb-3") { "🔀 인터랙션" }
+                  Pre(class:"bg-gray-900 text-gray-100 p-4 rounded text-sm overflow-x-auto whitespace-pre") {
+                    Code { "Dialog, Tooltip, Tabs\nSwitch, Checkbox\nSelect, Separator" }
+                  }
+                }
+              }
+
+              Div(class:"bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500 p-4 rounded mb-4") {
+                P(class:"text-orange-900 dark:text-orange-200 font-medium") {
+                  "⚠️ React에서만 작동 - Vue/Svelte는 Core Registry 사용"
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "// React: Core + Shadcn 병합\nlayout {\n  Card(class:\"p-6\") {  // shadcn Card 사용\n    Button(variant:\"default\") { \"클릭\" }\n  }\n}\n\n// Vue/Svelte: Core만 사용\nlayout {\n  Div(class:\"border rounded-lg p-6\") {  // HTML div\n    Button(class:\"bg-blue-500\") { \"클릭\" }\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🔧 레지스트리 병합 전략" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "// React Plugin\nconst registry = {\n  ...coreRegistry,    // 42개 순수 HTML\n  ...shadcnRegistry   // 28개 shadcn/ui (오버라이드)\n};\n\n// Vue/Svelte Plugin\nconst registry = coreRegistry;  // 42개만 사용" }
+              }
+
+              Div(class:"bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded") {
+                P(class:"text-green-900 dark:text-green-200 font-medium") {
+                  "💡 React는 Button이 shadcn, Vue는 <button> 태그로 컴파일"
+                }
+              }
+            }
+          }
+        }
+
+        Section(id:"cli", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-green-600 to-teal-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "⚡ CLI 사용법" }
+            P(class:"text-green-100 text-lg") { "명령줄에서 UIH를 컴파일하고 관리하세요" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "📦 설치" }
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# npm으로 전역 설치\nnpm install -g uih-cli\n\n# pnpm 사용 시\npnpm add -g uih-cli\n\n# 버전 확인\nuih --version" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🔨 기본 컴파일" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# React로 컴파일 (기본값)\nuih compile input.uih output\n\n# Vue로 컴파일\nuih compile input.uih output --target vue\n\n# Svelte로 컴파일\nuih compile input.uih output --target svelte" }
+              }
+
+              Div(class:"bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded mt-4") {
+                P(class:"text-blue-900 dark:text-blue-200 font-medium") {
+                  "📂 output 폴더에 컴파일된 파일이 생성됩니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "👁️ Watch 모드" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# 파일 변경 감지 및 자동 재컴파일\nuih compile input.uih output --watch\n\n# 또는 -w 플래그\nuih compile input.uih output -w" }
+              }
+
+              Div(class:"bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded") {
+                P(class:"text-green-900 dark:text-green-200 font-medium") {
+                  "🔄 개발 중 실시간으로 변경사항 확인 가능"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🤖 AI 생성" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# 자연어로 UIH 생성 (Claude Code 필요)\nuih ai \"login form\" > login.uih\n\n# 또는 MCP 서버 사용 (권장)\n# ~/.claude/mcp_settings.json 설정 필요" }
+              }
+
+              Div(class:"bg-purple-50 dark:bg-purple-900/20 border-l-4 border-purple-500 p-4 rounded") {
+                P(class:"text-purple-900 dark:text-purple-200 font-medium") {
+                  "✨ Claude Code가 UIH를 직접 생성하고 컴파일합니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🎯 Interactive 모드" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# Logic 자동 구현 템플릿 생성\nuih compile form.uih output --interactive\n\n# 생성된 코드에 TODO 주석이 추가되고\n# Claude Code가 자동으로 로직 구현" }
+              }
+
+              Div(class:"bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded") {
+                P(class:"text-yellow-900 dark:text-yellow-200 font-medium") {
+                  "⚡ validation, API call, state 관리 자동 생성"
+                }
+              }
+            }
+          }
+        }
+
+        Section(id:"playground", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-pink-600 to-rose-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🎮 Playground 사용법" }
+            P(class:"text-pink-100 text-lg") { "브라우저에서 UIH를 실시간으로 편집하고 미리보기" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🌐 온라인 Playground" }
+
+              Div(class:"mb-6") {
+                A(
+                  href:"/editor",
+                  class:"inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all text-lg"
+                ) {
+                  "🚀 Playground 열기 →"
+                }
+              }
+
+              Div(class:"space-y-4") {
+                Div(class:"flex items-start") {
+                  Span(class:"text-2xl mr-3") { "1️⃣" }
+                  Div {
+                    H4(class:"font-bold text-gray-900 dark:text-white mb-1") { "코드 작성" }
+                    P(class:"text-gray-600 dark:text-gray-300") {
+                      "왼쪽 에디터에서 UIH 코드를 작성합니다"
+                    }
+                  }
+                }
+                Div(class:"flex items-start") {
+                  Span(class:"text-2xl mr-3") { "2️⃣" }
+                  Div {
+                    H4(class:"font-bold text-gray-900 dark:text-white mb-1") { "실시간 미리보기" }
+                    P(class:"text-gray-600 dark:text-gray-300") {
+                      "오른쪽에서 렌더링 결과를 즉시 확인합니다"
+                    }
+                  }
+                }
+                Div(class:"flex items-start") {
+                  Span(class:"text-2xl mr-3") { "3️⃣" }
+                  Div {
+                    H4(class:"font-bold text-gray-900 dark:text-white mb-1") { "프레임워크 선택" }
+                    P(class:"text-gray-600 dark:text-gray-300") {
+                      "React, Vue, Svelte 중 타겟 프레임워크를 선택합니다"
+                    }
+                  }
+                }
+                Div(class:"flex items-start") {
+                  Span(class:"text-2xl mr-3") { "4️⃣" }
+                  Div {
+                    H4(class:"font-bold text-gray-900 dark:text-white mb-1") { "코드 다운로드" }
+                    P(class:"text-gray-600 dark:text-gray-300") {
+                      "완성된 컴포넌트를 프로젝트에 복사합니다"
+                    }
+                  }
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "💻 로컬 Playground" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "# 프로젝트 클론\ngit clone https://github.com/LeeJaeBae/uih.git\ncd uih\n\n# 의존성 설치\npnpm install\n\n# Playground 실행\ncd playground\npnpm dev\n\n# http://localhost:3000/editor 접속" }
+              }
+
+              Div(class:"bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded") {
+                P(class:"text-green-900 dark:text-green-200 font-medium") {
+                  "🔧 로컬에서 실행하면 파일 시스템에 직접 저장 가능"
+                }
+              }
+            }
+          }
+        }
+
+        Section(id:"hello-world", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🚀 Hello World 튜토리얼" }
+            P(class:"text-yellow-100 text-lg") { "5분 안에 첫 UIH 프로젝트 완성하기" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-6") {
+                Span(class:"w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold text-xl mr-4") { "1" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "hello.uih 파일 생성" }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "meta {\n  route: \"/hello\";\n  title: \"Hello UIH\";\n}\n\nstyle {\n  color.primary: \"#0E5EF7\";\n}\n\nlayout {\n  Div(class:\"min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100\") {\n    Div(class:\"text-center\") {\n      H1(class:\"text-6xl font-extrabold text-gray-900 mb-4\") {\n        \"Hello, UIH! 👋\"\n      }\n      P(class:\"text-xl text-gray-600 mb-8\") {\n        \"React, Vue, Svelte를 위한 통합 UI 언어\"\n      }\n      Button(class:\"px-8 py-3 bg-[var(--color-primary)] text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all\") {\n        \"시작하기 →\"\n      }\n    }\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-6") {
+                Span(class:"w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold text-xl mr-4") { "2" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "React로 컴파일" }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "uih compile hello.uih output --target react" }
+              }
+
+              Div(class:"bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded") {
+                P(class:"text-blue-900 dark:text-blue-200 font-medium") {
+                  "📂 output/hello.tsx 파일이 생성됩니다"
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-6") {
+                Span(class:"w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold text-xl mr-4") { "3" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "프로젝트에 추가" }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "// Next.js app/page.tsx\nimport HelloComponent from './output/hello';\n\nexport default function Page() {\n  return <HelloComponent />;\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center mb-6") {
+                Span(class:"w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold text-xl mr-4") { "4" }
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "실행 확인" }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto mb-4 whitespace-pre") {
+                Code { "npm run dev\n# http://localhost:3000 접속" }
+              }
+
+              Div(class:"bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded") {
+                P(class:"text-green-900 dark:text-green-200 font-medium") {
+                  "🎉 축하합니다! 첫 UIH 컴포넌트를 완성했습니다"
+                }
+              }
+            }
+          }
+        }
+
+        Section(id:"advanced", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🎓 고급 기능" }
+            P(class:"text-indigo-100 text-lg") { "Motion, Data, State 블록으로 인터랙티브한 UI 만들기" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "✨ Motion 블록" }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "CSS 애니메이션을 선언적으로 정의합니다."
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "motion {\n  .card on hover {\n    scale: 1.05;\n    duration: \"200ms\";\n  }\n  \n  .button on active {\n    scale: 0.95;\n    opacity: 0.8;\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🌐 Data 블록" }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "API 데이터 페칭을 자동화합니다."
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "data {\n  fetch users from \"/api/users\";\n  fetch posts from \"/api/posts\";\n}\n\nlayout {\n  Div {\n    // users 변수 자동 생성\n    // usersLoading, usersError도 생성됨\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "💾 State 블록" }
+              P(class:"text-gray-600 dark:text-gray-300 mb-4") {
+                "컴포넌트 상태를 정의합니다."
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "state {\n  count: 0;\n  isModalOpen: false;\n  username: \"\";\n  items: [];\n}\n\n// React: useState 자동 생성\n// Vue: ref 자동 생성\n// Svelte: let 변수 생성" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-4") { "🔗 종합 예제" }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto whitespace-pre") {
+                Code { "meta {\n  route: \"/dashboard\";\n}\n\nstyle {\n  color.primary: \"#0E5EF7\";\n}\n\nstate {\n  searchQuery: \"\";\n}\n\ndata {\n  fetch users from \"/api/users\";\n}\n\nmotion {\n  .user-card on hover {\n    scale: 1.02;\n    duration: \"150ms\";\n  }\n}\n\nlayout {\n  Div(class:\"container mx-auto p-6\") {\n    Input(\n      placeholder:\"검색...\",\n      class:\"mb-4 px-4 py-2 border rounded\"\n    )\n    \n    Div(class:\"grid grid-cols-3 gap-4\") {\n      // users 데이터 렌더링\n      Card(class:\"user-card p-4\") {\n        H3 { \"사용자 이름\" }\n      }\n    }\n  }\n}\n\nlogic {\n  on search {\n    call \"/api/search\";\n  }\n}" }
+              }
+            }
+          }
+        }
+
+        Div(class:"bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-12 text-center") {
+          H2(class:"text-4xl font-extrabold text-white mb-4") { "🎉 이제 시작해보세요!" }
+          P(class:"text-gray-300 text-lg mb-8") {
+            "UIH로 더 빠르고 일관성 있는 UI를 만들어보세요"
+          }
+          Div(class:"flex justify-center space-x-4") {
+            A(
+              href:"/editor",
+              class:"px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all"
+            ) {
+              "Playground 시작 →"
+            }
+            A(
+              href:"https://github.com/LeeJaeBae/uih",
+              class:"px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-lg shadow-lg transition-all"
+            ) {
+              "GitHub 보기"
+            }
+          }
+        }
+      }
+    }
+
+    Footer(class:"bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-20") {
+      Div(class:"container mx-auto px-6 py-8") {
+        Div(class:"text-center text-gray-600 dark:text-gray-400") {
+          P { "© 2024 UIH. MIT License." }
+          P(class:"mt-2") {
+            Span { "Made with ❤️ by " }
+            A(
+              href:"https://github.com/LeeJaeBae",
+              class:"text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            ) {
+              "LeeJaeWon"
+            }
+          }
+        }
+      }
+    }
+  }
+}

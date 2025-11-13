@@ -1,0 +1,336 @@
+meta {
+  route: "/docs/ko/examples";
+  title: "UIH 예제 갤러리";
+  theme: "light";
+}
+
+style {
+  color.primary: "#0E5EF7";
+  color.secondary: "#6B7280";
+  color.success: "#10B981";
+  color.warning: "#F59E0B";
+}
+
+layout {
+  Div(class:"min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800") {
+    Header(class:"bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50") {
+      Div(class:"container mx-auto px-6 py-4") {
+        Div(class:"flex items-center justify-between") {
+          Div(class:"flex items-center space-x-3") {
+            Div(class:"w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center") {
+              Span(class:"text-white font-bold text-xl") { "E" }
+            }
+            H1(class:"text-2xl font-bold text-gray-900 dark:text-white") { "UIH 예제 갤러리" }
+          }
+          Div(class:"flex items-center space-x-2") {
+            A(href:"/docs/ko", class:"px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300") { "문서" }
+            A(href:"/docs/ko/guide", class:"px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300") { "가이드" }
+            A(href:"/editor", class:"px-3 py-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-900 dark:text-purple-100 font-medium") { "에디터" }
+          }
+        }
+      }
+    }
+
+    Main(class:"container mx-auto px-6 py-12") {
+      Div(class:"max-w-7xl mx-auto") {
+        Section(class:"mb-16 text-center") {
+          H2(class:"text-5xl font-extrabold text-gray-900 dark:text-white mb-4") { "실전 UIH 예제" }
+          P(class:"text-xl text-gray-600 dark:text-gray-300 mb-8") {
+            "다양한 UI 패턴을 UIH로 구현한 예제 모음"
+          }
+          Div(class:"flex justify-center space-x-4") {
+            A(href:"#forms", class:"px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all") { "폼" }
+            A(href:"#cards", class:"px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-all") { "카드" }
+            A(href:"#navigation", class:"px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all") { "네비게이션" }
+            A(href:"#data", class:"px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all") { "데이터 표시" }
+          }
+        }
+
+        Section(id:"forms", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "📝 Form 예제" }
+            P(class:"text-purple-100 text-lg") { "로그인, 회원가입, 연락처 폼 등" }
+          }
+
+          Div(class:"grid grid-cols-1 lg:grid-cols-2 gap-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center justify-between mb-6") {
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "로그인 폼" }
+                Span(class:"px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-900 dark:text-purple-100 rounded-full text-sm font-medium") { "Basic" }
+              }
+
+              Div(class:"bg-gray-50 dark:bg-gray-900 rounded-lg p-6 mb-6") {
+                Div(class:"max-w-sm mx-auto") {
+                  H4(class:"text-xl font-bold mb-4 text-center") { "로그인" }
+                  Form(class:"space-y-4") {
+                    Input(
+                      type:"email",
+                      placeholder:"이메일",
+                      class:"w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    )
+                    Input(
+                      type:"password",
+                      placeholder:"비밀번호",
+                      class:"w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    )
+                    Button(class:"w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700") {
+                      "로그인"
+                    }
+                  }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "layout {\n  Card(class:\"p-6\") {\n    H2 { \"로그인\" }\n    Form {\n      Input(type:\"email\")\n      Input(type:\"password\")\n      Button { \"로그인\" }\n    }\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              Div(class:"flex items-center justify-between mb-6") {
+                H3(class:"text-2xl font-bold text-gray-900 dark:text-white") { "회원가입 폼" }
+                Span(class:"px-3 py-1 bg-pink-100 dark:bg-pink-900 text-pink-900 dark:text-pink-100 rounded-full text-sm font-medium") { "Advanced" }
+              }
+
+              Div(class:"bg-gray-50 dark:bg-gray-900 rounded-lg p-6 mb-6") {
+                Div(class:"max-w-sm mx-auto") {
+                  H4(class:"text-xl font-bold mb-4 text-center") { "회원가입" }
+                  Form(class:"space-y-3") {
+                    Input(placeholder:"이름", class:"w-full px-4 py-2 border rounded-lg")
+                    Input(type:"email", placeholder:"이메일", class:"w-full px-4 py-2 border rounded-lg")
+                    Input(type:"password", placeholder:"비밀번호", class:"w-full px-4 py-2 border rounded-lg")
+                    Div(class:"flex items-center space-x-2") {
+                      Input(type:"checkbox", class:"w-4 h-4")
+                      Label(class:"text-sm text-gray-600") { "약관에 동의합니다" }
+                    }
+                    Button(class:"w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700") {
+                      "가입하기"
+                    }
+                  }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "state {\n  agreed: false;\n}\n\nlayout {\n  Form {\n    Input(type:\"email\")\n    Checkbox { \"약관 동의\" }\n    Button { \"가입\" }\n  }\n}" }
+              }
+            }
+          }
+        }
+
+        Section(id:"cards", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🎴 Card 예제" }
+            P(class:"text-blue-100 text-lg") { "프로필 카드, 상품 카드, 통계 카드 등" }
+          }
+
+          Div(class:"grid grid-cols-1 md:grid-cols-3 gap-6") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all") {
+              Div(class:"text-center") {
+                Div(class:"w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl") {
+                  "👤"
+                }
+                H3(class:"text-xl font-bold text-gray-900 dark:text-white mb-2") { "홍길동" }
+                P(class:"text-gray-600 dark:text-gray-400 mb-4") { "프론트엔드 개발자" }
+                Div(class:"flex justify-center space-x-2") {
+                  Button(class:"px-4 py-2 bg-blue-600 text-white rounded-lg text-sm") { "팔로우" }
+                  Button(class:"px-4 py-2 border border-gray-300 rounded-lg text-sm") { "메시지" }
+                }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all") {
+              Div(class:"flex items-center justify-between mb-4") {
+                Div {
+                  P(class:"text-sm text-gray-600 dark:text-gray-400") { "총 사용자" }
+                  H3(class:"text-3xl font-bold text-gray-900 dark:text-white") { "12,345" }
+                }
+                Div(class:"w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-2xl") {
+                  "📈"
+                }
+              }
+              P(class:"text-sm text-green-600 dark:text-green-400") { "↑ 23% 지난 달 대비" }
+            }
+
+            Div(class:"bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl p-6 shadow-lg text-white") {
+              H3(class:"text-xl font-bold mb-2") { "프리미엄 플랜" }
+              P(class:"text-purple-100 mb-4") { "모든 기능 무제한 사용" }
+              Div(class:"mb-6") {
+                Span(class:"text-4xl font-bold") { "$29" }
+                Span(class:"text-purple-200") { "/월" }
+              }
+              Button(class:"w-full bg-white text-purple-600 py-2 rounded-lg font-bold hover:bg-purple-50") {
+                "시작하기"
+              }
+            }
+          }
+        }
+
+        Section(id:"navigation", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "🧭 Navigation 예제" }
+            P(class:"text-orange-100 text-lg") { "헤더, 사이드바, 탭 네비게이션" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-6") { "헤더 네비게이션" }
+
+              Nav(class:"bg-gray-900 rounded-lg p-4 mb-6") {
+                Div(class:"flex items-center justify-between") {
+                  Span(class:"text-white font-bold text-xl") { "Brand" }
+                  Div(class:"flex space-x-6") {
+                    A(href:"#", class:"text-gray-300 hover:text-white") { "홈" }
+                    A(href:"#", class:"text-gray-300 hover:text-white") { "소개" }
+                    A(href:"#", class:"text-gray-300 hover:text-white") { "서비스" }
+                    A(href:"#", class:"text-gray-300 hover:text-white") { "연락" }
+                  }
+                  Button(class:"bg-blue-600 text-white px-4 py-2 rounded-lg") { "시작" }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "Nav {\n  Div {\n    Span { \"Logo\" }\n    A(href:\"/\") { \"Home\" }\n    Button { \"CTA\" }\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-6") { "탭 네비게이션" }
+
+              Div(class:"mb-6") {
+                Div(class:"flex border-b border-gray-200") {
+                  Button(class:"px-6 py-3 border-b-2 border-blue-600 text-blue-600 font-medium") { "개요" }
+                  Button(class:"px-6 py-3 text-gray-600 hover:text-gray-900") { "상세정보" }
+                  Button(class:"px-6 py-3 text-gray-600 hover:text-gray-900") { "리뷰" }
+                  Button(class:"px-6 py-3 text-gray-600 hover:text-gray-900") { "설정" }
+                }
+                Div(class:"p-6 bg-gray-50 dark:bg-gray-900 rounded-b-lg") {
+                  P(class:"text-gray-600 dark:text-gray-300") { "탭 컨텐츠가 여기에 표시됩니다." }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "state {\n  activeTab: 0;\n}\n\nlayout {\n  Div {\n    Button { \"Tab 1\" }\n    Button { \"Tab 2\" }\n  }\n}" }
+              }
+            }
+          }
+        }
+
+        Section(id:"data", class:"mb-20 scroll-mt-20") {
+          Div(class:"bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 mb-8 shadow-xl") {
+            H2(class:"text-4xl font-extrabold text-white mb-2") { "📊 Data 표시 예제" }
+            P(class:"text-green-100 text-lg") { "테이블, 리스트, 그리드 레이아웃" }
+          }
+
+          Div(class:"space-y-8") {
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-6") { "데이터 테이블" }
+
+              Div(class:"overflow-x-auto mb-6") {
+                Table(class:"w-full") {
+                  Thead(class:"bg-gray-100 dark:bg-gray-700") {
+                    Tr {
+                      Th(class:"px-6 py-3 text-left text-sm font-semibold") { "이름" }
+                      Th(class:"px-6 py-3 text-left text-sm font-semibold") { "이메일" }
+                      Th(class:"px-6 py-3 text-left text-sm font-semibold") { "상태" }
+                      Th(class:"px-6 py-3 text-left text-sm font-semibold") { "액션" }
+                    }
+                  }
+                  Tbody {
+                    Tr(class:"border-b border-gray-200 dark:border-gray-700") {
+                      Td(class:"px-6 py-4") { "홍길동" }
+                      Td(class:"px-6 py-4") { "hong@example.com" }
+                      Td(class:"px-6 py-4") {
+                        Span(class:"px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm") { "활성" }
+                      }
+                      Td(class:"px-6 py-4") {
+                        Button(class:"text-blue-600 hover:underline text-sm") { "편집" }
+                      }
+                    }
+                    Tr(class:"border-b border-gray-200 dark:border-gray-700") {
+                      Td(class:"px-6 py-4") { "김철수" }
+                      Td(class:"px-6 py-4") { "kim@example.com" }
+                      Td(class:"px-6 py-4") {
+                        Span(class:"px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm") { "대기" }
+                      }
+                      Td(class:"px-6 py-4") {
+                        Button(class:"text-blue-600 hover:underline text-sm") { "편집" }
+                      }
+                    }
+                  }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "data {\n  fetch users from \"/api/users\";\n}\n\nlayout {\n  Table {\n    Thead { Tr { Th } }\n    Tbody { Tr { Td } }\n  }\n}" }
+              }
+            }
+
+            Div(class:"bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700") {
+              H3(class:"text-2xl font-bold text-gray-900 dark:text-white mb-6") { "그리드 레이아웃" }
+
+              Div(class:"grid grid-cols-1 md:grid-cols-4 gap-4 mb-6") {
+                Div(class:"bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-lg") {
+                  P(class:"text-sm text-blue-100 mb-2") { "방문자" }
+                  H4(class:"text-3xl font-bold") { "2,543" }
+                }
+                Div(class:"bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-lg") {
+                  P(class:"text-sm text-green-100 mb-2") { "매출" }
+                  H4(class:"text-3xl font-bold") { "$12.5K" }
+                }
+                Div(class:"bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-lg") {
+                  P(class:"text-sm text-purple-100 mb-2") { "주문" }
+                  H4(class:"text-3xl font-bold") { "147" }
+                }
+                Div(class:"bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-lg") {
+                  P(class:"text-sm text-orange-100 mb-2") { "전환율" }
+                  H4(class:"text-3xl font-bold") { "3.2%" }
+                }
+              }
+
+              Pre(class:"bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm whitespace-pre") {
+                Code { "layout {\n  Div(class:\"grid grid-cols-4\") {\n    Card { H3 { \"2,543\" } }\n    Card { H3 { \"$12.5K\" } }\n    Card { H3 { \"147\" } }\n  }\n}" }
+              }
+            }
+          }
+        }
+
+        Div(class:"bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-12 text-center") {
+          H2(class:"text-4xl font-extrabold text-white mb-4") { "🎨 더 많은 예제를 만들어보세요!" }
+          P(class:"text-indigo-100 text-lg mb-8") {
+            "UIH Playground에서 직접 실험하고 공유하세요"
+          }
+          Div(class:"flex justify-center space-x-4") {
+            A(
+              href:"/editor",
+              class:"px-8 py-4 bg-white text-indigo-600 font-bold rounded-lg shadow-lg hover:shadow-xl transition-all"
+            ) {
+              "Playground 열기 →"
+            }
+            A(
+              href:"https://github.com/LeeJaeBae/uih/tree/main/examples",
+              class:"px-8 py-4 bg-indigo-700 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-800 transition-all"
+            ) {
+              "GitHub 예제 보기"
+            }
+          }
+        }
+      }
+    }
+
+    Footer(class:"bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-20") {
+      Div(class:"container mx-auto px-6 py-8") {
+        Div(class:"text-center text-gray-600 dark:text-gray-400") {
+          P { "© 2024 UIH. MIT License." }
+          P(class:"mt-2") {
+            Span { "Made with ❤️ by " }
+            A(
+              href:"https://github.com/LeeJaeBae",
+              class:"text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300"
+            ) {
+              "LeeJaeWon"
+            }
+          }
+        }
+      }
+    }
+  }
+}
