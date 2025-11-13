@@ -40,7 +40,9 @@ uih/
 ├── packages/
 │   ├── parser/          # Core UIH language parser (AST generation)
 │   ├── codegen-react/   # React code generator (AST → JSX)
-│   └── cli/             # Command-line interface
+│   ├── cli/             # Command-line interface
+│   ├── ai/              # Claude AI integration for code generation
+│   └── mcp-server/      # MCP server for Claude Code integration
 ├── playground/          # Next.js playground with live UI preview
 ├── examples/            # Example .uih files
 ├── docs/                # Detailed documentation
@@ -48,6 +50,7 @@ uih/
 ```
 
 **Dependency Flow**: `cli` → `codegen-react` → `parser`
+**MCP Flow**: `mcp-server` → `ai` + `codegen-react` + `parser`
 
 ## Key Features
 
@@ -57,6 +60,8 @@ uih/
 - 🤖 **AI-Friendly** - Designed for natural language → code generation
 - 🖼️ **Live Preview** - Real-time UI rendering in VSCode
 - 🔄 **Multi-Framework** - React, Vue, and Svelte support
+- 🔌 **MCP Server** - Native Claude Code integration via Model Context Protocol
+- ⚡ **Interactive Templates** - Hybrid workflow: UIH generates structure + Claude Code implements logic automatically
 
 ## Example UIH File
 
@@ -92,10 +97,87 @@ layout {
 
 ## Development Workflow
 
+### Option 1: With MCP Server (Recommended for Claude Code)
+
+**Setup** (One-time):
+Add to `~/.claude/mcp_settings.json`:
+```json
+{
+  "mcpServers": {
+    "uih": {
+      "command": "/absolute/path/to/uih/packages/mcp-server/bin/uih-mcp-server.js"
+    }
+  }
+}
+```
+
+**Example**:
+```json
+{
+  "mcpServers": {
+    "uih": {
+      "command": "/Users/jaewonlee/Documents/CODESBYLEEJAEWON/uih/packages/mcp-server/bin/uih-mcp-server.js"
+    }
+  }
+}
+```
+
+**No API key needed!** Claude Code generates UIH code directly.
+
+**Usage**:
+
+**Basic Component Generation**:
+```
+You: "Create a login form component"
+Claude Code: [Automatically uses MCP tools]
+  → Reads UIH guide (mcp__uih__get_uih_guide)
+  → Generates UIH code directly
+  → Compiles to React/Vue/Svelte (mcp__uih__compile_uih)
+  → Saves to your project
+  ✅ Done in one step!
+```
+
+**Interactive Template (2-Stage Workflow)**:
+```
+You: "Create a login form with validation and API integration"
+Claude Code: [Hybrid template workflow]
+  → Reads UIH guide
+  → Generates UIH code with Form and Inputs
+  → Compiles with interactive: true
+  → Detects form features (inputs, buttons, validation needs)
+  → Injects smart placeholders:
+    • 🤖 State management (useState)
+    • 🤖 Validation logic
+    • 🤖 Submit handler with API call
+    • 🤖 Input change handlers
+  → Implements logic based on placeholders
+  → Saves fully functional component
+  ✅ Complete interactive form with all logic!
+```
+
+**How Interactive Mode Works**:
+1. **UIH generates static structure** - Forms, inputs, buttons, layout
+2. **Feature detection** - Automatically identifies interactive elements
+3. **Placeholder injection** - Adds TODO comments with implementation hints
+4. **Claude Code implements** - Completes logic based on placeholders
+5. **Result** - Fully functional component in one request
+
+See [MCP Server README](packages/mcp-server/README.md) for complete setup guide.
+
+### Option 2: Manual CLI (Without MCP)
+
 1. **Write** UIH files with natural language-like syntax
 2. **Compile** to your target framework (React/Vue/Svelte)
 3. **Preview** live in VSCode extension
 4. **Deploy** generated components to your project
+
+```bash
+# Generate with AI
+node packages/cli/dist/index.js ai "login form" > login.uih
+
+# Compile to React
+node packages/cli/dist/index.js compile login.uih out --target react
+```
 
 See [Development Guide](docs/DEVELOPMENT.md) for detailed commands and workflow.
 
@@ -111,4 +193,4 @@ Start with [Development Guide](docs/DEVELOPMENT.md) for setup instructions, or j
 
 ---
 
-**Version**: 1.3.4 | **License**: MIT | **Repository**: [github.com/yourusername/uih](https://github.com/yourusername/uih)
+**Version**: 0.8.0 | **VSCode Extension**: 1.3.4 | **License**: MIT | **Repository**: [github.com/LeeJaeBae/uih](https://github.com/LeeJaeBae/uih)

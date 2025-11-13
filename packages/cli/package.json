@@ -1,7 +1,7 @@
 {
   "name": "uih-cli",
-  "version": "0.7.2",
-  "description": "Command-line interface for UIH - compile, validate, and watch .uih files",
+  "version": "0.8.0",
+  "description": "Command-line interface for UIH with interactive templates - compile, validate, and watch .uih files with automatic logic implementation",
   "keywords": [
     "uih",
     "cli",

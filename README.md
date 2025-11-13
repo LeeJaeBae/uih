@@ -397,7 +397,15 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 
 ## 로드맵
 
-### v0.7 (현재)
+### v0.8 (현재)
+- ✅ 인터랙티브 템플릿 시스템 (Interactive Templates)
+- ✅ MCP Server 고도화 (Claude Code 네이티브 통합)
+- ✅ 스마트 플레이스홀더 주입 (자동 상태 관리, 검증, API 스켈레톤)
+- ✅ 하이브리드 워크플로우 (UIH 구조 생성 + Claude Code 로직 구현)
+- ✅ 전체 HTML 요소 지원 (25+ 요소)
+- ✅ 접근성 속성 지원
+
+### v0.7 (완료)
 - ✅ 온라인 플레이그라운드 (https://uih-playground.vercel.app)
 - ✅ VSCode 확장 (https://marketplace.visualstudio.com/items?itemName=LeeJaeWon.vscode-uih)
 - ✅ Monaco Editor 통합 (실시간 코드 편집)
@@ -406,6 +414,9 @@ pnpm dev                # CLI dev 모드 (examples/booking.uih 감시)
 - ✅ 다크/라이트 모드 지원
 - ✅ 주석 지원 (`//`, `/* */`)
 - ✅ 예약어를 속성 이름으로 사용 가능 (`for`, `if` 등)
+- ✅ Tailwind CSS 지원
+- ✅ CSS 변수 시스템
+- ✅ 컴포넌트 임포트 시스템
 
 ### v0.6 (완료)
 - ✅ 중첩된 조건/반복 최적화 (불필요한 Fragment 제거)

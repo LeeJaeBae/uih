@@ -5,6 +5,73 @@ All notable changes to UIH will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2025-11-14
+
+### Added
+- **Interactive Templates**: Hybrid workflow system for Claude Code integration
+  - Automatic feature detection from UIH AST (forms, inputs, modals, tabs)
+  - Smart placeholder injection with 🤖 TODO comments
+  - State management scaffolding (useState for React, ref for Vue, let for Svelte)
+  - Form validation templates with email/password patterns
+  - Submit handler templates with API call skeletons
+  - Input change handler templates with error clearing
+  - Modal and tab state management templates
+- **MCP Server Enhancements**:
+  - `interactive` parameter for compile_uih tool
+  - `features` parameter for selective placeholder injection
+  - `output_file` parameter for direct file saving
+- **Component Support**:
+  - Full HTML element support (25+ elements: Div, H1-H6, Form, etc.)
+  - Accessibility attributes for semantic HTML
+- **Documentation**:
+  - Added HYBRID_TEMPLATE.md with 8 interactive patterns
+  - Added PDCA documentation for playground live preview
+  - Updated MCP server README with interactive mode examples
+
+### Changed
+- React plugin now supports interactive template injection
+- MCP compile_uih tool schema updated with new parameters
+- Improved code generation with better formatting
+
+## [0.7.3] - 2025-11-11
+
+### Added
+- **Playground Live Preview**: Real-time UI rendering in Next.js playground
+  - Monaco Editor integration for UIH code editing
+  - Live compilation to React/Vue/Svelte
+  - 8 example gallery with instant preview
+  - Dark/Light mode support
+  - Deployed at https://uih-playground.vercel.app
+- **VSCode Extension v1.3.4**:
+  - Live UI preview with Tailwind CSS rendering
+  - Syntax highlighting improvements
+  - Better error messages
+
+### Changed
+- Improved parser error handling
+- Better TypeScript type inference
+
+### Fixed
+- Build issues with Prettier optional imports
+- Nested element parsing edge cases
+
+## [0.7.1] - 2025-01-XX
+
+### Added
+- **Tailwind CSS Support**: Full utility class support in components
+- **CSS Variables**: Custom design tokens via style block
+- **AI Code Generation**: CLI command for generating UIH from natural language
+- **Import System**: Component reuse across .uih files
+- **Data Block**: SWR data fetching support (experimental)
+
+### Changed
+- Improved type safety across all packages
+- Better error handling in parser and codegen
+
+### Fixed
+- Props passing to imported components
+- Variable reference syntax in props
+
 ## [0.6.0] - 2025-01-05
 
 ### Added
@@ -88,6 +155,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - pnpm workspace configuration
 - Build system with tsup
 
+[0.8.0]: https://github.com/LeeJaeBae/uih/releases/tag/v0.8.0
+[0.7.3]: https://github.com/LeeJaeBae/uih/releases/tag/v0.7.3
+[0.7.1]: https://github.com/LeeJaeBae/uih/releases/tag/v0.7.1
 [0.6.0]: https://github.com/LeeJaeBae/uih/releases/tag/v0.6.0
 [0.5.0]: https://github.com/LeeJaeBae/uih/releases/tag/v0.5.0
 [0.4.0]: https://github.com/LeeJaeBae/uih/releases/tag/v0.4.0

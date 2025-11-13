@@ -1,7 +1,16 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { UIHMissingBlockError } from "uih-parser";
 import { shadRegistry } from "./registry.js";
-import type { CodegenPlugin } from "./plugin.js";
+import type { CodegenPlugin, GenerateOptions } from "./plugin.js";
+import {
+  detectFeatures,
+  injectInteractivePlaceholders,
+  generateStatePlaceholder,
+  generateValidationPlaceholder,
+  generateSubmitPlaceholder,
+  generateInputHandlerPlaceholder,
+  type InteractiveOptions,
+} from "./interactive-templates.js";
 
 /**
  * React code generation plugin with shadcn/ui component support
@@ -10,7 +19,7 @@ export class ReactPlugin implements CodegenPlugin {
   readonly name = "react";
   readonly fileExtension = ".tsx";
 
-  async generate(file: UIHFile): Promise<string> {
+  async generate(file: UIHFile, options?: GenerateOptions): Promise<string> {
     // Generate user imports from .uih files and collect imported component names
     const importedComponents = new Set<string>();
     const userImports = (file.imports || []).map((imp) => {
@@ -74,13 +83,42 @@ export class ReactPlugin implements CodegenPlugin {
     stateImports.forEach(imp => imports.add(imp));
     dataImports.forEach(imp => imports.add(imp));
 
+    // Generate interactive placeholders if requested BEFORE generating import string
+    let interactivePlaceholders = "";
+    if (options?.interactive) {
+      const detectedFeatures = detectFeatures(file);
+      if (detectedFeatures.hasForm && detectedFeatures.hasInputs.length > 0) {
+        // Add useState import
+        imports.add('import { useState } from "react";');
+
+        // Generate placeholders
+        const stateTemplate = generateStatePlaceholder(detectedFeatures.hasInputs);
+        const validationTemplate = detectedFeatures.needsValidation
+          ? generateValidationPlaceholder(detectedFeatures.hasInputs)
+          : "";
+        const submitTemplate = detectedFeatures.needsApi
+          ? generateSubmitPlaceholder(detectedFeatures.hasInputs)
+          : "";
+        const inputHandlerTemplate = generateInputHandlerPlaceholder();
+
+        interactivePlaceholders = [
+          stateTemplate,
+          validationTemplate,
+          submitTemplate,
+          inputHandlerTemplate
+        ].filter(Boolean).join("\n");
+      }
+    }
+
+    // Generate import string AFTER interactive placeholders (which may add useState)
     const importStr = [...imports].filter(Boolean).join("\n");
     const allStyles = [styleVars, motionStyles].filter(Boolean).join("\n\n");
+
     const code = `
 ${userImports ? userImports + "\n" : ""}${importStr}
 ${fetcher ? fetcher : ""}
 export default function Page() {
-${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handlers : ""}
+${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handlers : ""}
   return (
     <>
       ${allStyles ? `<style dangerouslySetInnerHTML={{ __html: \`${allStyles}\` }} />` : ""}
@@ -92,22 +130,24 @@ ${stateHooks ? stateHooks : ""}${dataHooks ? dataHooks : ""}${handlers ? handler
 }
 `;
 
+    let finalCode = code.trim();
+
     // Format with prettier (optional - fallback to unformatted if unavailable)
     try {
       const prettier = await import("prettier");
-      const formatted = await prettier.default.format(code.trim(), {
+      finalCode = await prettier.default.format(finalCode, {
         parser: "typescript",
         semi: true,
         singleQuote: false,
         trailingComma: "es5",
         printWidth: 80,
       });
-      return formatted;
     } catch (error) {
-      // Prettier unavailable or formatting failed - return unformatted code
-      console.warn("Prettier formatting failed, returning unformatted code:", error);
-      return code.trim();
+      // Prettier unavailable or formatting failed - continue with unformatted code
+      console.warn("Prettier formatting failed, continuing with unformatted code:", error);
     }
+
+    return finalCode;
   }
 
   // Helper: Check if nodes need Fragment wrapper (multiple nodes or no nodes)

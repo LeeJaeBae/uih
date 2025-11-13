@@ -1,7 +1,7 @@
 {
   "name": "uih-codegen-react",
-  "version": "0.7.2",
-  "description": "Multi-framework code generator for UIH - supports React, Vue, and Svelte with plugin system",
+  "version": "0.8.0",
+  "description": "Multi-framework code generator for UIH with interactive templates - supports React, Vue, and Svelte with automatic logic implementation",
   "keywords": [
     "uih",
     "codegen",
@@ -11,7 +11,10 @@
     "code-generator",
     "plugin",
     "typescript",
-    "shadcn-ui"
+    "shadcn-ui",
+    "interactive-templates",
+    "ai-code-generation",
+    "hybrid-workflow"
   ],
   "author": "LeeJaeWon",
   "license": "MIT",

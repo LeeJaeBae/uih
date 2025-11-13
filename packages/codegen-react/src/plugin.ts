@@ -1,6 +1,23 @@
 import type { UIHFile } from "uih-parser";
 
 /**
+ * Code generation options
+ */
+export interface GenerateOptions {
+  /**
+   * Generate interactive template with logic placeholders
+   * When true, injects smart TODO comments for Claude Code to implement
+   */
+  interactive?: boolean;
+
+  /**
+   * Specific features to generate placeholders for
+   * If not provided, auto-detects from UIH AST
+   */
+  features?: string[]; // ["validation", "api", "animation", "modal", "tabs"]
+}
+
+/**
  * CodegenPlugin interface for framework-specific code generators
  */
 export interface CodegenPlugin {
@@ -17,9 +34,10 @@ export interface CodegenPlugin {
   /**
    * Generate framework-specific code from UIH AST
    * @param file - Parsed UIH file AST
+   * @param options - Code generation options (optional)
    * @returns Promise resolving to formatted code string
    */
-  generate(file: UIHFile): Promise<string>;
+  generate(file: UIHFile, options?: GenerateOptions): Promise<string>;
 }
 
 /**
