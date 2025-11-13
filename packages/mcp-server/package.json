@@ -1,7 +1,7 @@
 {
   "name": "uih-mcp-server",
-  "version": "0.2.0",
-  "description": "MCP server for UIH - enables Claude Code to generate UI components with interactive templates and automatic logic implementation",
+  "version": "0.3.0",
+  "description": "MCP server for UIH - Smart loading with 70% token reduction, interactive templates, and automatic logic implementation",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

@@ -8,7 +8,7 @@ export default function Page() {
     <>
       <div className="container mx-auto p-6">
         <Button className="close-btn" aria-label="Close dialog">
-          X
+          {"X"}
         </Button>
       </div>
     </>
@@ -42,7 +42,7 @@ exports[`React Code Generator > Accessibility Attributes > should generate role 
     <>
       <div className="container mx-auto p-6">
         <div aria-label="Main navigation" role="navigation">
-          Nav content
+          {"Nav content"}
         </div>
       </div>
     </>
@@ -58,7 +58,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <Button variant="primary">Click me</Button>
+        <Button variant="primary">{"Click me"}</Button>
       </div>
     </>
   );
@@ -74,7 +74,7 @@ export default function Page() {
     <>
       <div className="container mx-auto p-6">
         <Card>
-          <CardContent>Card content</CardContent>
+          <CardContent>{"Card content"}</CardContent>
         </Card>
       </div>
     </>
@@ -114,7 +114,7 @@ export default function Page() {
         }}
       />
       <div className="container mx-auto p-6">
-        <Button>Button</Button>
+        <Button>{"Button"}</Button>
       </div>
     </>
   );
@@ -141,7 +141,7 @@ exports[`React Code Generator > Canvas and SVG > should generate SVG element 1`]
     <>
       <div className="container mx-auto p-6">
         <svg className="icon" viewBox="0 0 100 100">
-          SVG content
+          {"SVG content"}
         </svg>
       </div>
     </>
@@ -178,8 +178,8 @@ export default function Page() {
       />
       <div className="container mx-auto p-6">
         <CustomHeader />
-        <p>Count: {count}</p>
-        <Button className="bg-[var(--color-primary)]">Increment</Button>
+        <p>{"Count: {count}"}</p>
+        <Button className="bg-[var(--color-primary)]">{"Increment"}</Button>
       </div>
     </>
   );
@@ -197,8 +197,8 @@ export default function Page() {
       <div className="container mx-auto p-6">
         {isLoggedIn && (
           <>
-            <Button>Logout</Button>
-            <Badge>Premium</Badge>
+            <Button>{"Logout"}</Button>
+            <Badge>{"Premium"}</Badge>
           </>
         )}
       </div>
@@ -215,7 +215,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        {isActive && <Badge>Active</Badge>}
+        {isActive && <Badge>{"Active"}</Badge>}
       </div>
     </>
   );
@@ -231,9 +231,9 @@ export default function Page() {
     <>
       <div className="container mx-auto p-6">
         {isPremium ? (
-          <Badge variant="success">Premium</Badge>
+          <Badge variant="success">{"Premium"}</Badge>
         ) : (
-          <Badge variant="default">Free</Badge>
+          <Badge variant="default">{"Free"}</Badge>
         )}
       </div>
     </>
@@ -257,7 +257,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <p>Users loaded</p>
+        <p>{"Users loaded"}</p>
       </div>
     </>
   );
@@ -288,7 +288,7 @@ export default function Page() {
     <>
       <div className="container mx-auto p-6">
         <Button className="btn-primary" onClick={handleClick}>
-          Click me
+          {"Click me"}
         </Button>
       </div>
     </>
@@ -302,7 +302,7 @@ exports[`React Code Generator > HTML Elements > should generate Div with Tailwin
   return (
     <>
       <div className="container mx-auto p-6">
-        <div className="container mx-auto p-4">Hello World</div>
+        <div className="container mx-auto p-4">{"Hello World"}</div>
       </div>
     </>
   );
@@ -316,7 +316,7 @@ exports[`React Code Generator > HTML Elements > should generate Form element 1`]
     <>
       <div className="container mx-auto p-6">
         <form className="space-y-4" action="/submit">
-          Form content
+          {"Form content"}
         </form>
       </div>
     </>
@@ -344,7 +344,7 @@ exports[`React Code Generator > HTML Elements > should generate Link (A) with hr
     <>
       <div className="container mx-auto p-6">
         <a className="text-blue-500 underline" href="https://example.com">
-          Click here
+          {"Click here"}
         </a>
       </div>
     </>
@@ -358,8 +358,8 @@ exports[`React Code Generator > HTML Elements > should generate heading tags 1`]
   return (
     <>
       <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold">Main Title</h1>
-        <h2 className="text-2xl">Subtitle</h2>
+        <h1 className="text-3xl font-bold">{"Main Title"}</h1>
+        <h2 className="text-2xl">{"Subtitle"}</h2>
       </div>
     </>
   );
@@ -373,8 +373,8 @@ exports[`React Code Generator > HTML Elements > should generate list elements 1`
     <>
       <div className="container mx-auto p-6">
         <ul className="list-disc">
-          <li>Item 1</li>
-          <li>Item 2</li>
+          <li>{"Item 1"}</li>
+          <li>{"Item 2"}</li>
         </ul>
       </div>
     </>
@@ -388,11 +388,11 @@ exports[`React Code Generator > HTML Elements > should generate semantic HTML el
   return (
     <>
       <div className="container mx-auto p-6">
-        <header className="bg-gray-100">Header</header>
+        <header className="bg-gray-100">{"Header"}</header>
         <main className="container">
-          <section>Content</section>
+          <section>{"Content"}</section>
         </main>
-        <footer className="mt-8">Footer</footer>
+        <footer className="mt-8">{"Footer"}</footer>
       </div>
     </>
   );
@@ -422,7 +422,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <Button>Click</Button>
+        <Button>{"Click"}</Button>
         <Input placeholder="Type here" />
       </div>
     </>
@@ -441,7 +441,7 @@ export default function Page() {
         {users.map((user) => (
           <React.Fragment key={user.id || Math.random()}>
             <Card>
-              <CardContent>User</CardContent>
+              <CardContent>{"User"}</CardContent>
             </Card>
           </React.Fragment>
         ))}
@@ -490,11 +490,11 @@ export default function Page() {
     <>
       <div className="container mx-auto p-6">
         <Card>
-          <CardContent>User Registration</CardContent>
+          <CardContent>{"User Registration"}</CardContent>
         </Card>
         <Input id="name" placeholder="Name" />
         <Input id="email" placeholder="Email" type="email" />
-        <Button variant="primary">Submit</Button>
+        <Button variant="primary">{"Submit"}</Button>
       </div>
     </>
   );
@@ -512,7 +512,7 @@ export default function Page() {
         {hasItems &&
           items.map((item) => (
             <React.Fragment key={item.id || Math.random()}>
-              <Badge>Item</Badge>
+              <Badge>{"Item"}</Badge>
             </React.Fragment>
           ))}
       </div>
@@ -533,9 +533,9 @@ export default function Page() {
         {items.map((item) => (
           <React.Fragment key={item.id || Math.random()}>
             <Card>
-              <CardContent>Item</CardContent>
+              <CardContent>{"Item"}</CardContent>
             </Card>
-            {item.isActive && <Badge>Active</Badge>}
+            {item.isActive && <Badge>{"Active"}</Badge>}
           </React.Fragment>
         ))}
       </div>
@@ -556,7 +556,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <p>Count: {count}</p>
+        <p>{"Count: {count}"}</p>
       </div>
     </>
   );
@@ -572,14 +572,14 @@ exports[`React Code Generator > Table Elements > should generate complete table 
         <table className="w-full">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Age</th>
+              <th>{"Name"}</th>
+              <th>{"Age"}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>John</td>
-              <td>30</td>
+              <td>{"John"}</td>
+              <td>{"30"}</td>
             </tr>
           </tbody>
         </table>
@@ -597,7 +597,9 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <Button className="bg-blue-500 text-white px-4 py-2">Click me</Button>
+        <Button className="bg-blue-500 text-white px-4 py-2">
+          {"Click me"}
+        </Button>
       </div>
     </>
   );
@@ -629,7 +631,7 @@ export default function Page() {
   return (
     <>
       <div className="container mx-auto p-6">
-        <p>Count: {count}</p>
+        <p>{"Count: {count}"}</p>
       </div>
     </>
   );

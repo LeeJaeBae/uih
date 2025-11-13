@@ -175,7 +175,9 @@ ${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? s
 
   private emitNode(n: Node, imports: Set<string>, importedComponents: Set<string>): string {
     if (n.kind === "Text") {
-      return n.text;
+      // Safely handle text with special characters (quotes, braces, etc.)
+      // by wrapping in JSX expression with JSON.stringify
+      return `{${JSON.stringify(n.text)}}`;
     }
 
     if (n.kind === "Conditional") {

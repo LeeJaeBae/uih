@@ -283,8 +283,8 @@ describe("React Code Generator", () => {
       const code = await generateReact(ast);
       expect(code).toMatchSnapshot();
       expect(code).toContain("{isPremium ?");
-      expect(code).toContain("<Badge variant=\"success\">Premium</Badge>");
-      expect(code).toContain("<Badge variant=\"default\">Free</Badge>");
+      expect(code).toContain('<Badge variant="success">{"Premium"}</Badge>');
+      expect(code).toContain('<Badge variant="default">{"Free"}</Badge>');
       expect(code).not.toContain("<><Badge");
     });
   });

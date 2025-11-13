@@ -105,7 +105,8 @@ ${allStyles ? `<style>\n${allStyles}\n</style>` : ""}
     const indentStr = "  ".repeat(indent);
 
     if (n.kind === "Text") {
-      return `${indentStr}${n.text}`;
+      // Safely handle text with special characters by using Svelte expression syntax
+      return `${indentStr}{${JSON.stringify(n.text)}}`;
     }
 
     if (n.kind === "Conditional") {

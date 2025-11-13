@@ -379,6 +379,18 @@ export const shadRegistry: Record<string, ShadComponent> = {
     render: (p: ComponentProps, children: string) =>
       `<svg ${propStr(p, ["id", "class", "width", "height", "viewBox"])}>${children || ""}</svg>`,
   },
+
+  // Code blocks
+  Pre: {
+    import: ``,
+    render: (p: ComponentProps, children: string) =>
+      `<pre ${propStr(p, ["id", "class"])}>${children || ""}</pre>`,
+  },
+  Code: {
+    import: ``,
+    render: (p: ComponentProps, children: string) =>
+      `<code ${propStr(p, ["id", "class"])}>${children || ""}</code>`,
+  },
 };
 
 /**

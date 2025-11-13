@@ -62,15 +62,44 @@ Add this to your Claude Code MCP settings (`~/.claude/mcp_settings.json`):
 ### 1. `get_uih_guide`
 Get UIH language syntax guide and examples. Claude Code reads this guide and generates UIH code directly.
 
-**Parameters**:
-- `section` (optional): Which section to retrieve (`full`, `syntax`, `examples`, `components`, `styling`)
+**Smart Loading Feature** 🎯: Automatically loads only relevant patterns based on user request, reducing token usage by ~70%!
 
-**Example**:
+**Parameters**:
+- `section` (optional): Which section to retrieve:
+  - `full` - Complete guide (~500 tokens)
+  - `syntax` - Basic UIH syntax only (~100 tokens)
+  - `form` - Form patterns (login, signup, inputs) (~150 tokens)
+  - `layout` - Dashboard and grid layouts (~180 tokens)
+  - `navigation` - Headers, footers, menus (~140 tokens)
+  - `data` - Tables and lists with loops (~160 tokens)
+  - `interaction` - Modals, loading, errors (~170 tokens)
+  - `best-practices` - Design system guidelines (~120 tokens)
+- `userRequest` (optional): User's original request for automatic context detection
+
+**Auto-Detection Keywords**:
+- **Form**: form, login, signup, input, submit, 회원, 로그인, 가입, 폼
+- **Layout**: dashboard, grid, layout, card, stats, 대시보드, 레이아웃, 카드
+- **Navigation**: nav, menu, header, footer, bar, 네비, 메뉴, 헤더, 푸터
+- **Data**: table, list, data, row, column, 테이블, 리스트, 데이터, 목록
+- **Interaction**: modal, loading, error, dialog, toast, 모달, 로딩, 에러, 다이얼로그
+
+**Examples**:
 ```
+# Auto-detection (recommended)
+Claude Code: [uses mcp__uih__get_uih_guide]
+userRequest: "Create a login form"
+→ Auto-detects: form context
+→ Returns: syntax + form pattern (~150 tokens)
+
+# Manual section selection
+Claude Code: [uses mcp__uih__get_uih_guide]
+section: "navigation"
+→ Returns: syntax + navigation pattern (~140 tokens)
+
+# Full guide (when needed)
 Claude Code: [uses mcp__uih__get_uih_guide]
 section: "full"
-→ Returns comprehensive UIH guide
-→ Claude Code generates UIH code based on the guide
+→ Returns: complete guide (~500 tokens)
 ```
 
 ### 2. `compile_uih`
@@ -230,7 +259,24 @@ node packages/mcp-server/dist/index.js
 ```
 
 ### Debugging
-The MCP server logs to stderr, which is visible in Claude Code's MCP logs.
+
+The MCP server supports debug logging via environment variables:
+
+```bash
+# Enable debug logging
+DEBUG=true node packages/mcp-server/dist/index.js
+
+# Or use UIH-specific flag
+UIH_DEBUG=true node packages/mcp-server/dist/index.js
+```
+
+Debug logs show:
+- Project root detection
+- Context auto-detection
+- Guide/code size truncation warnings
+- Feature detection for interactive mode
+
+All logs go to stderr, which is visible in Claude Code's MCP logs.
 
 ## Architecture
 
