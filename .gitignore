@@ -12,3 +12,7 @@ dist
 
 # out
 out
+
+# Claude Code config
+.claude/
+.mcp.json
