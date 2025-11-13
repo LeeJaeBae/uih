@@ -1,5 +1,6 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { UIHMissingBlockError } from "uih-parser";
+import { coreRegistry } from "./core-registry.js";
 import type { CodegenPlugin } from "./plugin.js";
 
 /**
@@ -198,13 +199,62 @@ ${indentStr}</${vueComponent}>`;
   }
 
   private mapToVueComponent(name: string): string {
-    // Map component names to Vue equivalents
-    const mapping: Record<string, string> = {
+    // Map component names to Vue equivalents (HTML tag names)
+    // Check if component exists in core registry first
+    if (coreRegistry[name]) {
+      // Extract HTML tag from core registry render function
+      // For most components, it's just lowercase version of the name
+      const mapping: Record<string, string> = {
+        Div: "div",
+        Span: "span",
+        P: "p",
+        H1: "h1",
+        H2: "h2",
+        H3: "h3",
+        H4: "h4",
+        H5: "h5",
+        H6: "h6",
+        Section: "section",
+        Article: "article",
+        Aside: "aside",
+        Header: "header",
+        Footer: "footer",
+        Nav: "nav",
+        Main: "main",
+        Form: "form",
+        Ul: "ul",
+        Ol: "ol",
+        Li: "li",
+        A: "a",
+        Img: "img",
+        Video: "video",
+        Audio: "audio",
+        Source: "source",
+        Table: "table",
+        Thead: "thead",
+        Tbody: "tbody",
+        Tfoot: "tfoot",
+        Tr: "tr",
+        Td: "td",
+        Th: "th",
+        Option: "option",
+        Fieldset: "fieldset",
+        Legend: "legend",
+        Canvas: "canvas",
+        Svg: "svg",
+        Pre: "pre",
+        Code: "code",
+        Text: "p",
+      };
+      return mapping[name] || "div";
+    }
+
+    // Fallback for unknown components (map shadcn-like components to basic HTML)
+    const shadcnFallback: Record<string, string> = {
       Button: "button",
       Input: "input",
       Card: "div",
       Badge: "span",
-      Text: "p",
       Textarea: "textarea",
       Select: "select",
       SelectItem: "option",
@@ -218,51 +268,9 @@ ${indentStr}</${vueComponent}>`;
       Alert: "div",
       Progress: "progress",
       Skeleton: "div",
-      // Pure HTML Elements
-      Div: "div",
-      Span: "span",
-      P: "p",
-      H1: "h1",
-      H2: "h2",
-      H3: "h3",
-      H4: "h4",
-      H5: "h5",
-      H6: "h6",
-      Section: "section",
-      Article: "article",
-      Aside: "aside",
-      Header: "header",
-      Footer: "footer",
-      Nav: "nav",
-      Main: "main",
-      Form: "form",
-      Ul: "ul",
-      Ol: "ol",
-      Li: "li",
-      A: "a",
-      Img: "img",
-      // Media Elements
-      Video: "video",
-      Audio: "audio",
-      Source: "source",
-      // Table Elements
-      Table: "table",
-      Thead: "thead",
-      Tbody: "tbody",
-      Tfoot: "tfoot",
-      Tr: "tr",
-      Td: "td",
-      Th: "th",
-      // Form Elements
-      Option: "option",
-      Fieldset: "fieldset",
-      Legend: "legend",
-      // Canvas and SVG
-      Canvas: "canvas",
-      Svg: "svg",
     };
 
-    return mapping[name] || "div";
+    return shadcnFallback[name] || "div";
   }
 
   private generateMotionStyles(motion: MotionBlock): string {

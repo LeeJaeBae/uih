@@ -14,7 +14,14 @@ export {
 export { ReactPlugin, createReactPlugin } from "./react-plugin.js";
 export { VuePlugin, createVuePlugin } from "./vue-plugin.js";
 export { SveltePlugin, createSveltePlugin } from "./svelte-plugin.js";
-export { shadRegistry } from "./registry.js";
+
+// Export registries (new architecture)
+export { coreRegistry, propStr, type ComponentConfig, type ComponentProps } from "./core-registry.js";
+export { shadcnRegistry } from "./shadcn-registry.js";
+
+// Backward compatibility alias (deprecated)
+export { shadcnRegistry as shadRegistry } from "./shadcn-registry.js";
+
 export {
   detectFeatures,
   injectInteractivePlaceholders,

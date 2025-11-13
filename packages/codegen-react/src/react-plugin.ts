@@ -1,6 +1,7 @@
 import type { UIHFile, LayoutBlock, MotionBlock, LogicBlock, StateBlock, DataBlock, StyleBlock, Node } from "uih-parser";
 import { UIHMissingBlockError } from "uih-parser";
-import { shadRegistry } from "./registry.js";
+import { coreRegistry, type ComponentConfig } from "./core-registry.js";
+import { shadcnRegistry } from "./shadcn-registry.js";
 import type { CodegenPlugin, GenerateOptions } from "./plugin.js";
 import {
   detectFeatures,
@@ -18,6 +19,14 @@ import {
 export class ReactPlugin implements CodegenPlugin {
   readonly name = "react";
   readonly fileExtension = ".tsx";
+  private registry: Record<string, ComponentConfig>;
+
+  constructor(useShadcn: boolean = true) {
+    // Merge registries: shadcn components override core components (e.g., Button, Input)
+    this.registry = useShadcn
+      ? { ...coreRegistry, ...shadcnRegistry }  // shadcn overrides core
+      : coreRegistry;  // Pure HTML only
+  }
 
   async generate(file: UIHFile, options?: GenerateOptions): Promise<string> {
     // Generate user imports from .uih files and collect imported component names
@@ -267,8 +276,8 @@ ${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? s
       }
     }
 
-    // Not an imported component - check shadcn registry
-    const reg = (n.name && (shadRegistry as any)[n.name]) || null;
+    // Not an imported component - check component registry
+    const reg = (n.name && this.registry[n.name]) || null;
     const propsObj = Object.fromEntries(
       (n.props || []).map((p) => [p.key, String(p.value)])
     );
@@ -433,7 +442,8 @@ ${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? s
 
 /**
  * Create and return a React plugin instance
+ * @param useShadcn Whether to use shadcn/ui components (default: true)
  */
-export function createReactPlugin(): CodegenPlugin {
-  return new ReactPlugin();
+export function createReactPlugin(useShadcn: boolean = true): CodegenPlugin {
+  return new ReactPlugin(useShadcn);
 }
