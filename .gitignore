@@ -16,3 +16,7 @@ out
 # Claude Code config
 .claude/
 .mcp.json
+
+# Test files
+test-output/
+test-*.uih
