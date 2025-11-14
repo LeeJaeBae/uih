@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -29,24 +30,24 @@ export default function Page() {
                   </h1>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <a
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/docs/ko"
                   >
                     {"문서"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/docs/ko/guide"
                   >
                     {"가이드"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg bg-purple-100 dark:bg-purple-900 text-purple-900 dark:text-purple-100 font-medium"
                     href="/editor"
                   >
                     {"에디터"}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -485,12 +486,12 @@ layout {
                   {"UIH Playground에서 직접 실험하고 공유하세요"}
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <a
+                  <Link
                     className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-lg shadow-lg hover:shadow-xl transition-all"
                     href="/editor"
                   >
                     {"Playground 열기 →"}
-                  </a>
+                  </Link>
                   <a
                     className="px-8 py-4 bg-indigo-700 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-800 transition-all"
                     href="https://github.com/LeeJaeBae/uih/tree/main/examples"

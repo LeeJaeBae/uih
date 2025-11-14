@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Page() {
   return (
     <>
@@ -26,18 +28,18 @@ export default function Page() {
                   </h1>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <a
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/"
                   >
                     {"홈"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/editor"
                   >
                     {"에디터"}
-                  </a>
+                  </Link>
                   <a
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="https://github.com/LeeJaeBae/uih"
@@ -559,12 +561,12 @@ uih compile form.uih output --interactive
                       {"🌐 온라인 Playground"}
                     </h3>
                     <div className="mb-6">
-                      <a
+                      <Link
                         className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all text-lg"
                         href="/editor"
                       >
                         {"🚀 Playground 열기 →"}
-                      </a>
+                      </Link>
                     </div>
                     <div className="space-y-4">
                       <div className="flex items-start">
@@ -879,12 +881,12 @@ logic {
                   {"UIH로 더 빠르고 일관성 있는 UI를 만들어보세요"}
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <a
+                  <Link
                     className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all"
                     href="/editor"
                   >
                     {"Playground 시작 →"}
-                  </a>
+                  </Link>
                   <a
                     className="px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-lg shadow-lg transition-all"
                     href="https://github.com/LeeJaeBae/uih"

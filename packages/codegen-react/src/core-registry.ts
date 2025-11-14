@@ -17,7 +17,7 @@ export interface ComponentProps {
  * Component registry entry
  */
 export interface ComponentConfig {
-  import: string;
+  import: string | ((props: ComponentProps) => string);
   render: (props: ComponentProps, children: string) => string;
 }
 
@@ -221,9 +221,26 @@ export const coreRegistry: Record<string, ComponentConfig> = {
 
   // ===== LINK & MEDIA =====
   A: {
-    import: ``,
-    render: (p: ComponentProps, children: string) =>
-      `<a ${propStr(p, ["id", "class", "href", "target", "rel"])}>${children || ""}</a>`,
+    import: (p: ComponentProps) => {
+      // Only import Next.js Link for internal navigation
+      const href = String(p.href || '');
+      const isInternal = href.startsWith('/') && !href.startsWith('//');
+      const isExternal = p.target === '_blank' || href.startsWith('http://') || href.startsWith('https://');
+      return (!isExternal && isInternal) ? `import Link from "next/link";` : ``;
+    },
+    render: (p: ComponentProps, children: string) => {
+      const href = String(p.href || '');
+      const isInternal = href.startsWith('/') && !href.startsWith('//');
+      const isExternal = p.target === '_blank' || href.startsWith('http://') || href.startsWith('https://');
+
+      if (!isExternal && isInternal) {
+        // Use Next.js Link for internal navigation
+        return `<Link ${propStr(p, ["id", "class", "href"])}>${children || ""}</Link>`;
+      } else {
+        // Use regular <a> tag for external links
+        return `<a ${propStr(p, ["id", "class", "href", "target", "rel"])}>${children || ""}</a>`;
+      }
+    },
   },
   Img: {
     import: ``,

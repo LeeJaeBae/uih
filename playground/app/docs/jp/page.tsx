@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Page() {
   return (
     <>
@@ -24,30 +26,30 @@ export default function Page() {
                   </h1>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <a
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/docs/ko"
                   >
                     {"한국어"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/docs/en"
                   >
                     {"English"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 font-medium"
                     href="/docs/jp"
                   >
                     {"日本語"}
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     href="/docs/cn"
                   >
                     {"中文"}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -62,12 +64,12 @@ export default function Page() {
                   {"React、Vue、Svelte向けの統合UIメタ言語"}
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <a
+                  <Link
                     className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all"
                     href="/editor"
                   >
                     {"エディタで始める →"}
-                  </a>
+                  </Link>
                   <a
                     className="px-8 py-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold rounded-lg shadow-lg border border-gray-300 dark:border-gray-600 transition-all"
                     href="https://github.com/LeeJaeBae/uih"
@@ -247,7 +249,7 @@ layout {
                       {"ソースコードと課題トラッカー"}
                     </p>
                   </a>
-                  <a
+                  <Link
                     className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all"
                     href="/editor"
                   >
@@ -257,7 +259,7 @@ layout {
                     <p className="text-gray-600 dark:text-gray-300">
                       {"ブラウザで今すぐ試す"}
                     </p>
-                  </a>
+                  </Link>
                   <a
                     className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all"
                     href="https://www.npmjs.com/package/uih-cli"

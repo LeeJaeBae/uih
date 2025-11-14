@@ -291,7 +291,10 @@ ${interactivePlaceholders ? interactivePlaceholders + "\n" : ""}${stateHooks ? s
     const children = (n.children || [])
       .map((c) => this.emitNode(c, imports, importedComponents))
       .join("");
-    if (reg?.import) imports.add(reg.import);
+    if (reg?.import) {
+      const importStr = typeof reg.import === 'function' ? reg.import(propsObj) : reg.import;
+      if (importStr) imports.add(importStr);
+    }
     if (reg?.render) return reg.render(propsObj, children);
     // fallback div
     return `<div>${children}</div>`;
